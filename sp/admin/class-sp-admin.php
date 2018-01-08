@@ -205,7 +205,7 @@ class Sp_Admin {
 
             $markdown = $converter->convert($post->post_content);
 
-            $data = array("body"=>array("title"=>"post_title", "content"=>$markdown, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
+            $data = array("body"=>array("title"=>$post->post_title, "content"=>$markdown, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
 
             wp_remote_post("http://localhost:8001", $data);
 

@@ -18,6 +18,14 @@
     <?php
     //Grab all options
     $options = get_option($this->plugin_name);
+
+    // validate the current options :
+
+    echo '<div class="error notice">
+    <p>There has been an error. Bummer</p>
+    </div>';
+
+
     ?>
 
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>

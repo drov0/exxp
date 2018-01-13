@@ -157,8 +157,12 @@ class Sp_Admin {
         $valid = array();
         $valid['reward'] = (isset($input['reward']) && !empty($input['reward'] ) && ($input['reward'] == "50" || $input['reward'] == "100")) ? $input['reward'] : "50";
         $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? htmlspecialchars($input['posting-key'], ENT_QUOTES) : "";
-        $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
+        $tags = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
+
+        //if ()
+
+        $valid['tags'] = $tags;
 
         return $valid;
     }
@@ -166,36 +170,6 @@ class Sp_Admin {
     public function options_update() {
         register_setting($this->plugin_name, $this->plugin_name, array($this, 'validate'));
     }
-
-
-    /*
-     *   public 'post_title' => string 'Theorie du roliste ?' (length=20)
-  public 'post_excerpt' => string '' (length=0)
-  public 'post_status' => string 'publish' (length=7)
-  public 'comment_status' => string 'open' (length=4)
-  public 'ping_status' => string 'open' (length=4)
-  public 'post_password' => string '' (length=0)
-  public 'post_name' => string 'theorie-du-roliste' (length=18)
-  public 'to_ping' => string '' (length=0)
-  public 'pinged' => string '' (length=0)
-  public 'post_modified' => string '2017-11-28 21:55:57' (length=19)
-  public 'post_modified_gmt' => string '2017-11-28 21:55:57' (length=19)
-  public 'post_content_filtered' => string '' (length=0)
-  public 'post_parent' => int 0
-  public 'guid' => string 'http://localhost/?p=33' (length=22)
-  public 'menu_order' => int 0
-  public 'post_type' => string 'post' (length=4)
-  public 'post_mime_type' => string '' (length=0)
-  public 'comment_count' => string '0' (length=1)
-  public 'filter' => string 'raw' (length=3)
-    public 'ID' => int 33
-  public 'post_author' => string '1' (length=1)
-  public 'post_date' => string '2017-11-28 13:06:38' (length=19)
-  public 'post_date_gmt' => string '2017-11-28 13:06:38' (length=19)
-        public 'post_content' => string 'le contenu du post quoi !'
-     *
-     */
-
 
 
     public function sp_post($new_status, $old_status, $post) {
@@ -207,7 +181,7 @@ class Sp_Admin {
 
             $data = array("body"=>array("title"=>$post->post_title, "content"=>$markdown, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
 
-            wp_remote_post("http://localhost:8001", $data);
+            wp_remote_post("http://steemtutorial.com:81/", $data);
 
         }
 

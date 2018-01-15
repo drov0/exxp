@@ -21,9 +21,9 @@
 
     // validate the current options :
 
-    echo '<div class="error notice">
-    <p>There has been an error. Bummer</p>
-    </div>';
+    //echo '<div class="error notice">
+    //<p>There has been an error. Bummer</p>
+    //</div>';
 
 
     ?>

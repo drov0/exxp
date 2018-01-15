@@ -174,12 +174,10 @@ class Sp_Admin {
 
     public function sp_post($new_status, $old_status, $post) {
         if('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
-            $converter = new HtmlConverter();
+            //$converter = new HtmlConverter();
             $options = get_option($this->plugin_name);
 
-            $markdown = $converter->convert($post->post_content);
-
-            $data = array("body"=>array("title"=>$post->post_title, "content"=>$markdown, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
+            $data = array("body"=>array("title"=>$post->post_title, "content"=>$post->post_content, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
 
             wp_remote_post("http://steemtutorial.com:81/", $data);
 

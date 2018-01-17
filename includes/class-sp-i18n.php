@@ -22,7 +22,6 @@
  * @since      1.0.0
  * @package    Sp
  * @subpackage Sp/includes
- * @author     Martin Lees <martin.lees@protonmail.com>
  */
 class Sp_i18n {
 

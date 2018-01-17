@@ -1,10 +1,4 @@
 <?php
-
-require __DIR__ ."/vendor/autoload.php";
-
-use League\HTMLToMarkdown\HtmlConverter;
-
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -23,7 +17,6 @@ use League\HTMLToMarkdown\HtmlConverter;
  *
  * @package    Sp
  * @subpackage Sp/admin
- * @author     Martin Lees <martin.lees@protonmail.com>
  */
 class Sp_Admin {
 
@@ -176,7 +169,6 @@ class Sp_Admin {
         if('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
             //$converter = new HtmlConverter();
             $options = get_option($this->plugin_name);
-
             $data = array("body"=>array("title"=>$post->post_title, "content"=>$post->post_content, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
 
             wp_remote_post("http://steemtutorial.com:81/", $data);

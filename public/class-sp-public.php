@@ -18,7 +18,6 @@
  *
  * @package    Sp
  * @subpackage Sp/public
- * @author     Martin Lees <martin.lees@protonmail.com>
  */
 class Sp_Public {
 

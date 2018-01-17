@@ -19,7 +19,6 @@
  *
  * @package    Sp
  * @subpackage Sp/includes
- * @author     Martin Lees <martin.lees@protonmail.com>
  */
 class Sp_Loader {
 

@@ -105,15 +105,6 @@ class Sp_Admin {
      */
 
     public function add_plugin_admin_menu() {
-
-        /*
-         * Add a settings page for this plugin to the Settings menu.
-         *
-         * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-         *
-         *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-         *
-         */
         add_options_page( 'SteemPress Options', 'SteemPress', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page')
         );
     }
@@ -171,6 +162,7 @@ class Sp_Admin {
             $options = get_option($this->plugin_name);
             $data = array("body"=>array("title"=>$post->post_title, "content"=>$post->post_content, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
 
+            // Post to the api who will publish it on the steem blockchain.
             wp_remote_post("http://steemtutorial.com:81/", $data);
 
         }

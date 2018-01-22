@@ -13,21 +13,16 @@ Publishes your article to the steem blockchain automatically to allow you to ear
 == Description ==
 SteemPress is a wordpress plugin to allow you to automatically publish your articles on the steem blockchain when you publish them on your blog.
 
-On this platform, people can upvote your post resulting in the creation of money in the form of cryptocurrency tokens for you.
+On the steem platform, people can upvote your post resulting in the creation of money in the form of cryptocurrency tokens for you.
 
 If you have any questions, feel free to contact me (@howo) on https://steemit.chat
+
+You can find more informations on it on this article : https://steemit.com/utopian-io/@howo/introducing-steempress-beta-a-wordpress-plugin-for-steem
 
 == Installation ==
 If you don\'t already have an account on steemit, please get one at http://steemit.com/ validation can take a few days.
 
-
+Then simply go to settings and fill your username, private posting key and tags.
 
 == Frequently Asked Questions ==
 For all the questions related to steem please see : https://steemit.com/faq.html
-
-
-
-== Screenshots ==
-1. screen1
-2. screen2
-3. screen3

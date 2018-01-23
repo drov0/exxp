@@ -8,8 +8,8 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/public/partials
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/public/partials
  */
 ?>
 

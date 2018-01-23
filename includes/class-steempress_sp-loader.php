@@ -6,8 +6,8 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
  */
 
 /**
@@ -17,10 +17,10 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
  */
-class Sp_Loader {
+class Steempress_sp_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

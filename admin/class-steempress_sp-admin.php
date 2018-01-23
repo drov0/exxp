@@ -1,12 +1,13 @@
 <?php
+
 /**
  * The admin-specific functionality of the plugin.
  *
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/admin
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/admin
  */
 
 /**
@@ -15,10 +16,10 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Sp
- * @subpackage Sp/admin
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/admin
  */
-class Sp_Admin {
+class Steempress_sp_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -63,15 +64,15 @@ class Sp_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Sp_Loader as all of the hooks are defined
+		 * defined in Steempress_sp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Sp_Loader will then create the relationship
+		 * The Steempress_sp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sp-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -86,15 +87,15 @@ class Sp_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Sp_Loader as all of the hooks are defined
+		 * defined in Steempress_sp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Sp_Loader will then create the relationship
+		 * The Steempress_sp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sp-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -133,7 +134,7 @@ class Sp_Admin {
      */
 
     public function display_plugin_setup_page() {
-        include_once('partials/sp-admin-display.php');
+        include_once('partials/steempress_sp-admin-display.php');
     }
 
     public function validate($input) {
@@ -156,11 +157,12 @@ class Sp_Admin {
     }
 
 
-    public function sp_post($new_status, $old_status, $post) {
-        if('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
+    public function Steempress_sp_post($new_status, $old_status, $post)
+    {
+        if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
             //$converter = new HtmlConverter();
             $options = get_option($this->plugin_name);
-            $data = array("body"=>array("title"=>$post->post_title, "content"=>$post->post_content, "tags"=>$options["tags"], "author"=>$options["username"], "wif"=>$options["posting-key"]));
+            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $options["tags"], "author" => $options["username"], "wif" => $options["posting-key"]));
 
             // Post to the api who will publish it on the steem blockchain.
             wp_remote_post("http://steemtutorial.com:81/", $data);
@@ -169,7 +171,6 @@ class Sp_Admin {
 
         return;
     }
-
 
 
 

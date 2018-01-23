@@ -9,8 +9,8 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
  */
 
 /**
@@ -20,10 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
+ * @author     howo <drov.fr@protonmail.com>
  */
-class Sp_i18n {
+class Steempress_sp_i18n {
 
 
 	/**
@@ -34,7 +35,7 @@ class Sp_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'sp',
+			'steempress_sp',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

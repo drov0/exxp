@@ -22,7 +22,7 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
+ * @package    Steempress_sp
  */
 
 // If uninstall not called from WordPress, then exit.

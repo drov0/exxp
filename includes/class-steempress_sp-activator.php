@@ -6,8 +6,8 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
  */
 
 /**
@@ -16,10 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Sp
- * @subpackage Sp/includes
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/includes
+ * @author     howo <drov.fr@protonmail.com>
  */
-class Sp_Activator {
+class Steempress_sp_Activator {
 
 	/**
 	 * Short Description. (use period)

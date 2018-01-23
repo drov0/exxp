@@ -6,8 +6,8 @@
  * @link       https://steemit.com/@howo
  * @since      1.0.0
  *
- * @package    Sp
- * @subpackage Sp/public
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/public
  */
 
 /**
@@ -16,10 +16,10 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Sp
- * @subpackage Sp/public
+ * @package    Steempress_sp
+ * @subpackage Steempress_sp/public
  */
-class Sp_Public {
+class Steempress_sp_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -64,15 +64,15 @@ class Sp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Sp_Loader as all of the hooks are defined
+		 * defined in Steempress_sp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Sp_Loader will then create the relationship
+		 * The Steempress_sp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sp-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -87,15 +87,15 @@ class Sp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Sp_Loader as all of the hooks are defined
+		 * defined in Steempress_sp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Sp_Loader will then create the relationship
+		 * The Steempress_sp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sp-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

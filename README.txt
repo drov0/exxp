@@ -1,5 +1,5 @@
 === SteemPress ===
-Contributors: howofr
+Contributors: howofr,fbablogadmin
 Tags: Steem,Steemit,Wordpress
 Donate link: https://steemit.com/@howo
 Requires at least: 2.7.0

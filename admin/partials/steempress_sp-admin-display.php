@@ -55,10 +55,8 @@
 
         if (is_array($result) or ($result instanceof Traversable))
             echo "<b style='color: darkgreen'>Ok</b>";
-        else {
-            echo "<br /> Connection error, send this to the developer (@howo you can find me on steemit.chat) to get help : <br/>";
-            var_dump($result);
-        }
+        else
+            echo "<b style='color: darkgreen'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>
 
 </div>

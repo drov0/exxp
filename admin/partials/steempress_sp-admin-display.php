@@ -27,7 +27,7 @@
         <p>Steem Username : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
-        <p>Posting key : </p>
+        <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
         <br />
         <!--<p> Reward : </p>
@@ -54,9 +54,9 @@
         $result = wp_remote_post("http://steemtutorial.com:81/test", $data);
 
         if (is_array($result) or ($result instanceof Traversable))
-            echo "Ok";
+            echo "<b style='color: darkgreen'>Ok</b>";
         else {
-            echo "connection error, send this to the developer to get help : <br/>";
+            echo "<br /> Connection error, send this to the developer (@howo you can find me on steemit.chat) to get help : <br/>";
             var_dump($result);
         }
         ?> </p>

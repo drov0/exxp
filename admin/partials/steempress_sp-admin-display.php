@@ -46,4 +46,19 @@
 
     </form>
 
+    <p> Connectivity to the steem server : <?php
+
+        $data = array("body" => array("test" => "test"));
+
+        // Post to the api who will publish it on the steem blockchain.
+        $result = wp_remote_post("http://steemtutorial.com:81/test", $data);
+
+        if (is_array($result) or ($result instanceof Traversable))
+            echo "Ok";
+        else {
+            echo "connection error, send this to the developer to get help : <br/>";
+            var_dump($result);
+        }
+        ?> </p>
+
 </div>

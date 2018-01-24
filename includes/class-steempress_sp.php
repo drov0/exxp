@@ -67,7 +67,7 @@ class Steempress_sp {
 	 */
 	public function __construct() {
 		if ( defined( 'steempress_sp_compte' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
+			$this->version = steempress_sp_compte;
 		} else {
 			$this->version = '1.0.0';
 		}

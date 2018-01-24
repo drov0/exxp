@@ -162,10 +162,30 @@ class Steempress_sp_Admin {
         if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
             //$converter = new HtmlConverter();
             $options = get_option($this->plugin_name);
-            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $options["tags"], "author" => $options["username"], "wif" => $options["posting-key"]));
+
+            $wp_tags = wp_get_post_tags($post->ID);
+
+            if (sizeof($wp_tags) != 0) {
+
+                $tags = [];
+
+                foreach ($wp_tags as $tag) {
+                    $tags[] = $tag->name;
+                }
+
+                $tags = implode(" ", $tags);
+            }
+            else
+                $tags = $options["tags"];
+
+
+            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"]));
+
+
 
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("http://steemtutorial.com:81/", $data);
+            //wp_remote_post("http://steemtutorial.com:81/", $data);
+            wp_remote_post("http://localhost:8001", $data);
 
         }
 

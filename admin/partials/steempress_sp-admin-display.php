@@ -18,6 +18,7 @@
     <?php
     //Grab all options
     $options = get_option($this->plugin_name);
+
     ?>
 
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
@@ -30,28 +31,34 @@
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
         <br />
-        <!--<p> Reward : </p>
+        <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
             <option value="100" <?php echo ($options["reward"] == "100" ?  'selected="selected"' : '');?>>100% Steem Power</option>
-        </select>-->
+        </select>
 
 
 
-        <p> Default tags : (separate each tag by a space, 5 max) </p>
+        <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress steem" : $options["tags"]), ENT_QUOTES); ?>"/>
         <br />
+        <br />
+
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add original link to the steem article.<br>
+
 
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
 
     </form>
+
 
     <p> Connectivity to the steem server : <?php
 
         $data = array("body" => array("test" => "test"));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post("http://steemtutorial.com:81/test", $data);
+        $result = wp_remote_post("https://steemgifts.com/test", $data);
 
         if (is_array($result) or ($result instanceof Traversable))
             echo "<b style='color: darkgreen'>Ok</b>";

@@ -142,12 +142,11 @@ class Steempress_sp_Admin {
         $valid = array();
         $valid['reward'] = (isset($input['reward']) && !empty($input['reward'] ) && ($input['reward'] == "50" || $input['reward'] == "100")) ? $input['reward'] : "50";
         $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? htmlspecialchars($input['posting-key'], ENT_QUOTES) : "";
-        $tags = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
+        $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
+        $valid['seo'] = ((isset($input['seo']) && !empty($input['seo'])) && $input['seo'] == 'on') ? 'on' : "off";
+        $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
 
-        //if ()
-
-        $valid['tags'] = $tags;
 
         return $valid;
     }
@@ -178,14 +177,15 @@ class Steempress_sp_Admin {
             else
                 $tags = $options["tags"];
 
+            if ($options['seo'] == "on")
+                $link = get_permalink($post->ID);
+            else
+                $link = "";
 
-            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"]));
-
-
+            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward']));
 
             // Post to the api who will publish it on the steem blockchain.
-            //wp_remote_post("http://steemtutorial.com:81/", $data);
-            wp_remote_post("http://localhost:8001", $data);
+            wp_remote_post("https://steemgifts.com", $data);
 
         }
 

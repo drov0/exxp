@@ -1,5 +1,5 @@
 === SteemPress ===
-Contributors: howofr,fbablogadmin
+Contributors: howofr,fredrikaa
 Tags: Steem,Steemit,Wordpress,monetization,blockchain
 Donate link: https://steemit.com/@howo
 Requires at least: 2.7.0

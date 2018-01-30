@@ -3,6 +3,7 @@ Contributors: howofr,fredrikaa
 Tags: Steem,Steemit,Wordpress,monetization,blockchain
 Donate link: https://steemit.com/@howo
 Requires at least: 2.7.0
+Tested up to: 4.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

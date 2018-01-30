@@ -156,6 +156,8 @@ class Steempress_sp_Admin {
     }
 
 
+
+
     public function Steempress_sp_post($new_status, $old_status, $post)
     {
         if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
@@ -168,10 +170,6 @@ class Steempress_sp_Admin {
                 $options["posting-key"] = "";
             if (!isset($options["reward"]))
                 $options["reward"] = "100";
-            if (!isset($options["tags"]))
-                $options["tags"] = "";
-            if (!isset($options["tags"]))
-                $options["tags"] = "";
             if (!isset($options["tags"]))
                 $options["tags"] = "";
             if (!isset($options["seo"]))

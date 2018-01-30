@@ -28,6 +28,7 @@ features :
 - Conversion and cleanup of the text to make look good on steem.
 - Optional self vote
 - Add an original link to your blog
+- Custom tags for each article
 - Default tags if no tags are defined for an article.
 
 

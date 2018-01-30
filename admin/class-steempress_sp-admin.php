@@ -197,7 +197,7 @@ class Steempress_sp_Admin {
             else
                 $link = "";
 
-            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward']));
+            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
 
             // A few local verifications as to not overload the server with useless txs
 

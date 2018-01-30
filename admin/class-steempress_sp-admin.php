@@ -204,11 +204,11 @@ class Steempress_sp_Admin {
             // A few local verifications as to not overload the server with useless txs
 
             $test = $data['body'];
-
             // Last minute checks before sending it to the server
-            if ($test['tags'] != "" && $test['username'] != "" && $test['posting-key'] != "") {
+            if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                 // Post to the api who will publish it on the steem blockchain.
-                wp_remote_post("https://steemgifts.com", $data);
+                //wp_remote_post("https://steemgifts.com", $data);
+                wp_remote_post("http://localhost:8001", $data);
             }
         }
 

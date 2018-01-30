@@ -32,7 +32,7 @@ features :
 
 
 == Installation ==
-If you don't already have an account on steemit, please get one at http://steemit.com/ validation can take a few days.
+If you don't already have an account on steemit, please get one at https://steemit.com/pick_account validation can take a few days.
 
 Then simply go to settings and fill your username, private posting key and default tags. and you're good to go :)
 

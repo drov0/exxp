@@ -19,6 +19,24 @@
     //Grab all options
     $options = get_option($this->plugin_name);
 
+    // avoid undefined errors when running it for the first time :
+    if (!isset($options["username"]))
+        $options["username"] = "";
+    if (!isset($options["posting-key"]))
+        $options["posting-key"] = "";
+    if (!isset($options["reward"]))
+        $options["reward"] = "100";
+    if (!isset($options["tags"]))
+        $options["tags"] = "";
+    if (!isset($options["tags"]))
+        $options["tags"] = "";
+    if (!isset($options["tags"]))
+        $options["tags"] = "";
+    if (!isset($options["seo"]))
+        $options["seo"] = "on";
+    if (!isset($options["vote"]))
+        $options["vote"] = "on";
+
     ?>
 
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
@@ -31,6 +49,12 @@
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
         <br />
+        <?php
+        if ($options["posting-key"] == "")
+            echo "Don't have a steem account ? Sign up here : https://steemit.com/pick_account"
+
+
+        ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
@@ -63,7 +87,7 @@
         if (is_array($result) or ($result instanceof Traversable))
             echo "<b style='color: darkgreen'>Ok</b>";
         else
-            echo "<b style='color: darkgreen'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
+            echo "<b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>
 
 </div>

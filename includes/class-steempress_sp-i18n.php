@@ -22,7 +22,6 @@
  * @since      1.0.0
  * @package    Steempress_sp
  * @subpackage Steempress_sp/includes
- * @author     howo <drov.fr@protonmail.com>
  */
 class Steempress_sp_i18n {
 

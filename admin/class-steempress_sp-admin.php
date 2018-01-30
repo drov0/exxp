@@ -159,8 +159,25 @@ class Steempress_sp_Admin {
     public function Steempress_sp_post($new_status, $old_status, $post)
     {
         if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
-            //$converter = new HtmlConverter();
             $options = get_option($this->plugin_name);
+
+            // Avoid undefined errors
+            if (!isset($options["username"]))
+                $options["username"] = "";
+            if (!isset($options["posting-key"]))
+                $options["posting-key"] = "";
+            if (!isset($options["reward"]))
+                $options["reward"] = "100";
+            if (!isset($options["tags"]))
+                $options["tags"] = "";
+            if (!isset($options["tags"]))
+                $options["tags"] = "";
+            if (!isset($options["tags"]))
+                $options["tags"] = "";
+            if (!isset($options["seo"]))
+                $options["seo"] = "on";
+            if (!isset($options["vote"]))
+                $options["vote"] = "on";
 
             $wp_tags = wp_get_post_tags($post->ID);
 
@@ -184,9 +201,15 @@ class Steempress_sp_Admin {
 
             $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward']));
 
-            // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("https://steemgifts.com", $data);
+            // A few local verifications as to not overload the server with useless txs
 
+            $test = $data['body'];
+
+            // Last minute checks before sending it to the server
+            if ($test['tags'] != "" && $test['username'] != "" && $test['posting-key'] != "") {
+                // Post to the api who will publish it on the steem blockchain.
+                wp_remote_post("https://steemgifts.com", $data);
+            }
         }
 
         return;

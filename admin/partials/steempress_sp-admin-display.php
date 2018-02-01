@@ -46,15 +46,13 @@
         <p>Steem Username : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
+        <?php
+        if ($options["posting-key"] == "" || $options['username'] == "")
+            echo "Don't have a steem account ? Sign up <a href='https://steemit.com/pick_account'> here</a>"
+        ?>
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
         <br />
-        <?php
-        if ($options["posting-key"] == "")
-            echo "Don't have a steem account ? Sign up here : https://steemit.com/pick_account"
-
-
-        ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>

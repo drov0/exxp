@@ -75,17 +75,23 @@
     </form>
 
 
-    <p> Connectivity to the steem server : <?php
+    <p><?php
 
-        $data = array("body" => array("test" => "test"));
+        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key']));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post("https://steemgifts.com/test", $data);
-
+        //$result = wp_remote_post("https://steemgifts.com/test", $data);
+        $result = wp_remote_post("http://localhost:8001/test", $data);
         if (is_array($result) or ($result instanceof Traversable))
-            echo "<b style='color: darkgreen'>Ok</b>";
+            $text = $result['body'];
+            if ($text == "ok")
+                echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>
+                      Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
+            else if ($text == "wif ok")
+                echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>
+                      Username/posting key  : <b style='color: darkgreen'>Ok</b> ";
         else
-            echo "<b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
+            echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>
 
 </div>

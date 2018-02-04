@@ -19,6 +19,7 @@ So, what benefits could you as a blog owner get by also sharing your posts on th
 - It can help you gain a new audience as your content is brought to the eyes of people browsing any app or website that presents content stored on the STEEM blockchain.
 - It may also provide a new source of income, as content posted on STEEM earns its own rewards based on upvotes.
 - It will help store your content securely
+
 To use SteemPress, you will need a STEEM account which can be made for free signing up via www.steemit.com
 You can also follow the value of a STEEM token here : https://coinmarketcap.com/currencies/steem/
 

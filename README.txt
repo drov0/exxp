@@ -45,3 +45,5 @@ Then simply go to settings and fill your username, private posting key and defau
 == Frequently Asked Questions ==
 
 For all the questions related to steem please see : https://steemit.com/faq.html
+
+We

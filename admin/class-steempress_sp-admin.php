@@ -181,7 +181,7 @@ class Steempress_sp_Admin {
 
             if (sizeof($wp_tags) != 0) {
 
-                $tags = [];
+                $tags = array();
 
                 foreach ($wp_tags as $tag) {
                     $tags[] = $tag->name;

@@ -38,7 +38,7 @@ features :
 
 
 == Installation ==
-If you don't already have an account on steemit, please get one at https://steemit.com/pick_account validation can take a few days.
+If you don't already have an account on steemit, please get one at https://signup.steemit.com/ validation can take a few days.
 
 Then simply go to settings and fill your username, private posting key and default tags. and you're good to go :)
 
@@ -46,4 +46,10 @@ Then simply go to settings and fill your username, private posting key and defau
 
 For all the questions related to steem please see : https://steemit.com/faq.html
 
-We
+About the benefactor rewards :
+
+Like most other apps on STEEM, including esteem, dtube, dsound, dmania, utopian and zappl to name a few, we intend to use benefactor rewards to help run SteemPress. The benefactor rewards is currently set to  10%. In comparison, Dtube and Utopian both take 25% benefactor rewards while Zappl takes 15%.
+
+It is worth noting that the benefactor(s) only receive a part of the Steem Power reward from the post, leaving the SBD rewards untouched. Assuming the post is set as 50/50 split SBD/SP and that 25% of the total rewards go to the curators, the 10% benefactor rewards only affects 37.5% of the total rewards. With SBDs also trading above its peg, the percentage of the USD rewards is also significantly lower.
+
+We (fredrikaa and howo) are determined to do our best to keep this percentage low in order to incentivise more use. Discussions on the use of benefactor rewards, and what rates they should be, are of course welcomed.

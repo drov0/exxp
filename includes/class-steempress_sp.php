@@ -168,7 +168,14 @@ class Steempress_sp {
         $this->loader->add_action( 'transition_post_status', $plugin_admin, 'Steempress_sp_post', 10, 3 );
 
 
+        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'custom_bulk_actions' );
+        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'custom_bulk_action_handler', 10, 3 );
+        $this->loader->add_action( 'admin_notices', $plugin_admin,'custom_bulk_action_admin_notice' );
+
+
     }
+
+
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
@@ -180,8 +187,7 @@ class Steempress_sp {
 	private function define_public_hooks() {
 
 		$plugin_public = new Steempress_sp_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
@@ -225,5 +231,6 @@ class Steempress_sp {
 	public function get_version() {
 		return $this->version;
 	}
+
 
 }

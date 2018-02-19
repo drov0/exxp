@@ -25,7 +25,7 @@
     if (!isset($options["posting-key"]))
         $options["posting-key"] = "";
     if (!isset($options["reward"]))
-        $options["reward"] = "100";
+        $options["reward"] = "50";
     if (!isset($options["tags"]))
         $options["tags"] = "";
     if (!isset($options["tags"]))
@@ -67,7 +67,7 @@
         <br />
 
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
-        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add original link to the steem article.<br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the original link to the steem article.<br>
 
 
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
@@ -80,7 +80,8 @@
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward']));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post("https://steemgifts.com/test", $data);
+        //$result = wp_remote_post("https://steemgifts.com/test", $data);
+        $result = wp_remote_post("http://localhost:8001/test", $data);
         if (is_array($result) or ($result instanceof Traversable))
             $text = $result['body'];
             if ($text == "ok")

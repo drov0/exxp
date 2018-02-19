@@ -158,60 +158,97 @@ class Steempress_sp_Admin {
 
 
 
+
+    public function Steempress_sp_publish($id)
+    {
+        $options = get_option($this->plugin_name);
+
+        // Avoid undefined errors
+        if (!isset($options["username"]))
+            $options["username"] = "";
+        if (!isset($options["posting-key"]))
+            $options["posting-key"] = "";
+        if (!isset($options["reward"]))
+            $options["reward"] = "100";
+        if (!isset($options["tags"]))
+            $options["tags"] = "";
+        if (!isset($options["seo"]))
+            $options["seo"] = "on";
+        if (!isset($options["vote"]))
+            $options["vote"] = "on";
+
+        $post = get_post($id);
+
+        $wp_tags = wp_get_post_tags($id);
+
+        if (sizeof($wp_tags) != 0) {
+
+            $tags = array();
+
+            foreach ($wp_tags as $tag) {
+                $tags[] = $tag->name;
+            }
+
+            $tags = implode(" ", $tags);
+        }
+        else
+            $tags = $options["tags"];
+
+        if ($options['seo'] == "on")
+            $link = get_permalink($post->ID);
+        else
+            $link = "";
+
+        $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
+
+        // A few local verifications as to not overload the server with useless txs
+
+        $test = $data['body'];
+        // Last minute checks before sending it to the server
+        if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
+            // Post to the api who will publish it on the steem blockchain.
+            wp_remote_post("https://steemgifts.com", $data);
+        }
+    }
+
+
     public function Steempress_sp_post($new_status, $old_status, $post)
     {
         if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
-            $options = get_option($this->plugin_name);
-
-            // Avoid undefined errors
-            if (!isset($options["username"]))
-                $options["username"] = "";
-            if (!isset($options["posting-key"]))
-                $options["posting-key"] = "";
-            if (!isset($options["reward"]))
-                $options["reward"] = "100";
-            if (!isset($options["tags"]))
-                $options["tags"] = "";
-            if (!isset($options["seo"]))
-                $options["seo"] = "on";
-            if (!isset($options["vote"]))
-                $options["vote"] = "on";
-
-            $wp_tags = wp_get_post_tags($post->ID);
-
-            if (sizeof($wp_tags) != 0) {
-
-                $tags = array();
-
-                foreach ($wp_tags as $tag) {
-                    $tags[] = $tag->name;
-                }
-
-                $tags = implode(" ", $tags);
-            }
-            else
-                $tags = $options["tags"];
-
-            if ($options['seo'] == "on")
-                $link = get_permalink($post->ID);
-            else
-                $link = "";
-
-            $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
-
-            // A few local verifications as to not overload the server with useless txs
-
-            $test = $data['body'];
-            // Last minute checks before sending it to the server
-            if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
-                // Post to the api who will publish it on the steem blockchain.
-                wp_remote_post("https://steemgifts.com", $data);
-            }
+            $this->Steempress_sp_publish($post->ID);
         }
 
         return;
     }
 
 
+    public function custom_bulk_actions($bulk_actions) {
+        $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
+        return $bulk_actions;
+    }
+
+    public function custom_bulk_action_handler( $redirect_to, $doaction, $post_ids ) {
+        if ( $doaction !== 'publish_to_steem' ) {
+            return $redirect_to;
+        }
+        foreach ( $post_ids as $post_id ) {
+            // Perform action for each post.
+            $this->Steempress_sp_publish($post_id);
+        }
+        $redirect_to = add_query_arg( 'published_to_steem', count( $post_ids ), $redirect_to );
+        return $redirect_to;
+    }
+
+    public function custom_bulk_action_admin_notice() {
+        if ( ! empty( $_REQUEST['published_to_steem'] ) ) {
+            $published_count = intval( $_REQUEST['published_to_steem'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
+                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
+                    $published_count,
+                    'published_to_steem'
+                ) . '</div>', $published_count );
+        }
+    }
 
 }

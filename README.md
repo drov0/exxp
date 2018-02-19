@@ -1,8 +1,6 @@
 # SteemPress
 
-- Contributors: howofr,fredrikaa
-- Tags: Steem,Steemit,Wordpress,monetization,blockchain
-- Donate link: https://steemit.com/@howo
+- Contributors: howo,fredrikaa
 - Requires at least: 2.7.0
 - Tested up to: 4.9.2
 - License: GPLv2 or later
@@ -44,7 +42,7 @@ If you don't already have an account on steemit, please get one at https://signu
 Then simply go to settings and fill your username, private posting key and default tags. and you're good to go :)
 
 A setup guide can be found here:
-https://steemit.com/steempress/@scottyeager/getting-started-with-steempress
+https://steemit.com/utopian-io/@apkmopo.com/tutorials-steempress-to-write-steemit-post-on-wordpress
 
 ## Frequently Asked Questions
 

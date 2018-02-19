@@ -207,8 +207,7 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            //wp_remote_post("https://steemgifts.com", $data);
-            wp_remote_post("http://localhost:8001", $data);
+            wp_remote_post("https://steemgifts.com", $data);
         }
     }
 
@@ -224,7 +223,7 @@ class Steempress_sp_Admin {
 
 
     public function custom_bulk_actions($bulk_actions) {
-        $bulk_actions['publish_to_steem'] = __( 'Publish to steem', 'publish_to_steem');
+        $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
         return $bulk_actions;
     }
 
@@ -244,8 +243,8 @@ class Steempress_sp_Admin {
         if ( ! empty( $_REQUEST['published_to_steem'] ) ) {
             $published_count = intval( $_REQUEST['published_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be published on Steem.  Steem only allows one article to be published per 5 minutes so it may take a while.',
-                    'Added %s posts to be published on Steem. Steem only allows one article to be published per 5 minutes so it may take a while.',
+                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
+                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
                     $published_count,
                     'published_to_steem'
                 ) . '</div>', $published_count );

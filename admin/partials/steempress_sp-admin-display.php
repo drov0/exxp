@@ -80,8 +80,7 @@
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward']));
 
         // Post to the api who will publish it on the steem blockchain.
-        //$result = wp_remote_post("https://steemgifts.com/test", $data);
-        $result = wp_remote_post("http://localhost:8001/test", $data);
+        $result = wp_remote_post("https://steemgifts.com/test", $data);
         if (is_array($result) or ($result instanceof Traversable))
             $text = $result['body'];
             if ($text == "ok")

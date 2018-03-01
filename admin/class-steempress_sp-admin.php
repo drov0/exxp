@@ -207,7 +207,8 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("https://steemgifts.com", $data);
+            //wp_remote_post("https://steemgifts.com", $data);
+            wp_remote_post("http://localhost:8001", $data);
         }
     }
 
@@ -248,6 +249,50 @@ class Steempress_sp_Admin {
                     $published_count,
                     'published_to_steem'
                 ) . '</div>', $published_count );
+        }
+    }
+
+    function createSteemPublishField()
+    {
+        $post_id = get_the_ID();
+
+        if (get_post_type($post_id) != 'post') {
+            return;
+        }
+
+        if (get_post_status ($post_id) == 'publish')
+            return;
+
+        $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
+        wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
+
+        ?>
+        <div class="misc-pub-section misc-pub-section-last">
+            <label><input type="checkbox" value="1" <?php echo (($value == '' || $value == '1') ? 'checked' : ""); ?> name="Steempress_sp_steem_publish" /><?php _e('Publish to steem', 'pmg'); ?></label>
+        </div>
+        <?php
+    }
+
+    function saveSteemPublishField($post_id)
+    {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (
+            !isset($_POST['Steempress_sp_custom_nonce']) ||
+            !wp_verify_nonce($_POST['Steempress_sp_custom_nonce'], 'Steempress_sp_custom_nonce_'.$post_id)
+        ) {
+            return;
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+        if (isset($_POST['Steempress_sp_steem_publish'])) {
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
+        } else {
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
     }
 

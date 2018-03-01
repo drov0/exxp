@@ -173,6 +173,11 @@ class Steempress_sp {
         $this->loader->add_action( 'admin_notices', $plugin_admin,'custom_bulk_action_admin_notice' );
 
 
+        $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'createSteemPublishField' );
+        $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField' );
+
+
+
     }
 
 

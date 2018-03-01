@@ -207,21 +207,9 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            //wp_remote_post("https://steemgifts.com", $data);
-            wp_remote_post("http://localhost:8001", $data);
+            wp_remote_post("https://steemgifts.com", $data);
         }
     }
-
-
-    public function Steempress_sp_post($new_status, $old_status, $post)
-    {
-        if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
-            $this->Steempress_sp_publish($post->ID);
-        }
-
-        return;
-    }
-
 
     public function custom_bulk_actions($bulk_actions) {
         $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
@@ -263,36 +251,28 @@ class Steempress_sp_Admin {
         if (get_post_status ($post_id) == 'publish')
             return;
 
-        $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
-        wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
-
         ?>
         <div class="misc-pub-section misc-pub-section-last">
-            <label><input type="checkbox" value="1" <?php echo (($value == '' || $value == '1') ? 'checked' : ""); ?> name="Steempress_sp_steem_publish" /><?php _e('Publish to steem', 'pmg'); ?></label>
+            <label><input type="checkbox" value="1" checked name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>
         </div>
         <?php
     }
 
-    function saveSteemPublishField($post_id)
+    function Steempress_sp_publish_to_steem($post_id)
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-            return;
-        }
-
-        if (
-            !isset($_POST['Steempress_sp_custom_nonce']) ||
-            !wp_verify_nonce($_POST['Steempress_sp_custom_nonce'], 'Steempress_sp_custom_nonce_'.$post_id)
-        ) {
             return;
         }
 
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
-        if (isset($_POST['Steempress_sp_steem_publish'])) {
-            update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
+
+        if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
+            return;
         } else {
-            update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
+            if (get_post_status($post_id) == 'publish')
+                $this->Steempress_sp_publish($post_id);
         }
     }
 

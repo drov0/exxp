@@ -35,7 +35,8 @@ features :
 - Add an original link to your blog
 - Custom tags for each article
 - Default tags if no tags are defined for an article.
-
+- Optional posting
+- Bulk posting
 
 == Installation ==
 If you don't already have an account on steemit, please get one at https://signup.steemit.com/ validation can take a few days.

@@ -32,6 +32,8 @@ You can find more informations on it on this article : https://steemit.com/utopi
 - Add an original link to your blog
 - Custom tags for each article
 - Default tags if no tags are defined for an article.
+- Optional posting 
+- Bulk posting
 
 
 ## Installation

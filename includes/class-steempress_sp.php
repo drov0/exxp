@@ -164,6 +164,7 @@ class Steempress_sp {
 
 
         $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
+        $this->loader->add_action( 'transition_post_status', $plugin_admin, 'Steempress_sp_post', 15, 3 );
 
 
         $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'custom_bulk_actions' );
@@ -172,7 +173,7 @@ class Steempress_sp {
 
 
         $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'createSteemPublishField' );
-        $this->loader->add_action( 'save_post', $plugin_admin,'Steempress_sp_publish_to_steem',15);
+        $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
 
 
 

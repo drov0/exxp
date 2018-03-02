@@ -240,6 +240,22 @@ class Steempress_sp_Admin {
         }
     }
 
+
+    public function Steempress_sp_post($new_status, $old_status, $post)
+    {
+        if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
+            if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
+                return;
+            } else {
+                $value = get_post_meta($post->ID, 'Steempress_sp_steem_publish', true);
+                if ($value != "0")
+                    $this->Steempress_sp_publish($post->ID);
+            }
+        }
+
+        return;
+    }
+
     function createSteemPublishField()
     {
         $post_id = get_the_ID();
@@ -251,28 +267,41 @@ class Steempress_sp_Admin {
         if (get_post_status ($post_id) == 'publish')
             return;
 
+        wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
+
+        $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
+        if ($value == "0")
+            $checked = "";
+        else
+            $checked = "checked";
+
         ?>
         <div class="misc-pub-section misc-pub-section-last">
-            <label><input type="checkbox" value="1" checked name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>
+            <label><input type="checkbox" value="1" <?php echo $checked; ?> name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>
         </div>
         <?php
     }
 
-    function Steempress_sp_publish_to_steem($post_id)
+    function saveSteemPublishField($post_id)
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (
+            !isset($_POST['Steempress_sp_custom_nonce']) ||
+            !wp_verify_nonce($_POST['Steempress_sp_custom_nonce'], 'Steempress_sp_custom_nonce_'.$post_id)
+        ) {
             return;
         }
 
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
-
-        if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
-            return;
+        if (isset($_POST['Steempress_sp_steem_publish'])) {
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
         } else {
-            if (get_post_status($post_id) == 'publish')
-                $this->Steempress_sp_publish($post_id);
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
     }
 

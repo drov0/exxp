@@ -36,6 +36,8 @@
         $options["seo"] = "on";
     if (!isset($options["vote"]))
         $options["vote"] = "on";
+    if (!isset($options["append"]))
+        $options["append"] = "off";
 
     ?>
 
@@ -66,6 +68,7 @@
         <br />
         <br />
 
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-append-tags" name="<?php echo $this->plugin_name; ?>[append]"  <?php echo $options['append'] == "off" ? '' : 'checked="checked"' ?>> Always add the default tags before the post tags. (For instance if the post tags are "life travel" and your default tag is "french", the tags used on the post will be "french life travel") <br/>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the original link to the steem article.<br>
 
@@ -80,7 +83,7 @@
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward']));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post("https://steemgifts.com/test", $data);
+        $result = wp_remote_post("https://steempress.io/test", $data);
         if (is_array($result) or ($result instanceof Traversable))
             $text = $result['body'];
             if ($text == "ok")

@@ -146,6 +146,7 @@ class Steempress_sp_Admin {
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
         $valid['seo'] = ((isset($input['seo']) && !empty($input['seo'])) && $input['seo'] == 'on') ? 'on' : "off";
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
+        $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
 
 
         return $valid;
@@ -176,12 +177,17 @@ class Steempress_sp_Admin {
             $options["seo"] = "on";
         if (!isset($options["vote"]))
             $options["vote"] = "on";
+        if (!isset($options["append"]))
+            $options["append"] = "off";
+
 
         $post = get_post($id);
 
         $wp_tags = wp_get_post_tags($id);
 
         if (sizeof($wp_tags) != 0) {
+
+
 
             $tags = array();
 
@@ -190,6 +196,9 @@ class Steempress_sp_Admin {
             }
 
             $tags = implode(" ", $tags);
+
+            if ($options["append"] == "on")
+                $tags = $options["tags"]." ".$tags;
         }
         else
             $tags = $options["tags"];
@@ -199,6 +208,7 @@ class Steempress_sp_Admin {
         else
             $link = "";
 
+
         $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
 
         // A few local verifications as to not overload the server with useless txs
@@ -207,7 +217,7 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("https://steemgifts.com", $data);
+            wp_remote_post("https://steempress.io", $data);
         }
     }
 

@@ -192,7 +192,7 @@ class Steempress_sp_Admin {
             $tags = array();
 
             foreach ($wp_tags as $tag) {
-                $tags[] = $tag->name;
+                $tags[] = str_replace(" ", "", $tag->name);
             }
 
             $tags = implode(" ", $tags);

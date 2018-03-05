@@ -147,6 +147,7 @@ class Steempress_sp_Admin {
         $valid['seo'] = ((isset($input['seo']) && !empty($input['seo'])) && $input['seo'] == 'on') ? 'on' : "off";
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
+        $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
 
 
         return $valid;
@@ -180,6 +181,8 @@ class Steempress_sp_Admin {
             $options["vote"] = "on";
         if (!isset($options["append"]))
             $options["append"] = "off";
+        if (!isset($options["delay"]))
+            $options["delay"] = "0";
 
 
         $post = get_post($id);
@@ -217,7 +220,13 @@ class Steempress_sp_Admin {
             $content = $post->post_content;
 
 
-        $data = array("body" => array("title" => $post->post_title, "content" => $content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
+        $domain = get_site_url();
+
+        $data = array("body" => array(
+                "title" => $post->post_title,
+                "content" => $content,
+                "tags" => $tags,
+                "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"], "delay"=> $options["delay"], "wordpress_id"=> $id, "domain"=> $domain));
 
         // A few local verifications as to not overload the server with useless txs
 

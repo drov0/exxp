@@ -162,6 +162,7 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_publish($id)
     {
+
         $options = get_option($this->plugin_name);
 
         // Avoid undefined errors
@@ -208,8 +209,15 @@ class Steempress_sp_Admin {
         else
             $link = "";
 
+        $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($id), 'thumbnail' );
 
-        $data = array("body" => array("title" => $post->post_title, "content" => $post->post_content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
+        if ($thumbnail != "0")
+            $content = "<center>".$thumbnail."</center> <br/>".$post->post_content;
+        else
+            $content = $post->post_content;
+
+
+        $data = array("body" => array("title" => $post->post_title, "content" => $content, "tags" => $tags, "author" => $options["username"], "wif" => $options["posting-key"], "original_link" => $link, "reward" => $options['reward'], "vote"=> $options["vote"]));
 
         // A few local verifications as to not overload the server with useless txs
 

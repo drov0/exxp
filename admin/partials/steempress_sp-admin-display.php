@@ -68,7 +68,7 @@
         <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress steem" : $options["tags"]), ENT_QUOTES); ?>"/>
         <br />
-        <p> Delay posts : Your posts will get published to steem x days after being published on your blog. A value of 0 posts your articles  to steem as soon as you publish them.</p>
+        <p> Delay posts : Your posts will get published to steem x minutes after being published on your blog. A value of 0 posts your articles to steem as soon as you publish them.</p>
         <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
         <br />
         <br />
@@ -85,10 +85,11 @@
 
     <p><?php
 
-        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward']));
+        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  ((float)steempress_sp_compte)*100));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post("https://steempress.io/test", $data);
+        //$result = wp_remote_post("https://steempress.io/test", $data);
+        $result = wp_remote_post("http://localhost:8001/test", $data);
         if (is_array($result) or ($result instanceof Traversable))
             $text = $result['body'];
             if ($text == "ok")

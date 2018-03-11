@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       Steempress
  * Description:       Publishes your article to the steem blockchain automatically to allow you to earn money and reach new audiences.
- * Version:           1.1.4
+ * Version:           1.2.0
  * Author:            Martin Lees
  * Author URI:        https://steemit.com/@howo
  * License:           GPL-2.0+

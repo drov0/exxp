@@ -242,8 +242,7 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            //wp_remote_post("https://steempress.io", $data);
-            wp_remote_post("http://localhost:8001", $data);
+            wp_remote_post("https://steempress.io", $data);
         }
     }
 

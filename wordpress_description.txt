@@ -27,6 +27,8 @@ If you have any questions, feel free to contact me @Howo or @fredrikaa on https:
 
 You can find more informations on it on this article : https://steemit.com/utopian-io/@howo/introducing-steempress-beta-a-wordpress-plugin-for-steem
 
+Plugin featured at the London CryptoCurrency Show in april 2018.
+
 features :
 
 - Automatic posting of your article

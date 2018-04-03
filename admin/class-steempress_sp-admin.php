@@ -255,9 +255,9 @@ class Steempress_sp_Admin {
         if ( $doaction !== 'publish_to_steem' ) {
             return $redirect_to;
         }
-        foreach ( $post_ids as $post_id ) {
+        for ($i = sizeof($post_ids)-1; $i >= 0; $i--) {
             // Perform action for each post.
-            $this->Steempress_sp_publish($post_id);
+            $this->Steempress_sp_publish($post_ids[$i]);
         }
         $redirect_to = add_query_arg( 'published_to_steem', count( $post_ids ), $redirect_to );
         return $redirect_to;

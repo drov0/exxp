@@ -206,11 +206,12 @@ class Steempress_sp_Admin {
         }
         else
             $tags = $options["tags"];
+        $link = get_permalink($post->ID);
 
         if ($options['seo'] == "on")
-            $link = get_permalink($post->ID);
+            $display_backlink = "true";
         else
-            $link = "";
+            $display_backlink = "false";
 
         $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($id), 'thumbnail' );
 
@@ -234,6 +235,7 @@ class Steempress_sp_Admin {
                 "delay"=> $options["delay"],
                 "wordpress_id"=> $id,
                 "domain"=> $domain,
+                "display_backlink" => $display_backlink,
                 "version" =>  ((float)steempress_sp_compte)*100));
 
         // A few local verifications as to not overload the server with useless txs
@@ -242,7 +244,7 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("https://steempress.io", $data);
+            wp_remote_post("http://localhost:8001", $data);
         }
     }
 

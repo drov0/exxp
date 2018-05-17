@@ -39,6 +39,7 @@ class Steempress_sp_Admin {
 	 */
 	private $version;
 
+	private $api_url;
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -50,7 +51,7 @@ class Steempress_sp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		$this->api_url = "https://api.steempress.io";
 	}
 
 	/**
@@ -244,7 +245,7 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post("https://steempress.io", $data);
+            wp_remote_post($this->api_url, $data);
         }
     }
 

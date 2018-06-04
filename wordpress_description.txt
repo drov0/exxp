@@ -46,6 +46,8 @@ If you don't already have an account on steemit, please get one at https://signu
 
 Then simply go to settings and fill your username, private posting key and default tags. and you're good to go :)
 
+There is a guide created by one of our users that you can find here : https://steemit.com/utopian-io/@apkmopo.com/tutorials-steempress-to-write-steemit-post-on-wordpress
+
 == Frequently Asked Questions ==
 
 Like most other apps on STEEM, including esteem, dtube, dsound, dmania, utopian and zappl to name a few, we intend to use benefactor rewards to help run SteemPress. The benefactor rewards is currently set to 10%. In comparison, Dtube and Utopian both take 25% benefactor rewards while Zappl takes 15%.

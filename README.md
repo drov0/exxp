@@ -52,6 +52,6 @@ https://steemit.com/faq.html
 
 ## Benefactor rewards
 
-Like most other apps on Steem, including esteem, dtube, dsound, dmania, utopian and zappl to name a few, we intend to use benefactor rewards to help run SteemPress. The benefactor rewards is currently set to  10%. In comparison, Dtube and Utopian both take 25% benefactor rewards while Zappl takes 15%.
+Like most other apps on Steem, including esteem, dtube, dsound, dmania, utopian and zappl to name a few, we intend to use benefactor rewards to help run SteemPress. The benefactor rewards is currently set to  15%. In comparison, Dtube and Utopian both take 25% benefactor rewards while Zappl takes 15%.
 
 We (fredrikaa and howo) are determined to do our best to keep this percentage low in order to incentivise more use. Discussions on the use of benefactor rewards, and what rates they should be, are of course welcomed.

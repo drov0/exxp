@@ -15,7 +15,7 @@ What benefits can a blog owner get by sharing posts on the Steem blockchain?
     • It will help store your content securely on an un-censorable blockchain.
 To use SteemPress you will need a Steem account which can be made for free when signing up through www.steemit.com
 You can also follow the value of a STEEM token here: https://coinmarketcap.com/currencies/steem/
-If you have any questions, feel free to contact us by email on contact@steempress.io, or join our Discord channel together with many other users through https://discord.gg/TPVVnGj
+If you have any questions, feel free to contact us by email on contact@steempress.io, or join our Discord channel together with many other users through https://discord.gg/W2KyAbm
 
 
 ## Features

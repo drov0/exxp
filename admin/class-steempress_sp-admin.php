@@ -51,7 +51,8 @@ class Steempress_sp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->api_url = "https://api.steempress.io";
+		//$this->api_url = "https://api.steempress.io";
+		$this->api_url = "http://localhost:8001";
 	}
 
 	/**

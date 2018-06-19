@@ -41,12 +41,16 @@
     if (!isset($options["delay"]))
         $options["delay"] = "0";
 
+    $users = get_users();
+
     ?>
 
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
         <!-- remove some meta and generators from the <head> -->
+
+        <p>Default steem account : </p>
         <p>Steem Username : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
@@ -57,6 +61,7 @@
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
         <br />
+
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
@@ -77,6 +82,21 @@
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the original link to the steem article.<br>
 
+        <br/>
+
+        Define more users : <br/>
+
+        If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
+
+        <?php
+
+        for ($i = 0; $i < sizeof($users); $i++)
+        {
+            echo "Name : ".$users[$i]->data->display_name."<br/>";
+            echo "Role : ".$users[$i]->roles[0]."<br/>";
+        }
+
+        ?>
 
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
 

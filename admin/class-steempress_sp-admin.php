@@ -151,6 +151,13 @@ class Steempress_sp_Admin {
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
 
+        $users = get_users();
+
+        for ($i = 0; $i < sizeof($users); $i++)
+        {
+            $valid['posting-key'.$users[$i]->data->ID] = (isset($input['posting-key'.$users[$i]->data->ID]) && !empty($input['posting-key'.$users[$i]->data->ID])) ? htmlspecialchars($input['posting-key'.$users[$i]->data->ID], ENT_QUOTES) : "";
+            $valid['username'.$users[$i]->data->ID] = (isset($input['username'.$users[$i]->data->ID]) && !empty($input['username'.$users[$i]->data->ID])) ? htmlspecialchars($input['username'.$users[$i]->data->ID], ENT_QUOTES) : "";
+        }
 
         return $valid;
     }

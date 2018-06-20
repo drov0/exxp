@@ -19,6 +19,8 @@
     //Grab all options
     $options = get_option($this->plugin_name);
 
+    var_dump($options);
+
     // avoid undefined errors when running it for the first time :
     if (!isset($options["username"]))
         $options["username"] = "";
@@ -87,13 +89,22 @@
         Define more users : <br/>
 
         If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
-
+        <br />
+        <br />
         <?php
+
+
 
         for ($i = 0; $i < sizeof($users); $i++)
         {
             echo "Name : ".$users[$i]->data->display_name."<br/>";
             echo "Role : ".$users[$i]->roles[0]."<br/>";
+
+            echo '<p> Steem username :</p>';
+            echo '<input type="text" class="regular-text" id="'.$this->plugin_name.'-username-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[username'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["username".$users[$i]->data->ID], ENT_QUOTES).'"/><br />';
+            echo '<p>Private Posting key : </p> <input type="text" class="regular-text" id="'.$this->plugin_name.'-posting-key-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[posting-key'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["posting-key".$users[$i]->data->ID], ENT_QUOTES).'"/><br/><br/>';
+
+
         }
 
         ?>

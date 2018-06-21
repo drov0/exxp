@@ -36,6 +36,7 @@ If you have any questions, feel free to contact us by email on contact@steempres
     • Optional posting
     • Bulk posting
     • Post scheduling
+    * Multiple steem account support
 
 == Installation ==
 

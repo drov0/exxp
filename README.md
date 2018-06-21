@@ -1,3 +1,4 @@
+
 # SteemPress
 - Contributors: howo,fredrikaa
 - Requires at least: 4.7
@@ -29,6 +30,7 @@ If you have any questions, feel free to contact us by email on contact@steempres
 • Optional posting
 • Bulk posting
 • Post scheduling
+* Multiple steem account support
 
 
 ## Installation

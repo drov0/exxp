@@ -1,4 +1,34 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+.collapsible {
+    background-color: #8e8e8e;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+
+.collapsible:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}

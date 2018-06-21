@@ -96,14 +96,13 @@
 
         <br/>
 
-        Define more users : <br/>
-
-        If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
+        <button class="collapsible" type="button">Define more users</button>
+        <div class="content">
+            <br/>
+            If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
         <br />
         <br />
         <?php
-
-
 
         for ($i = 0; $i < sizeof($users); $i++)
         {
@@ -116,7 +115,7 @@
         }
 
         ?>
-
+        </div>
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
     </form>
     <p><?php
@@ -159,5 +158,22 @@
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>
-
 </div>
+
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+</script>

@@ -196,6 +196,17 @@ class Steempress_sp_Admin {
 
         $post = get_post($id);
 
+        $author_id = $post->post_author;
+
+        $username = $options["username"];
+        $posting_key = $options["posting-key"];
+
+        if (isset($options['username'.$author_id]) && $options['username'.$author_id] != "" && isset($options['posting-key'.$author_id]) && $options['posting-key'.$author_id] != "")
+        {
+            $username = $options['username'.$author_id];
+            $posting_key = $options['posting-key'.$author_id];
+        }
+
         $wp_tags = wp_get_post_tags($id);
 
         if (sizeof($wp_tags) != 0) {
@@ -236,8 +247,8 @@ class Steempress_sp_Admin {
                 "title" => $post->post_title,
                 "content" => $content,
                 "tags" => $tags,
-                "author" => $options["username"],
-                "wif" => $options["posting-key"],
+                "author" => $username,
+                "wif" => $posting_key,
                 "original_link" => $link,
                 "reward" => $options['reward'],
                 "vote"=> $options["vote"],

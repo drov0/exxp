@@ -19,8 +19,6 @@
     //Grab all options
     $options = get_option($this->plugin_name);
 
-    var_dump($options);
-
     // avoid undefined errors when running it for the first time :
     if (!isset($options["username"]))
         $options["username"] = "";
@@ -43,11 +41,23 @@
     if (!isset($options["delay"]))
         $options["delay"] = "0";
 
+
+
     $users = get_users();
+
+
+    for ($i = 0; $i < sizeof($users); $i++) {
+        if (!isset($options['username'.$users[$i]->data->ID]))
+            $options['username'.$users[$i]->data->ID] = "";
+        if (!isset($options['posting-key'.$users[$i]->data->ID]))
+            $options['posting-key'.$users[$i]->data->ID] = "";
+    }
 
     ?>
 
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
+
+    <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
         <!-- remove some meta and generators from the <head> -->
@@ -103,31 +113,49 @@
             echo '<p> Steem username :</p>';
             echo '<input type="text" class="regular-text" id="'.$this->plugin_name.'-username-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[username'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["username".$users[$i]->data->ID], ENT_QUOTES).'"/><br />';
             echo '<p>Private Posting key : </p> <input type="text" class="regular-text" id="'.$this->plugin_name.'-posting-key-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[posting-key'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["posting-key".$users[$i]->data->ID], ENT_QUOTES).'"/><br/><br/>';
-
-
         }
 
         ?>
 
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
-
     </form>
-
-
     <p><?php
 
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  ((float)steempress_sp_compte)*100));
 
         // Post to the api who will publish it on the steem blockchain.
         $result = wp_remote_post($this->api_url."/test", $data);
-        if (is_array($result) or ($result instanceof Traversable))
+        if (is_array($result) or ($result instanceof Traversable)) {
+            echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
             if ($text == "ok")
-                echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>
-                      Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
+                      echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
             else if ($text == "wif ok")
-                echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>
-                      Username/posting key  : <b style='color: darkgreen'>Ok</b> ";
+                echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> ";
+
+            echo "<br/>";
+            echo "<br/>";
+            for ($i = 0; $i < sizeof($users); $i++)
+            {
+                if ($options['username'.$users[$i]->data->ID] != "" && $options['posting-key'.$users[$i]->data->ID] != "")
+                {
+                    echo "Name : ".$users[$i]->data->display_name."<br/>";
+                    echo "Role : ".$users[$i]->roles[0]."<br/>";
+                    $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  ((float)steempress_sp_compte)*100));
+                    $result = wp_remote_post($this->api_url."/test", $data);
+                    $text = $result['body'];
+                    if ($text == "ok")
+                        echo "Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?<br/>";
+                    else if ($text == "wif ok")
+                        echo "username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
+
+                    echo "<br/>";
+                }
+
+
+            }
+
+        }
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>

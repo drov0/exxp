@@ -96,8 +96,8 @@
 
         <br/>
 
-        <button class="collapsible" type="button">Define more users</button>
-        <div class="content">
+        <button class="steempress_sp_collapsible" type="button">Define more users</button>
+        <div class="steempress_sp_content">
             <br/>
             If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
         <br />
@@ -162,7 +162,7 @@
 
 
 <script>
-    var coll = document.getElementsByClassName("collapsible");
+    var coll = document.getElementsByClassName("steempress_sp_collapsible");
     var i;
 
     for (i = 0; i < coll.length; i++) {

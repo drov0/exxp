@@ -30,7 +30,8 @@ If you have any questions, feel free to contact us by email on contact@steempres
 • Optional posting
 • Bulk posting
 • Post scheduling
-* Multiple steem account support
+• Multiple steem account support
+• Add (or not) the featured image on top of the steem post
 
 
 ## Installation

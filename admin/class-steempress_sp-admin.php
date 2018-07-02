@@ -150,6 +150,7 @@ class Steempress_sp_Admin {
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
+        $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
 
         $users = get_users();
 
@@ -192,7 +193,8 @@ class Steempress_sp_Admin {
             $options["append"] = "off";
         if (!isset($options["delay"]))
             $options["delay"] = "0";
-
+        if (!isset($options["featured"]))
+            $options["featured"] = "on";
 
         $post = get_post($id);
 
@@ -233,13 +235,12 @@ class Steempress_sp_Admin {
         else
             $display_backlink = "false";
 
-        $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($id), 'thumbnail' );
-
-        if ($thumbnail != "0")
-            $content = "<center>".$thumbnail."</center> <br/>".$post->post_content;
-        else
-            $content = $post->post_content;
-
+        $content = $post->post_content;
+        if ($options["featured"] == "on") {
+            $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($id), 'thumbnail');
+            if ($thumbnail != "0")
+                $content = "<center>" . $thumbnail . "</center> <br/>" . $post->post_content;
+        }
 
         $domain = get_site_url();
 

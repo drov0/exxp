@@ -45,13 +45,20 @@
 
 
     $users = get_users();
-
+    $categories = get_categories(array('hide_empty' => FALSE));
 
     for ($i = 0; $i < sizeof($users); $i++) {
         if (!isset($options['username'.$users[$i]->data->ID]))
             $options['username'.$users[$i]->data->ID] = "";
         if (!isset($options['posting-key'.$users[$i]->data->ID]))
             $options['posting-key'.$users[$i]->data->ID] = "";
+    }
+
+
+    for ($i = 0; $i < sizeof($categories); $i++)
+    {
+        if (!isset($options['cat'.$categories[$i]->cat_ID]))
+            $options['cat'.$categories[$i]->cat_ID] = "off";
     }
 
     ?>
@@ -116,8 +123,22 @@
             echo '<p>Private Posting key : </p> <input type="text" class="regular-text" id="'.$this->plugin_name.'-posting-key-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[posting-key'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["posting-key".$users[$i]->data->ID], ENT_QUOTES).'"/><br/><br/>';
         }
 
+
         ?>
         </div>
+        <br/>
+        Category filter : <br/>
+        Check the categories that you want steempress to ignore.<br/>
+        <?php
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+            echo "<input type='checkbox' id='".$this->plugin_name."-cat".$categories[$i]->cat_ID."' name='".$this->plugin_name."[cat".$categories[$i]->cat_ID."]' ".($options['cat'.$categories[$i]->cat_ID] == "on" ? "checked='checked'" : "").">".$categories[$i]->name."<br>";
+        }
+
+        ?>
+
+
         <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
     </form>
     <p><?php

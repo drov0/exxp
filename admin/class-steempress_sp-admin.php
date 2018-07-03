@@ -51,8 +51,8 @@ class Steempress_sp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->api_url = "https://api.steempress.io";
-		//$this->api_url = "http://localhost:8001";
+		//$this->api_url = "https://api.steempress.io";
+		$this->api_url = "http://localhost:8001";
 	}
 
 	/**
@@ -160,6 +160,15 @@ class Steempress_sp_Admin {
             $valid['username'.$users[$i]->data->ID] = (isset($input['username'.$users[$i]->data->ID]) && !empty($input['username'.$users[$i]->data->ID])) ? htmlspecialchars($input['username'.$users[$i]->data->ID], ENT_QUOTES) : "";
         }
 
+        $categories = get_categories(array('hide_empty' => FALSE));
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+
+            $valid['cat'.$categories[$i]->cat_ID] = ((isset($input['cat'.$categories[$i]->cat_ID]) && !empty($input['cat'.$categories[$i]->cat_ID])) && $input['cat'.$categories[$i]->cat_ID] == 'on') ? 'on' : "off";
+        }
+
+
         return $valid;
     }
 
@@ -197,6 +206,16 @@ class Steempress_sp_Admin {
             $options["featured"] = "on";
 
         $post = get_post($id);
+
+
+        $categories = get_the_category($id);
+
+        for($i = 0; $i < sizeof($categories); $i++)
+        {
+            if (isset($options['cat'.$categories[$i]->cat_ID]) && $options['cat'.$categories[$i]->cat_ID] == "on")
+                return;
+        }
+
 
         $author_id = $post->post_author;
 

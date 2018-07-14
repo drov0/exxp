@@ -151,6 +151,7 @@ class Steempress_sp_Admin {
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
         $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
+        $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? htmlspecialchars($input['footer'], ENT_QUOTES) : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
 
         $users = get_users();
 
@@ -204,6 +205,8 @@ class Steempress_sp_Admin {
             $options["delay"] = "0";
         if (!isset($options["featured"]))
             $options["featured"] = "on";
+        if (!isset($options["footer"]))
+            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
 
         $post = get_post($id);
 
@@ -263,6 +266,17 @@ class Steempress_sp_Admin {
 
         $domain = get_site_url();
 
+        $version = steempress_sp_compte;
+
+        $pos = strrpos(steempress_sp_compte, ".");
+
+        if($pos !== false)
+            $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
+
+        $version = ((float)$version)*100;
+
+
+
         $data = array("body" => array(
                 "title" => $post->post_title,
                 "content" => $content,
@@ -276,7 +290,9 @@ class Steempress_sp_Admin {
                 "wordpress_id"=> $id,
                 "domain"=> $domain,
                 "display_backlink" => $display_backlink,
-                "version" =>  ((float)steempress_sp_compte)*100));
+                "version" =>  $version,
+                "footer" =>$options['footer'],
+        ));
 
         // A few local verifications as to not overload the server with useless txs
 

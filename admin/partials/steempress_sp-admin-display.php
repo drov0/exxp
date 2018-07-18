@@ -16,6 +16,9 @@
 <div class="wrap">
 
     <?php
+
+    var_dump(get_post_meta(42));
+
     //Grab all options
     $options = get_option($this->plugin_name);
 

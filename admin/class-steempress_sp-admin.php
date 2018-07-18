@@ -51,8 +51,8 @@ class Steempress_sp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->api_url = "https://api.steempress.io";
-		//$this->api_url = "http://localhost:8001";
+		//$this->api_url = "https://api.steempress.io";
+		$this->api_url = "http://localhost:8001";
 	}
 
 	/**
@@ -300,7 +300,10 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post($this->api_url, $data);
+            $result = wp_remote_post($this->api_url, $data);
+            $permlink = $result['body'];
+            add_post_meta($id, "steempress_sp_username", $username);
+            add_post_meta($id, "steempress_sp_permlink", $permlink);
         }
     }
 

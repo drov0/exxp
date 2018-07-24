@@ -95,8 +95,36 @@ class Steempress_sp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name."steem", plugin_dir_url( __FILE__ ) . 'js/steem.min.js');
+		wp_enqueue_script( $this->plugin_name."public_js", plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+        public function steempress_sp_comments($content)
+    {
+
+        $id = get_the_ID();
+
+        $username = get_post_meta($id, "steempress_sp_username");
+        $permlink = get_post_meta($id, "steempress_sp_permlink");
+
+        $payout = "";
+        $data = "";
+        $comments = "";
+        if (sizeof($username) == 1 and sizeof($permlink) == 1)
+        {
+
+            $data = "<div id=\"steempress_sp_username\" style=\"display: none;\">".$username[0]."</div>";
+            $data .= "<div id=\"steempress_sp_permlink\" style=\"display: none;\">".$permlink[0]."</div>";
+
+
+            $payout = "<div id='steempress_sp_price'>0.000$</div>";
+
+            // comment zone
+            $comments = "<div id='steempress_sp_price'>0.000$</div>";
+        }
+
+        return $content.$data.$payout;
+    }
 
 }

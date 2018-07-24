@@ -2,3 +2,8 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+
+#steempress_sp_price {
+    text-align: right;
+}

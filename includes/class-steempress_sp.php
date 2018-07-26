@@ -194,7 +194,6 @@ class Steempress_sp {
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
         $this->loader->add_filter('the_content',$plugin_public, 'steempress_sp_comments');
-
 	}
 
 	/**

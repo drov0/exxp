@@ -33,8 +33,8 @@
 
     $(window).load(function () {
 
-        const username = "howo"//$("#steempress_sp_username")[0].innerText;
-        const permlink = "my-steemniversary-one-year-going-from-oh-this-looks-cool-to-well-this-is-now-my-job"//$("#steempress_sp_permlink")[0].innerText;
+        const username = $("#steempress_sp_username")[0].innerText;
+        const permlink = $("#steempress_sp_permlink")[0].innerText;
 
         console.log(permlink);
         steem.api.getContent(username, permlink, function(err, response){

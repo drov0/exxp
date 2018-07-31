@@ -38,6 +38,9 @@ If you have any questions, feel free to contact us by email on contact@steempres
     • Post scheduling
     • Multiple steem account support
     • Add (or not) the featured image on top of the steem post
+    • Category filtering
+    • Custom footer on steem
+
 
 == Installation ==
 

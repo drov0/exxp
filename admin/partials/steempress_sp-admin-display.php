@@ -42,6 +42,8 @@
         $options["delay"] = "0";
     if (!isset($options["featured"]))
         $options["featured"] = "on";
+    if (!isset($options["footer"]))
+        $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
 
 
     $users = get_users();
@@ -72,7 +74,7 @@
 
         <p>Default steem account : </p>
         <p>Steem Username : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "")
@@ -100,10 +102,16 @@
 
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-append-tags" name="<?php echo $this->plugin_name; ?>[append]"  <?php echo $options['append'] == "off" ? '' : 'checked="checked"' ?>> Always add the default tags before the post tags. (For instance if the post tags are "life travel" and your default tag is "french", the tags used on the post will be "french life travel") <br/>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
-        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the original link to the steem article.<br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the end of the article.<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>> Add featured images on top of the steem post.<br>
 
         <br/>
+
+        <p> Footer text : <br>  the tag [%original_link%] will be replaced by the link of the article on your blog. </p>
+        <br/>
+        <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
+        <br />
+
 
         <button class="steempress_sp_collapsible" type="button">Define more users</button>
         <div class="steempress_sp_content">
@@ -143,7 +151,16 @@
     </form>
     <p><?php
 
-        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  ((float)steempress_sp_compte)*100));
+        $version = steempress_sp_compte;
+
+        $pos = strrpos(steempress_sp_compte, ".");
+
+        if($pos !== false)
+            $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
+
+        $version = ((float)$version)*100;
+
+        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
 
         // Post to the api who will publish it on the steem blockchain.
         $result = wp_remote_post($this->api_url."/test", $data);
@@ -163,7 +180,7 @@
                 {
                     echo "Name : ".$users[$i]->data->display_name."<br/>";
                     echo "Role : ".$users[$i]->roles[0]."<br/>";
-                    $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  ((float)steempress_sp_compte)*100));
+                    $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
                     $result = wp_remote_post($this->api_url."/test", $data);
                     $text = $result['body'];
                     if ($text == "ok")
@@ -173,8 +190,6 @@
 
                     echo "<br/>";
                 }
-
-
             }
 
         }

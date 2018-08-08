@@ -100,32 +100,15 @@ class Steempress_sp_Public {
 
 	}
 
-	    private function steempress_sp_steem_comments($id, $username, $permlink)
-        {
 
-
-            $data = array(
-                "jsonrpc" => "2.0",
-                "method" => "get_content_replies",
-                "params" => [$username,$permlink]
-            );
-
-            $result = wp_remote_post("https://api.steemit.com", array(
-                'headers'   => array('Content-Type' => 'application/json; charset=utf-8'),
-                'body'      => json_encode($data),
-                'method'    => 'POST'
-            ));
-
-            return $result['body'];
-        }
-
-        public function steempress_sp_comments($content)
+	public function steempress_sp_comments($content)
     {
 
         $id = get_the_ID();
 
         $username = get_post_meta($id, "steempress_sp_username");
         $permlink = get_post_meta($id, "steempress_sp_permlink");
+        $tag = get_post_meta($id, "steempress_sp_tag");
 
 
 
@@ -133,20 +116,22 @@ class Steempress_sp_Public {
         $data = "";
 
 
-        if (sizeof($username) == 1 and sizeof($permlink) == 1)
+        if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1)
         {
 
             $username = $username[0];
             $permlink = $permlink[0];
+            $tag = $tag[0];
 
             $data = "<div id=\"steempress_sp_username\" style=\"display: none;\">".$username."</div>";
             $data .= "<div id=\"steempress_sp_permlink\" style=\"display: none;\">".$permlink."</div>";
+            $data .= "<div id=\"steempress_sp_tag\" style=\"display: none;\">".$tag."</div>";
 
 
             $payout = "<div id='steempress_sp_price'>0.000$</div>";
 
             // comment zone
-            echo ($this->steempress_sp_steem_comments($id, $username, $permlink));
+            //echo ($this->steempress_sp_steem_comments($id, $username, $permlink));
         }
 
         return $content.$data.$payout;

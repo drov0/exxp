@@ -35,12 +35,34 @@
 
         const username = $("#steempress_sp_username")[0].innerText;
         const permlink = $("#steempress_sp_permlink")[0].innerText;
+        const tag = $("#steempress_sp_tag")[0].innerText;
 
-        console.log(permlink);
-        steem.api.getContent(username, permlink, function(err, response){
-            console.log($("#steempress_sp_price")[0]);
-            $("#steempress_sp_price")[0].innerHTML=response.total_payout_value.replace("SBD","$")
+
+        // grab value
+        steem.api.getContent(username, permlink, function(err, response) {
+            if (!err) {
+
+                if (response.total_payout_value !== "0.000 SBD")
+                    $("#steempress_sp_price")[0].innerHTML = response.total_payout_value.replace("SBD", "$")
+                else
+                    $("#steempress_sp_price")[0].innerHTML = response.pending_payout_value.replace("SBD", "$")
+            }
         });
+
+
+        steem.api.getState("steempress/@petanque/testcomments-xylmwuwi6p", function(err, result) {
+            console.log(err, result);
+        });
+
+
+
+
+
+
+
+
+
+
 
 
     })

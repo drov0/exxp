@@ -110,11 +110,9 @@ class Steempress_sp_Public {
         $permlink = get_post_meta($id, "steempress_sp_permlink");
         $tag = get_post_meta($id, "steempress_sp_tag");
 
-
-
         $payout = "";
         $data = "";
-
+        $comments = "";
 
         if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1)
         {
@@ -131,10 +129,10 @@ class Steempress_sp_Public {
             $payout = "<div id='steempress_sp_price'>0.000$</div>";
 
             // comment zone
-            //echo ($this->steempress_sp_steem_comments($id, $username, $permlink));
+            $comments = "<div id='steempress_sp_comments'></div>";
         }
 
-        return $content.$data.$payout;
+        return $content.$data.$payout.$comments;
     }
 
 

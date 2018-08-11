@@ -45,7 +45,8 @@
         $options["featured"] = "on";
     if (!isset($options["footer"]))
         $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-
+    if (!isset($options["twoway"]))
+        $options["twoway"] = "off";
 
     $users = get_users();
     $categories = get_categories(array('hide_empty' => FALSE));
@@ -147,8 +148,14 @@
 
         ?>
 
+        <br/>
+        Two way integration : <br/>
+        These options are related to how the plugin will pull payout data and comments onto your wordpress blog. <br/>
+        <?php
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate two way integration (BETA) ";
+        submit_button('Save all changes', 'primary','submit', TRUE); ?>
 
-        <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
+
     </form>
     <p><?php
 

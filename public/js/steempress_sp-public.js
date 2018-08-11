@@ -30,6 +30,73 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
+    function get_whole_values(base_value, time_fractions) {
+        var time_data = [base_value];
+        for (var i = 0; i < time_fractions.length; i++) {
+            time_data.push(parseInt(time_data[i]/time_fractions[i]));
+            time_data[i] = time_data[i] % time_fractions[i];
+        }; return time_data;
+    };
+
+    function datestr(elapsed)
+    {
+        const whole = get_whole_values(elapsed, [60,60,24]);
+
+        var display_date = "";
+
+        if (whole[3] !== 0) {
+            if (whole[3] === 1)
+                display_date += whole[3]+" day ";
+            else
+                display_date += whole[3]+" days ";
+
+            if (whole[2] !== 0) {
+                if (whole[2] === 1)
+                    display_date += whole[2]+ " hour ago";
+                else
+                    display_date += whole[2]+ " hours ago";
+            }
+        }
+        else
+        {
+            if (whole[2] !== 0) {
+                if (whole[2] === 1)
+                    display_date += whole[2]+" hour ";
+                else
+                    display_date += whole[2]+" hours ";
+
+                if (whole[1] !== 0) {
+                    if (whole[1] === 1)
+                        display_date += whole[1]+ " minute ago";
+                    else
+                        display_date += whole[1]+ " minutes ago";
+                }
+            }
+            else if (whole[1] !== 0) {
+                if (whole[1] === 1)
+                    display_date += whole[1]+" minute ";
+                else
+                    display_date += whole[1]+" minutes ";
+
+                if (whole[0] !== 0) {
+                    if (whole[0] === 1)
+                        display_date += whole[0]+ " second ago";
+                    else
+                        display_date += whole[0]+ " seconds ago";
+                }
+            }
+            else {
+                if (whole[0] === 1)
+                    display_date += whole[0] + " second ago";
+                else
+                    display_date += whole[0] + " seconds ago";
+            }
+
+        }
+
+        return display_date;
+    }
+
 
     function get_all_comments(author, permlink, tag, callback)
     {
@@ -60,6 +127,8 @@
     function get_replies(comment, comment_list, author_list)
     {
         author_list.add(comment.author);
+        comment.date = datestr(Math.floor(new Date().getTime() / 1000) - (new Date(comment.created).getTime()/1000));
+
         for (var i = 0; i < comment.replies.length; i++) {
             var reply = comment_list[comment.replies[i]];
             if (reply.total_payout_value !== "0.000 SBD")
@@ -85,8 +154,8 @@
             str += "<li class=\"steempress_sp_cmmnt\">\n" +
                 "          <div class=\"avatar\"><img src=\"https://steemitimages.com/u/"+comments[i].author+"/avatar\" width=\"55\" height=\"55\" alt=\""+comments[i].author+"'s avatar\"></div>\n" +
                 "          <div class=\"steempress_sp_cmmnt-content\">\n" +
-                "            <header><a href=\"https://steemit.com/@"+comments[i].author+"\" class=\"userlink\">"+comments[i].author+"</a> - <span class=\"pubdate\">posted 6 days ago</span> "+comments[i].payout+" </header>\n" +
-                "            <p class=\"steempress_sp_comment_text\">"+comments[i].body+"</p>\n" +
+                "            <header><a href=\"https://steemit.com/@"+comments[i].author+"\" class=\"userlink\">"+comments[i].author+"</a> - <span class=\"pubdate\">posted "+comments[i].date+"</span> </header>\n" +
+                "            <p class=\"steempress_sp_comment_text\">"+comments[i].body+"</p>\n" + comments[i].payout.toString()+
                 "          </div>\n"
 
             if (comments[i].replies.length !== 0) {
@@ -98,11 +167,6 @@
         }
 
         return str;
-
-    }
-
-    function generate_replies_string(comment)
-    {
 
     }
 
@@ -128,7 +192,7 @@
 
             $("#steempress_sp_price")[0].innerHTML = payout;
 
-            var comment_str = "<div id=\"steempress_sp_comment_container\"><ul id=\"steempress_sp_comments\">";
+            var comment_str = "<h4>Steem Comments : </h4><div id=\"steempress_sp_comment_container\"><ul id=\"steempress_sp_comments\">";
             comment_str += generate_comment_string(result[0].replies);
             comment_str += "</ul></div>";
             $("#steempress_sp_comments")[0].innerHTML = comment_str;

@@ -129,7 +129,7 @@ class Steempress_sp_Public {
             $payout = "<div id='steempress_sp_price'>0.000$</div>";
 
             // comment zone
-            $comments = "<div id='steempress_sp_comments'></div>";
+            $comments = "<br/><div id='steempress_sp_comments'></div>";
         }
 
         return $content.$data.$payout.$comments;

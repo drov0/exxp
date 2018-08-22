@@ -107,11 +107,12 @@ class Steempress_sp_Public {
         $options = get_option($this->plugin_name);
 
 
+
+
         if (!isset($options["twoway"]))
             $options["twoway"] = "off";
 
         if ($options['twoway'] == "on") {
-
             $id = get_the_ID();
 
             $username = get_post_meta($id, "steempress_sp_username");

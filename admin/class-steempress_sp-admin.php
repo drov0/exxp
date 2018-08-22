@@ -304,9 +304,9 @@ class Steempress_sp_Admin {
             $data = $result['body'];
             $primary_tag = explode("/",$data)[0];
             $permlink= explode("/",$data)[1];
-            add_post_meta($id, "steempress_sp_username", $username);
-            add_post_meta($id, "steempress_sp_permlink", $permlink);
-            add_post_meta($id, "steempress_sp_tag", $primary_tag);
+            add_post_meta($id, "steempress_sp_username", $username, true);
+            add_post_meta($id, "steempress_sp_permlink", $permlink, true);
+            add_post_meta($id, "steempress_sp_tag", $primary_tag, true);
         }
     }
 

@@ -8,7 +8,7 @@
     text-align: right;
 }
 
-steempress_sp_cmmnt img { border: 0; max-width: 100%; height: 55px;}
+#steempress_sp_cmmnt img { border: 0; max-width: 100%; height: 55px;}
 
 
 /* page layout structure */
@@ -23,7 +23,7 @@ steempress_sp_cmmnt img { border: 0; max-width: 100%; height: 55px;}
 }
 
 .steempress_sp_comment_text {
-    font-family: Arial, Geneva, Verdana, sans-serif; font-size: 1.3em; line-height: 1.42em; margin-bottom: 12px; font-weight: normal; color: #656565;
+    font-family: Arial, Geneva, Verdana, sans-serif; font-size: 1.6em; line-height: 1.42em; margin-bottom: 12px; font-weight: normal; color: #656565;
 }
 
 /* steempress_sp_comments area */

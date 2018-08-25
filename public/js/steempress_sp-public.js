@@ -28,7 +28,6 @@
 
         // Make the actual CORS request.
         function makeCorsRequest() {
-            // This is a sample server that supports CORS.
             var url = "http://localhost:8002";
 
             var xhr = createCORSRequest('POST', url);
@@ -36,24 +35,14 @@
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader("Content-length", params.length);
             if (!xhr) {
-                alert('CORS not supported');
                 return;
             }
 
             // Response handlers.
             xhr.onload = function() {
                 var data = JSON.parse(xhr.responseText);
-
                 $("#steempress_sp_price")[0].innerHTML = data.payout;
-
                 $("#steempress_sp_comments")[0].innerHTML = data.comments;
-
-                console.log(data);
-
-            };
-
-            xhr.onerror = function() {
-                alert('Woops, there was an error making the request.');
             };
 
             xhr.send(params);

@@ -32,74 +32,74 @@ class Steempress_sp_Admin {
 
 	/**
 	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $version    The current version of this plugin.
+     */
+    private $version;
 
-	private $api_url;
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
+    private $api_url;
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    1.0.0
+     * @param      string    $plugin_name       The name of this plugin.
+     * @param      string    $version    The version of this plugin.
+     */
+    public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		//$this->api_url = "https://api.steempress.io";
-		$this->api_url = "http://localhost:8001";
-	}
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
+        //$this->api_url = "https://api.steempress.io";
+        $this->api_url = "http://localhost:8001";
+    }
 
-	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
+    /**
+     * Register the stylesheets for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Steempress_sp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Steempress_sp_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Steempress_sp_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', array(), $this->version, 'all' );
+        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', array(), $this->version, 'all' );
 
-	}
+    }
 
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
+    /**
+     * Register the JavaScript for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Steempress_sp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Steempress_sp_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Steempress_sp_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', array( 'jquery' ), $this->version, false );
 
-	}
+    }
 
     /**
      * Register the administration menu for this plugin into the WordPress Dashboard menu.
@@ -278,20 +278,20 @@ class Steempress_sp_Admin {
 
 
         $data = array("body" => array(
-                "title" => $post->post_title,
-                "content" => $content,
-                "tags" => $tags,
-                "author" => $username,
-                "wif" => $posting_key,
-                "original_link" => $link,
-                "reward" => $options['reward'],
-                "vote"=> $options["vote"],
-                "delay"=> $options["delay"],
-                "wordpress_id"=> $id,
-                "domain"=> $domain,
-                "display_backlink" => $display_backlink,
-                "version" =>  $version,
-                "footer" =>$options['footer'],
+            "title" => $post->post_title,
+            "content" => $content,
+            "tags" => $tags,
+            "author" => $username,
+            "wif" => $posting_key,
+            "original_link" => $link,
+            "reward" => $options['reward'],
+            "vote"=> $options["vote"],
+            "delay"=> $options["delay"],
+            "wordpress_id"=> $id,
+            "domain"=> $domain,
+            "display_backlink" => $display_backlink,
+            "version" =>  $version,
+            "footer" =>$options['footer'],
         ));
 
         // A few local verifications as to not overload the server with useless txs
@@ -402,6 +402,67 @@ class Steempress_sp_Admin {
         } else {
             update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
+    }
+
+    function wporg_save_postdata($post_id)
+    {
+        if (array_key_exists('wporg_field', $_POST)) {
+            update_post_meta(
+                $post_id,
+                '_wporg_meta_key',
+                $_POST['wporg_field']
+            );
+        }
+    }
+
+    public function steempress_sp_custom_box_html($post)
+    {
+
+
+
+        $author = get_post_meta($post->ID, 'steempress_sp_username', true);
+        $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
+        $tag = get_post_meta($post->ID, 'steempress_sp_tag', true);
+
+        echo "
+              <p>These options are only for advanced users regarding steem integration</p>
+              <label for=\"steempress_sp_username\">Author</label><br>
+              <input type='text' name='steempress_sp_username' value='".$author."'/> <br>
+              <label for=\"steempress_sp_author\">Permlink</label> 
+              <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
+              <label for=\"steempress_sp_tag\">Main tag</label> 
+              <input type='text' name='steempress_sp_tag' value='".$tag."'/>
+              ";
+    }
+
+    public function steempress_sp_add_custom_box()
+    {
+        $post_id = get_the_ID();
+
+        if (get_post_type($post_id) != 'post') {
+            return;
+        }
+
+        if (get_post_status ($post_id) != 'publish')
+            return;
+
+        add_meta_box(
+            'steempress_sp_box_id',
+            'SteemPress options',
+            array($this,'steempress_sp_custom_box_html'),
+            'post',
+            'side'
+        );
+    }
+
+    function steempress_sp_save_post_data($post_id)
+    {
+        if (array_key_exists('steempress_sp_username', $_POST) && array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_tag', $_POST)) {
+            update_post_meta($post_id,'steempress_sp_username',$_POST['steempress_sp_username']);
+            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_tag',$_POST['steempress_sp_tag']);
+        }
+
     }
 
 }

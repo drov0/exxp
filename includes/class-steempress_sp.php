@@ -174,7 +174,8 @@ class Steempress_sp {
 
         $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'createSteemPublishField' );
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
-
+        $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
+        $this->loader->add_action('save_post',$plugin_admin,  'steempress_sp_save_post_data');
 
 
     }

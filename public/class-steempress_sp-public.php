@@ -109,6 +109,7 @@ class Steempress_sp_Public {
 
 
 
+
         if (!isset($options["twoway"]))
             $options["twoway"] = "off";
 
@@ -122,6 +123,7 @@ class Steempress_sp_Public {
             $payout = "";
             $data = "";
             $comments = "";
+            $front_page = "";
 
             if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1) {
 
@@ -129,18 +131,17 @@ class Steempress_sp_Public {
                 $permlink = $permlink[0];
                 $tag = $tag[0];
 
-                $data = "<div id=\"steempress_sp_username\" style=\"display: none;\">" . $username . "</div>";
-                $data .= "<div id=\"steempress_sp_permlink\" style=\"display: none;\">" . $permlink . "</div>";
-                $data .= "<div id=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
+                $data =  "<div name=\"steempress_sp_username\" style=\"display: none;\">" . $username . "</div>";
+                $data .= "<div name=\"steempress_sp_permlink\" style=\"display: none;\">" . $permlink . "</div>";
+                $data .= "<div name=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
 
 
-                $payout = "<div id='steempress_sp_price'>0.000$</div>";
+                $payout = "<div name='steempress_sp_price'>0.000$</div>";
+                if (!is_front_page())
+                $comments = "<br/><div name='steempress_sp_comments'></div>";
 
-                // comment zone
-                $comments = "<br/><div id='steempress_sp_comments'></div>";
             }
-
-            return $content . $data . $payout . $comments;
+            return $content . $data . $payout . $comments.$front_page;
         } else
             return $content;
 

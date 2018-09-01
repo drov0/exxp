@@ -106,10 +106,6 @@ class Steempress_sp_Public {
 
         $options = get_option($this->plugin_name);
 
-
-
-
-
         if (!isset($options["twoway"]))
             $options["twoway"] = "off";
 
@@ -136,12 +132,15 @@ class Steempress_sp_Public {
                 $data .= "<div name=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
 
 
-                $payout = "<div name='steempress_sp_price'>0.000$</div>";
+                $payout = "<div name='steempress_sp_price'>0.000$</div> <a href='#'>Upvote</a> ";
+                $sign_in = "<a style=\"cursor:pointer\" onclick=\" window.open('http://localhost:8002/sc','',' scrollbars=yes,menubar=no,width=500,height=600, resizable=yes,toolbar=no,location=no,status=no')\">Sign in</a>
+
+";
                 if (!is_front_page())
                 $comments = "<br/><div name='steempress_sp_comments'></div>";
 
             }
-            return $content . $data . $payout . $comments.$front_page;
+            return $content . $data . $payout .$sign_in. $comments.$front_page;
         } else
             return $content;
 

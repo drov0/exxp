@@ -29,7 +29,6 @@
             var params = "username=" + username + "&permlink=" + permlink + "&tag=" + tag + "&display_comment=true";
 
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader("Content-length", params.length);
         if (!xhr) {
             return;
         }

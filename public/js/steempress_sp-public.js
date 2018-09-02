@@ -76,13 +76,20 @@
 
 	$(window).load(load_steem_capabilities)
 
+
+
+
 })( jQuery );
 
 
-;
+function steempress_sp_receiveToken(event)
+{
+    if (event.origin !== "http://localhost:8002")
+        return;
 
-/*
+    var username = event.data[0];
+    var token = event.data[1];
 
+}
 
- */
-
+window.addEventListener("message", steempress_sp_receiveToken, false);

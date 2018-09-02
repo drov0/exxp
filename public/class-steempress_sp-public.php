@@ -134,8 +134,8 @@ class Steempress_sp_Public {
 
                 $payout = "<div name='steempress_sp_price'>0.000$</div> <a href='#'>Upvote</a> ";
                 $sign_in = "<a style=\"cursor:pointer\" onclick=\" window.open('http://localhost:8002/sc','',' scrollbars=yes,menubar=no,width=500,height=600, resizable=yes,toolbar=no,location=no,status=no')\">Sign in</a>
-
-";
+                            
+                            ";
                 if (!is_front_page())
                 $comments = "<br/><div name='steempress_sp_comments'></div>";
 

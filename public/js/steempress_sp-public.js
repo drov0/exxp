@@ -87,9 +87,11 @@ function steempress_sp_receiveToken(event)
     if (event.origin !== "http://localhost:8002")
         return;
 
-    var username = event.data[0];
-    var token = event.data[1];
+   var token = event.data;
 
+    var now = new Date();
+    now.setTime(now.getTime() +  604800000);
+    document.cookie = "steempress_token="+token+"; expires=" + now.toUTCString();
 }
 
 window.addEventListener("message", steempress_sp_receiveToken, false);

@@ -116,11 +116,7 @@ class Steempress_sp_Public {
             $permlink = get_post_meta($id, "steempress_sp_permlink");
             $tag = get_post_meta($id, "steempress_sp_tag");
 
-            $payout = "";
             $data = "";
-            $comments = "";
-            $front_page = "";
-
             if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1) {
 
                 $username = $username[0];
@@ -131,16 +127,13 @@ class Steempress_sp_Public {
                 $data .= "<div name=\"steempress_sp_permlink\" style=\"display: none;\">" . $permlink . "</div>";
                 $data .= "<div name=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
 
-
-                $payout = "<div name='steempress_sp_price'>0.000$</div> <a href='#'>Upvote</a> ";
-                $sign_in = "<a style=\"cursor:pointer\" onclick=\" window.open('http://localhost:8002/sc','',' scrollbars=yes,menubar=no,width=500,height=600, resizable=yes,toolbar=no,location=no,status=no')\">Sign in</a>
-                            
-                            ";
-                if (!is_front_page())
-                $comments = "<br/><div name='steempress_sp_comments'></div>";
+                if (is_front_page())
+                    $steempress = "<iframe sandbox='allow-popups allow-scripts allow-same-origin' src=\"http://localhost:8002/".$tag."/".$username."/".$permlink."/false\" style=\"border: 0; width: 100%;  max-height: 500px;\"></iframe>";
+                else
+                    $steempress = "<iframe sandbox='allow-popups allow-scripts allow-same-origin' src=\"http://localhost:8002/".$tag."/".$username."/".$permlink."/true\" style=\"border: 0; width: 100%; max-height: 500px\"></iframe>";
 
             }
-            return $content . $data . $payout .$sign_in. $comments.$front_page;
+            return $content . $data . $steempress;
         } else
             return $content;
 

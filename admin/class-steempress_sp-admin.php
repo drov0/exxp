@@ -152,6 +152,7 @@ class Steempress_sp_Admin {
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
         $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
         $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? $input['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";
 
         $users = get_users();
 
@@ -206,7 +207,7 @@ class Steempress_sp_Admin {
             $options["featured"] = "on";
         if (!isset($options["footer"]))
             $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-
+        
         $post = get_post($id);
 
 

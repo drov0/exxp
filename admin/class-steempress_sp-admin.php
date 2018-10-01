@@ -343,7 +343,8 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_post($new_status, $old_status, $post)
     {
-        if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
+        // New post
+        if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
                 return;
             } else {
@@ -351,10 +352,15 @@ class Steempress_sp_Admin {
                 if ($value != "0")
                     $this->Steempress_sp_publish($post->ID);
             }
+            // Edited post
+        } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
+            $this->steempress_sp_update($post->ID);
         }
-
-        return;
+            return;
     }
+
+
+
 
     function createSteemPublishField()
     {
@@ -405,22 +411,8 @@ class Steempress_sp_Admin {
         }
     }
 
-    function wporg_save_postdata($post_id)
-    {
-        if (array_key_exists('wporg_field', $_POST)) {
-            update_post_meta(
-                $post_id,
-                '_wporg_meta_key',
-                $_POST['wporg_field']
-            );
-        }
-    }
-
     public function steempress_sp_custom_box_html($post)
     {
-
-
-
         $author = get_post_meta($post->ID, 'steempress_sp_username', true);
         $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
         $tag = get_post_meta($post->ID, 'steempress_sp_tag', true);
@@ -464,6 +456,119 @@ class Steempress_sp_Admin {
             update_post_meta($post_id,'steempress_sp_tag',$_POST['steempress_sp_tag']);
         }
 
+    }
+
+    function steempress_sp_update($post_id)
+    {
+        $post = get_post($post_id);
+        if ($post->post_status == "publish") {
+            $options = get_option($this->plugin_name);
+
+            // Avoid undefined errors
+            if (!isset($options["username"]))
+                $options["username"] = "";
+            if (!isset($options["posting-key"]))
+                $options["posting-key"] = "";
+            if (!isset($options["reward"]))
+                $options["reward"] = "100";
+            if (!isset($options["tags"]))
+                $options["tags"] = "";
+            if (!isset($options["seo"]))
+                $options["seo"] = "on";
+            if (!isset($options["vote"]))
+                $options["vote"] = "on";
+            if (!isset($options["append"]))
+                $options["append"] = "off";
+            if (!isset($options["delay"]))
+                $options["delay"] = "0";
+            if (!isset($options["featured"]))
+                $options["featured"] = "on";
+            if (!isset($options["footer"]))
+                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+            if (!isset($options["update"]))
+                $options["update"] = "on";
+
+            if ($options["update"] == "on") {
+
+                $author_id = $post->post_author;
+
+                $username = $options["username"];
+                $posting_key = $options["posting-key"];
+
+                if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "" && isset($options['posting-key' . $author_id]) && $options['posting-key' . $author_id] != "") {
+                    $username = $options['username' . $author_id];
+                    $posting_key = $options['posting-key' . $author_id];
+                }
+
+                $wp_tags = wp_get_post_tags($post_id);
+
+                if (sizeof($wp_tags) != 0) {
+
+                    $tags = array();
+
+                    foreach ($wp_tags as $tag) {
+                        $tags[] = str_replace(" ", "", $tag->name);
+                    }
+
+                    $tags = implode(" ", $tags);
+
+                    if ($options["append"] == "on")
+                        $tags = $options["tags"] . " " . $tags;
+                } else
+                    $tags = $options["tags"];
+                $link = get_permalink($post->ID);
+
+                if ($options['seo'] == "on")
+                    $display_backlink = "true";
+                else
+                    $display_backlink = "false";
+
+                $content = $post->post_content;
+                if ($options["featured"] == "on") {
+                    $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($post_id), 'thumbnail');
+                    if ($thumbnail != "0")
+                        $content = "<center>" . $thumbnail . "</center> <br/>" . $post->post_content;
+                }
+
+
+                $version = steempress_sp_compte;
+
+                $pos = strrpos(steempress_sp_compte, ".");
+
+                if ($pos !== false)
+                    $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
+
+                $version = ((float)$version) * 100;
+
+                $permlink = get_post_meta($post_id, "steempress_sp_permlink");
+
+                $data = array("body" => array(
+                    "title" => $post->post_title,
+                    "content" => $content,
+                    "tags" => $tags,
+                    "author" => $username,
+                    "wif" => $posting_key,
+                    "original_link" => $link,
+                    "wordpress_id" => $post_id,
+                    "display_backlink" => $display_backlink,
+                    "version" => $version,
+                    "footer" => $options['footer'],
+                    "permlink" => $permlink[0],
+                    "vote"=> $options["vote"],
+                    "reward" => $options['reward'],
+                ));
+
+
+                // A few local verifications as to not overload the server with useless txs
+
+                $test = $data['body'];
+                // Last minute checks before sending it to the server
+                if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
+                    // Post to the api who will publish it on the steem blockchain.
+                    wp_remote_post($this->api_url . "/update", $data);
+                }
+            }
+        }
     }
 
 }

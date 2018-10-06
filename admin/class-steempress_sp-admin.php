@@ -417,7 +417,7 @@ class Steempress_sp_Admin {
         $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
         $tag = get_post_meta($post->ID, 'steempress_sp_tag', true);
 
-        echo "
+        $body = "
               <p>These options are only for advanced users regarding steem integration</p>
               <label for=\"steempress_sp_username\">Author</label><br>
               <input type='text' name='steempress_sp_username' value='".$author."'/> <br>
@@ -426,6 +426,25 @@ class Steempress_sp_Admin {
               <label for=\"steempress_sp_tag\">Main tag</label> 
               <input type='text' name='steempress_sp_tag' value='".$tag."'/>
               ";
+
+        if ($author != "" && $permlink != "" && $tag != "")
+        {
+            $data = array("body" => array(
+                "author" => $author,
+                "permlink" => $permlink,
+                "tag" => $tag
+            ));
+            $response = wp_remote_post($this->api_url . "/test_param", $data);
+
+
+            if ($response['body'] == "ok")
+                $body .= "<br/><p>Parameters : ok </p>";
+            else
+                $body .= "<br/><p>Error : either the author, the permlink or the tag is incorrect.</p>";
+
+        }
+
+        echo $body;
     }
 
     public function steempress_sp_add_custom_box()

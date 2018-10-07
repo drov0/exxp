@@ -426,23 +426,11 @@ class Steempress_sp_Admin {
               <label for=\"steempress_sp_tag\">Main tag</label> 
               <input type='text' name='steempress_sp_tag' value='".$tag."'/>
               ";
+        // Minified js to handle the "test parameters" function
+        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".$this->api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),t=document.getElementsByName(\"steempress_sp_tag\")[0].value,s=document.getElementsByName(\"steempress_sp_username\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n+\"&tag=\"+t;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : either the author, the permlink or the tag is incorrect.\"},e.send(r))}</script>";
 
-        if ($author != "" && $permlink != "" && $tag != "")
-        {
-            $data = array("body" => array(
-                "author" => $author,
-                "permlink" => $permlink,
-                "tag" => $tag
-            ));
-            $response = wp_remote_post($this->api_url . "/test_param", $data);
+        $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
-
-            if ($response['body'] == "ok")
-                $body .= "<br/><p>Parameters : ok </p>";
-            else
-                $body .= "<br/><p>Error : either the author, the permlink or the tag is incorrect.</p>";
-
-        }
 
         echo $body;
     }

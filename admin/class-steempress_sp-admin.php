@@ -302,12 +302,14 @@ class Steempress_sp_Admin {
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
             $result = wp_remote_post($this->api_url, $data);
-            $data = $result['body'];
-            $primary_tag = explode("/",$data)[0];
-            $permlink= explode("/",$data)[1];
-            add_post_meta($id, "steempress_sp_username", $username, true);
-            add_post_meta($id, "steempress_sp_permlink", $permlink, true);
-            add_post_meta($id, "steempress_sp_tag", $primary_tag, true);
+            if (!isset($result->errors)) {
+                $data = $result['body'];
+                $primary_tag = explode("/", $data)[0];
+                $permlink = explode("/", $data)[1];
+                add_post_meta($id, "steempress_sp_username", $username, true);
+                add_post_meta($id, "steempress_sp_permlink", $permlink, true);
+                add_post_meta($id, "steempress_sp_tag", $primary_tag, true);
+            }
         }
     }
 

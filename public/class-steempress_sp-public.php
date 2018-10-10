@@ -128,9 +128,9 @@ class Steempress_sp_Public {
                 $data .= "<div name=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
 
                 if (is_front_page())
-                    $steempress = "<iframe sandbox='allow-popups allow-scripts allow-same-origin ' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 83px;\"></iframe>";
+                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 83px;\"></iframe>";
                 else
-                    $steempress = "<iframe sandbox='allow-popups allow-scripts allow-same-origin' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 500px\"></iframe>";
+                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 500px\"></iframe>";
 
             }
             return $content . $data . $steempress;

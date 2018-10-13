@@ -116,24 +116,20 @@ class Steempress_sp_Public {
             $permlink = get_post_meta($id, "steempress_sp_permlink");
             $tag = get_post_meta($id, "steempress_sp_tag");
 
-            $data = "";
             if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1) {
 
                 $username = $username[0];
                 $permlink = $permlink[0];
                 $tag = $tag[0];
 
-                $data =  "<div name=\"steempress_sp_username\" style=\"display: none;\">" . $username . "</div>";
-                $data .= "<div name=\"steempress_sp_permlink\" style=\"display: none;\">" . $permlink . "</div>";
-                $data .= "<div name=\"steempress_sp_tag\" style=\"display: none;\">" . $tag . "</div>";
-
+                // If it's the front page, we display a smaller iframe.
                 if (is_front_page())
-                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 83px;\"></iframe>";
+                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
                 else
-                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 500px\"></iframe>";
+                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
 
             }
-            return $content . $data . $steempress;
+            return $content .  $steempress;
         } else
             return $content;
 

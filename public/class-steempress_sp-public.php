@@ -123,11 +123,13 @@ class Steempress_sp_Public {
                 $tag = $tag[0];
 
                 // If it's the front page, we display a smaller iframe.
+                $steempress = "<div id='steempress_sp_comment_feed'>";
                 if (is_front_page())
-                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
+                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
                 else
-                    $steempress = "<iframe src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
+                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
 
+                $steempress .= "</div>";
             }
             return $content .  $steempress;
         } else

@@ -313,12 +313,18 @@ class Steempress_sp_Admin {
         }
     }
 
-    public function custom_bulk_actions($bulk_actions) {
+    public function steempress_sp_bulk_update_action($bulk_actions) {
+        $bulk_actions['update_to_steem'] = __( 'Update to STEEM', 'update_to_steem');
+        return $bulk_actions;
+    }
+
+    public function steempress_sp_bulk_publish_action($bulk_actions) {
         $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
         return $bulk_actions;
     }
 
-    public function custom_bulk_action_handler( $redirect_to, $doaction, $post_ids ) {
+
+    public function steempress_sp_bulk_publish_handler( $redirect_to, $doaction, $post_ids ) {
         if ( $doaction !== 'publish_to_steem' ) {
             return $redirect_to;
         }
@@ -326,18 +332,42 @@ class Steempress_sp_Admin {
             // Perform action for each post.
             $this->Steempress_sp_publish($post_ids[$i]);
         }
-        $redirect_to = add_query_arg( 'published_to_steem', count( $post_ids ), $redirect_to );
+        $redirect_to = add_query_arg('published_to_steem', count( $post_ids ), $redirect_to );
         return $redirect_to;
     }
 
-    public function custom_bulk_action_admin_notice() {
+    public function steempress_sp_bulk_update_handler( $redirect_to, $doaction, $post_ids ) {
+        if ( $doaction !== 'update_to_steem' ) {
+            return $redirect_to;
+        }
+        for ($i = sizeof($post_ids)-1; $i >= 0; $i--) {
+            // Perform action for each post.
+            $this->steempress_sp_update($post_ids[$i]);
+        }
+        $redirect_to = add_query_arg('updated_to_steem', count( $post_ids ), $redirect_to );
+        return $redirect_to;
+    }
+
+    public function steempress_sp_bulk_publish_notice() {
         if ( ! empty( $_REQUEST['published_to_steem'] ) ) {
             $published_count = intval( $_REQUEST['published_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
-                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
+                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',
+                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
                     $published_count,
                     'published_to_steem'
+                ) . '</div>', $published_count );
+        }
+    }
+
+    public function steempress_sp_bulk_update_notice() {
+        if ( ! empty( $_REQUEST['updated_to_steem'] ) ) {
+            $published_count = intval( $_REQUEST['updated_to_steem'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Added %s post to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    'Added %s posts to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    $published_count,
+                    'updated_to_steem'
                 ) . '</div>', $published_count );
         }
     }

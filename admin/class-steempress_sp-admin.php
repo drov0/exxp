@@ -53,6 +53,7 @@ class Steempress_sp_Admin {
         $this->version = $version;
         //$this->api_url = "https://api.steempress.io";
         $this->api_url = "http://localhost:8001";
+        $this->twoway_api_url = "http://localhost:8002";
     }
 
     /**
@@ -303,12 +304,7 @@ class Steempress_sp_Admin {
             // Post to the api who will publish it on the steem blockchain.
             $result = wp_remote_post($this->api_url, $data);
             if (!isset($result->errors)) {
-                $data = $result['body'];
-                $primary_tag = explode("/", $data)[0];
-                $permlink = explode("/", $data)[1];
-                add_post_meta($id, "steempress_sp_username", $username, true);
-                add_post_meta($id, "steempress_sp_permlink", $permlink, true);
-                add_post_meta($id, "steempress_sp_tag", $primary_tag, true);
+                add_post_meta($id, "steempress_sp_permlink", $result['body'], true);
             }
         }
     }
@@ -348,6 +344,7 @@ class Steempress_sp_Admin {
             if ($this->steempress_sp_update($post_ids[$i], true) == 1)
                 $updated++;
         }
+
         if ($updated != count($post_ids))
             $redirect_to = add_query_arg('updated_to_steem_err', $updated, $redirect_to );
         else
@@ -364,7 +361,9 @@ class Steempress_sp_Admin {
                     $published_count,
                     'updated_to_steem'
                 ) . '</div>', $published_count );
-        }  else if (!empty($_REQUEST['updated_to_steem_err']))
+        }
+
+        if (!empty($_REQUEST['updated_to_steem_err']))
         {
             $published_count = intval( $_REQUEST['updated_to_steem_err'] );
             printf( '<div id="message" class="updated fade">' .
@@ -462,21 +461,32 @@ class Steempress_sp_Admin {
 
     public function steempress_sp_custom_box_html($post)
     {
-        $author = get_post_meta($post->ID, 'steempress_sp_username', true);
+
+        $author_id = $post->post_author;
+
+        $options = get_option($this->plugin_name);
+
+        if (!isset($options["username"]))
+            $options["username"] = "";
+
+
+        $author = $options["username"];
+
+        if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+            $author = $options['username' . $author_id];
+        }
+
         $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
-        $tag = get_post_meta($post->ID, 'steempress_sp_tag', true);
 
         $body = "
               <p>These options are only for advanced users regarding steem integration</p>
-              <label for=\"steempress_sp_username\">Author</label><br>
-              <input type='text' name='steempress_sp_username' value='".$author."'/> <br>
+              <label for=\"steempress_sp_username\">Author : </label><br>
+              <p name='steempress_sp_username'>".$author."</p>
               <label for=\"steempress_sp_author\">Permlink</label> 
               <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
-              <label for=\"steempress_sp_tag\">Main tag</label> 
-              <input type='text' name='steempress_sp_tag' value='".$tag."'/>
               ";
         // Minified js to handle the "test parameters" function
-        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".$this->api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),t=document.getElementsByName(\"steempress_sp_tag\")[0].value,s=document.getElementsByName(\"steempress_sp_username\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n+\"&tag=\"+t;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : either the author, the permlink or the tag is incorrect.\"},e.send(r))}</script>";
+        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".$this->twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_username\")[0].innerText,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink is incorrect.\"},e.send(r))}</script>";
 
         $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
@@ -506,12 +516,9 @@ class Steempress_sp_Admin {
 
     function steempress_sp_save_post_data($post_id)
     {
-        if (array_key_exists('steempress_sp_username', $_POST) && array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_tag', $_POST)) {
-            update_post_meta($post_id,'steempress_sp_username',$_POST['steempress_sp_username']);
+        if (array_key_exists('steempress_sp_permlink', $_POST)) {
             update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
-            update_post_meta($post_id,'steempress_sp_tag',$_POST['steempress_sp_tag']);
         }
-
     }
 
     /* Returned codes :

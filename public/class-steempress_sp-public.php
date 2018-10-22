@@ -112,22 +112,32 @@ class Steempress_sp_Public {
         if ($options['twoway'] == "on") {
             $id = get_the_ID();
 
-            $username = get_post_meta($id, "steempress_sp_username");
+            $post = get_post($id);
+
             $permlink = get_post_meta($id, "steempress_sp_permlink");
-            $tag = get_post_meta($id, "steempress_sp_tag");
 
-            if (sizeof($username) == 1 and sizeof($permlink) == 1 and sizeof($tag) == 1) {
+            $author_id = $post->post_author;
 
-                $username = $username[0];
+            if (!isset($options["username"]))
+                $options["username"] = "";
+
+
+            $author = $options["username"];
+
+            if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+                $author = $options['username' . $author_id];
+            }
+
+            if (sizeof($permlink) == 1 && $author != "") {
+
                 $permlink = $permlink[0];
-                $tag = $tag[0];
 
                 // If it's the front page, we display a smaller iframe.
                 $steempress = "<div id='steempress_sp_comment_feed'>";
                 if (is_front_page())
-                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
+                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
                 else
-                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?tag=".$tag."&author=".$username."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
+                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
 
                 $steempress .= "</div>";
             }

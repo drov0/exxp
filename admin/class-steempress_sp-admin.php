@@ -340,24 +340,19 @@ class Steempress_sp_Admin {
         if ( $doaction !== 'update_to_steem' ) {
             return $redirect_to;
         }
+
+        $updated = 0;
+
         for ($i = sizeof($post_ids)-1; $i >= 0; $i--) {
             // Perform action for each post.
-            $this->steempress_sp_update($post_ids[$i]);
+            if ($this->steempress_sp_update($post_ids[$i], true) == 1)
+                $updated++;
         }
-        $redirect_to = add_query_arg('updated_to_steem', count( $post_ids ), $redirect_to );
+        if ($updated != count($post_ids))
+            $redirect_to = add_query_arg('updated_to_steem_err', $updated, $redirect_to );
+        else
+            $redirect_to = add_query_arg('updated_to_steem', $updated, $redirect_to );
         return $redirect_to;
-    }
-
-    public function steempress_sp_bulk_publish_notice() {
-        if ( ! empty( $_REQUEST['published_to_steem'] ) ) {
-            $published_count = intval( $_REQUEST['published_to_steem'] );
-            printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',
-                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
-                    $published_count,
-                    'published_to_steem'
-                ) . '</div>', $published_count );
-        }
     }
 
     public function steempress_sp_bulk_update_notice() {
@@ -369,8 +364,30 @@ class Steempress_sp_Admin {
                     $published_count,
                     'updated_to_steem'
                 ) . '</div>', $published_count );
+        }  else if (!empty($_REQUEST['updated_to_steem_err']))
+        {
+            $published_count = intval( $_REQUEST['updated_to_steem_err'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Your post was not updated probably because the metadata was not correctly set. Please edit the article you wanted to update on STEEM and edit the metadata. Then resubmit it.',
+                    'Added %s posts to be updated on STEEM. Some were not updated probably because the metadata was not correctly set. Please edit the articles you want to update to STEEM and edit the metadata. Then resubmit them.',
+                    $published_count,
+                    'updated_to_steem'
+                ) . '</div>', $published_count );
         }
     }
+
+    public function steempress_sp_bulk_publish_notice() {
+        if ( !empty($_REQUEST['published_to_steem'])) {
+            $published_count = intval( $_REQUEST['published_to_steem'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',
+                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    $published_count,
+                    'published_to_steem'
+                ) . '</div>', $published_count );
+        }
+    }
+
 
 
     public function Steempress_sp_post($new_status, $old_status, $post)
@@ -497,7 +514,14 @@ class Steempress_sp_Admin {
 
     }
 
-    function steempress_sp_update($post_id)
+    /* Returned codes :
+    1 : ok
+    -1 : metadata is incorrect
+    -2 : update is not activated
+    -3 : Post is not in the published state
+
+    */
+    function steempress_sp_update($post_id, $bulk = false)
     {
         $post = get_post($post_id);
         if ($post->post_status == "publish") {
@@ -527,7 +551,7 @@ class Steempress_sp_Admin {
             if (!isset($options["update"]))
                 $options["update"] = "on";
 
-            if ($options["update"] == "on") {
+            if ($options["update"] == "on" || $bulk) {
 
                 $author_id = $post->post_author;
 
@@ -601,13 +625,22 @@ class Steempress_sp_Admin {
                 // A few local verifications as to not overload the server with useless txs
 
                 $test = $data['body'];
-                // Last minute checks before sending it to the server
                 if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
-                    // Post to the api who will publish it on the steem blockchain.
-                    wp_remote_post($this->api_url . "/update", $data);
-                }
-            }
-        }
+                    // Post to the api who will update it on the steem blockchain.
+                    $result = wp_remote_post($this->api_url . "/update", $data);
+                    if (!isset($result->errors)) {
+                        $data = $result['body'];
+                        if ($data == "ok")
+                            return 1;
+                        else
+                            return -1;
+                    }
+                } else
+                    return -1;
+            } else
+                return -2;
+        } else
+            return -3;
     }
 
 }

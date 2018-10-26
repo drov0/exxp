@@ -111,13 +111,10 @@ class Steempress_sp_Public {
 
         if ($options['twoway'] == "on") {
             $id = get_the_ID();
-
-            /*if ($id != 88)
-                return $content;*/
-
+            
             $post = get_post($id);
 
-            $permlink = get_post_meta($id, "steempress_sp_permlink");
+            $permlink = get_post_meta($id, "steempress_sp_permlink", true);
 
             $author_id = $post->post_author;
 
@@ -127,13 +124,18 @@ class Steempress_sp_Public {
 
             $author = $options["username"];
 
+
             if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
                 $author = $options['username' . $author_id];
             }
 
+            $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
+
+            if ($meta_author != $author && $meta_author != "")
+                $author = $meta_author;
+
             if (sizeof($permlink) == 1 && $author != "") {
 
-                $permlink = $permlink[0];
 
                 // If it's the front page, we display a smaller iframe.
                $steempress = "<div id='steempress_sp_comment_feed'>";

@@ -2,7 +2,5 @@
 (function( $ ) {
     'use strict';
 
-
 })( jQuery );
-
 

@@ -95,7 +95,7 @@ class Steempress_sp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name."steem", plugin_dir_url( __FILE__ ) . 'js/steem.min.js');
+		wp_enqueue_script( $this->plugin_name."iframeResizer", plugin_dir_url( __FILE__ ) . 'js/iframeResizer.min.js');
 		wp_enqueue_script( $this->plugin_name."public_js", plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
@@ -111,6 +111,9 @@ class Steempress_sp_Public {
 
         if ($options['twoway'] == "on") {
             $id = get_the_ID();
+
+            /*if ($id != 88)
+                return $content;*/
 
             $post = get_post($id);
 
@@ -133,11 +136,11 @@ class Steempress_sp_Public {
                 $permlink = $permlink[0];
 
                 // If it's the front page, we display a smaller iframe.
-                $steempress = "<div id='steempress_sp_comment_feed'>";
+               $steempress = "<div id='steempress_sp_comment_feed'>";
                 if (is_front_page())
-                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;  height: 150px;\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800 , heightCalculationMethod:'min'})\" src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
                 else
-                    $steempress .= "<iframe id='steempress_sp_embed' src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; height: 800px\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800, scrolling:true, heightCalculationMethod:'min'})\" src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
 
                 $steempress .= "</div>";
             }

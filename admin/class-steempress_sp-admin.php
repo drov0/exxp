@@ -636,6 +636,7 @@ class Steempress_sp_Admin {
                 $test = $data['body'];
                 if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                     // Post to the api who will update it on the steem blockchain.
+                    return -1;
                     $result = wp_remote_post($this->api_url . "/update", $data);
                     if (!isset($result->errors)) {
                         $data = $result['body'];

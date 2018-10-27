@@ -32,74 +32,71 @@ class Steempress_sp_Admin {
 
 	/**
 	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $version    The current version of this plugin.
+     */
+    private $version;
 
-	private $api_url;
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    1.0.0
+     * @param      string    $plugin_name       The name of this plugin.
+     * @param      string    $version    The version of this plugin.
+     */
+    public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->api_url = "https://api.steempress.io";
-		//$this->api_url = "http://localhost:8001";
-	}
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
+    }
 
-	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
+    /**
+     * Register the stylesheets for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Steempress_sp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Steempress_sp_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Steempress_sp_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', array(), $this->version, 'all' );
+        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', array(), $this->version, 'all' );
 
-	}
+    }
 
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
+    /**
+     * Register the JavaScript for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Steempress_sp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in Steempress_sp_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Steempress_sp_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', array( 'jquery' ), $this->version, false );
 
-	}
+    }
 
     /**
      * Register the administration menu for this plugin into the WordPress Dashboard menu.
@@ -151,7 +148,9 @@ class Steempress_sp_Admin {
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
         $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
-        $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? $input['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? htmlspecialchars($input['footer'], ENT_QUOTES) : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $valid['twoway'] = ((isset($input['twoway']) && !empty($input['twoway'])) && $input['twoway'] == 'on') ? 'on' : "off";
+        $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";
 
         $users = get_users();
 
@@ -206,7 +205,7 @@ class Steempress_sp_Admin {
             $options["featured"] = "on";
         if (!isset($options["footer"]))
             $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-
+        
         $post = get_post($id);
 
 
@@ -233,8 +232,6 @@ class Steempress_sp_Admin {
         $wp_tags = wp_get_post_tags($id);
 
         if (sizeof($wp_tags) != 0) {
-
-
 
             $tags = array();
 
@@ -277,20 +274,20 @@ class Steempress_sp_Admin {
 
 
         $data = array("body" => array(
-                "title" => $post->post_title,
-                "content" => $content,
-                "tags" => $tags,
-                "author" => $username,
-                "wif" => $posting_key,
-                "original_link" => $link,
-                "reward" => $options['reward'],
-                "vote"=> $options["vote"],
-                "delay"=> $options["delay"],
-                "wordpress_id"=> $id,
-                "domain"=> $domain,
-                "display_backlink" => $display_backlink,
-                "version" =>  $version,
-                "footer" =>$options['footer'],
+            "title" => $post->post_title,
+            "content" => $content,
+            "tags" => $tags,
+            "author" => $username,
+            "wif" => $posting_key,
+            "original_link" => $link,
+            "reward" => $options['reward'],
+            "vote"=> $options["vote"],
+            "delay"=> $options["delay"],
+            "wordpress_id"=> $id,
+            "domain"=> $domain,
+            "display_backlink" => $display_backlink,
+            "version" =>  $version,
+            "footer" =>$options['footer'],
         ));
 
         // A few local verifications as to not overload the server with useless txs
@@ -299,16 +296,26 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            wp_remote_post($this->api_url, $data);
+            $result = wp_remote_post(steempress_sp_api_url, $data);
+            if (!isset($result->errors)) {
+                update_post_meta($id,'steempress_sp_permlink',$result['body']);
+                update_post_meta($id,'steempress_sp_author',$username);
+            }
         }
     }
 
-    public function custom_bulk_actions($bulk_actions) {
+    public function steempress_sp_bulk_update_action($bulk_actions) {
+        $bulk_actions['update_to_steem'] = __( 'Update to STEEM', 'update_to_steem');
+        return $bulk_actions;
+    }
+
+    public function steempress_sp_bulk_publish_action($bulk_actions) {
         $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
         return $bulk_actions;
     }
 
-    public function custom_bulk_action_handler( $redirect_to, $doaction, $post_ids ) {
+
+    public function steempress_sp_bulk_publish_handler( $redirect_to, $doaction, $post_ids ) {
         if ( $doaction !== 'publish_to_steem' ) {
             return $redirect_to;
         }
@@ -316,16 +323,59 @@ class Steempress_sp_Admin {
             // Perform action for each post.
             $this->Steempress_sp_publish($post_ids[$i]);
         }
-        $redirect_to = add_query_arg( 'published_to_steem', count( $post_ids ), $redirect_to );
+        $redirect_to = add_query_arg('published_to_steem', count( $post_ids ), $redirect_to );
         return $redirect_to;
     }
 
-    public function custom_bulk_action_admin_notice() {
-        if ( ! empty( $_REQUEST['published_to_steem'] ) ) {
+    public function steempress_sp_bulk_update_handler( $redirect_to, $doaction, $post_ids ) {
+        if ( $doaction !== 'update_to_steem' ) {
+            return $redirect_to;
+        }
+
+        $updated = 0;
+
+        for ($i = sizeof($post_ids)-1; $i >= 0; $i--) {
+            // Perform action for each post.
+            if ($this->steempress_sp_update($post_ids[$i], true) == 1)
+                $updated++;
+        }
+
+        if ($updated != count($post_ids))
+            $redirect_to = add_query_arg('updated_to_steem_err', $updated, $redirect_to );
+        else
+            $redirect_to = add_query_arg('updated_to_steem', $updated, $redirect_to );
+        return $redirect_to;
+    }
+
+    public function steempress_sp_bulk_update_notice() {
+        if ( ! empty( $_REQUEST['updated_to_steem'] ) ) {
+            $published_count = intval( $_REQUEST['updated_to_steem'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Added %s post to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    'Added %s posts to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    $published_count,
+                    'updated_to_steem'
+                ) . '</div>', $published_count );
+        }
+
+        if (!empty($_REQUEST['updated_to_steem_err']))
+        {
+            $published_count = intval( $_REQUEST['updated_to_steem_err'] );
+            printf( '<div id="message" class="updated fade">' .
+                _n( 'Your post was not updated probably because the metadata was not correctly set. Please edit the article you wanted to update on STEEM and edit the metadata. Then resubmit it.',
+                    'Added %s posts to be updated on STEEM. Some were not updated probably because the metadata was not correctly set. Please edit the articles you want to update to STEEM and edit the metadata. Then resubmit them.',
+                    $published_count,
+                    'updated_to_steem'
+                ) . '</div>', $published_count );
+        }
+    }
+
+    public function steempress_sp_bulk_publish_notice() {
+        if ( !empty($_REQUEST['published_to_steem'])) {
             $published_count = intval( $_REQUEST['published_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
-                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while.',
+                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',
+                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
                     $published_count,
                     'published_to_steem'
                 ) . '</div>', $published_count );
@@ -333,9 +383,11 @@ class Steempress_sp_Admin {
     }
 
 
+
     public function Steempress_sp_post($new_status, $old_status, $post)
     {
-        if ('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
+        // New post
+        if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
                 return;
             } else {
@@ -343,10 +395,15 @@ class Steempress_sp_Admin {
                 if ($value != "0")
                     $this->Steempress_sp_publish($post->ID);
             }
-        }
-
-        return;
+            // Edited post
+        } /*else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
+            $this->steempress_sp_update($post->ID);
+        }*/
+            return;
     }
+
+
+
 
     function createSteemPublishField()
     {
@@ -395,6 +452,203 @@ class Steempress_sp_Admin {
         } else {
             update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
+    }
+
+    public function steempress_sp_custom_box_html($post)
+    {
+
+        $author_id = $post->post_author;
+
+        $options = get_option($this->plugin_name);
+
+        if (!isset($options["username"]))
+            $options["username"] = "";
+
+
+        $author = $options["username"];
+
+        if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+            $author = $options['username' . $author_id];
+        }
+
+        $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
+        $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
+        
+        if ($meta_author != $author && $meta_author != "")
+            $author = $meta_author;
+
+        $body = "
+              <p>These options are only for advanced users regarding steem integration</p>
+              <label for=\"steempress_sp_author\">Author : </label><br>
+              <input type='text' name='steempress_sp_author' value='".$author."'/><br>
+              <label for=\"steempress_sp_author\">Permlink</label> 
+              <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
+              ";
+        // Minified js to handle the "test parameters" function
+        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".steempress_sp_twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+
+        $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
+
+
+        echo $body;
+    }
+
+    public function steempress_sp_add_custom_box()
+    {
+        $post_id = get_the_ID();
+
+        if (get_post_type($post_id) != 'post') {
+            return;
+        }
+
+        if (get_post_status ($post_id) != 'publish')
+            return;
+
+        add_meta_box(
+            'steempress_sp_box_id',
+            'SteemPress options',
+            array($this,'steempress_sp_custom_box_html'),
+            'post',
+            'side'
+        );
+    }
+
+    function steempress_sp_save_post_data($post_id)
+    {
+        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
+            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
+        }
+    }
+
+    /* Returned codes :
+    1 : ok
+    -1 : metadata is incorrect
+    -2 : update is not activated
+    -3 : Post is not in the published state
+
+    */
+    function steempress_sp_update($post_id, $bulk = false)
+    {
+        $post = get_post($post_id);
+        if ($post->post_status == "publish") {
+            $options = get_option($this->plugin_name);
+
+            // Avoid undefined errors
+            if (!isset($options["username"]))
+                $options["username"] = "";
+            if (!isset($options["posting-key"]))
+                $options["posting-key"] = "";
+            if (!isset($options["reward"]))
+                $options["reward"] = "100";
+            if (!isset($options["tags"]))
+                $options["tags"] = "";
+            if (!isset($options["seo"]))
+                $options["seo"] = "on";
+            if (!isset($options["vote"]))
+                $options["vote"] = "on";
+            if (!isset($options["append"]))
+                $options["append"] = "off";
+            if (!isset($options["delay"]))
+                $options["delay"] = "0";
+            if (!isset($options["featured"]))
+                $options["featured"] = "on";
+            if (!isset($options["footer"]))
+                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+            if (!isset($options["update"]))
+                $options["update"] = "on";
+
+            if ($options["update"] == "on" || $bulk) {
+
+                $author_id = $post->post_author;
+
+                $username = $options["username"];
+                $posting_key = $options["posting-key"];
+
+                if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "" && isset($options['posting-key' . $author_id]) && $options['posting-key' . $author_id] != "") {
+                    $username = $options['username' . $author_id];
+                    $posting_key = $options['posting-key' . $author_id];
+                }
+
+                $wp_tags = wp_get_post_tags($post_id);
+
+                if (sizeof($wp_tags) != 0) {
+
+                    $tags = array();
+
+                    foreach ($wp_tags as $tag) {
+                        $tags[] = str_replace(" ", "", $tag->name);
+                    }
+
+                    $tags = implode(" ", $tags);
+
+                    if ($options["append"] == "on")
+                        $tags = $options["tags"] . " " . $tags;
+                } else
+                    $tags = $options["tags"];
+                $link = get_permalink($post->ID);
+
+                if ($options['seo'] == "on")
+                    $display_backlink = "true";
+                else
+                    $display_backlink = "false";
+
+                $content = $post->post_content;
+                if ($options["featured"] == "on") {
+                    $thumbnail = wp_get_attachment_url(get_post_thumbnail_id($post_id), 'thumbnail');
+                    if ($thumbnail != "0")
+                        $content = "<center>" . $thumbnail . "</center> <br/>" . $post->post_content;
+                }
+
+
+                $version = steempress_sp_compte;
+
+                $pos = strrpos(steempress_sp_compte, ".");
+
+                if ($pos !== false)
+                    $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
+
+                $version = ((float)$version) * 100;
+
+                $permlink = get_post_meta($post_id, "steempress_sp_permlink");
+
+                $data = array("body" => array(
+                    "title" => $post->post_title,
+                    "content" => $content,
+                    "tags" => $tags,
+                    "author" => $username,
+                    "wif" => $posting_key,
+                    "original_link" => $link,
+                    "wordpress_id" => $post_id,
+                    "display_backlink" => $display_backlink,
+                    "version" => $version,
+                    "footer" => $options['footer'],
+                    "permlink" => $permlink[0],
+                    "vote"=> $options["vote"],
+                    "reward" => $options['reward'],
+                ));
+
+
+                // A few local verifications as to not overload the server with useless txs
+
+                $test = $data['body'];
+                if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
+                    // Post to the api who will update it on the steem blockchain.
+                    return -1;
+                    $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
+                    if (!isset($result->errors)) {
+                        $data = $result['body'];
+                        if ($data == "ok")
+                            return 1;
+                        else
+                            return -1;
+                    }
+                } else
+                    return -1;
+            } else
+                return -2;
+        } else
+            return -3;
     }
 
 }

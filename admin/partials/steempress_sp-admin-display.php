@@ -16,6 +16,7 @@
 <div class="wrap">
 
     <?php
+
     //Grab all options
     $options = get_option($this->plugin_name);
 
@@ -44,6 +45,10 @@
         $options["featured"] = "on";
     if (!isset($options["footer"]))
         $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+    if (!isset($options["twoway"]))
+        $options["twoway"] = "off";
+    if (!isset($options["update"]))
+        $options["update"] = "on";
 
 
     $users = get_users();
@@ -104,6 +109,7 @@
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the end of the article.<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>> Add featured images on top of the steem post.<br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>> Update the steem post when updating on wordpress.<br>
 
         <br/>
 
@@ -146,8 +152,14 @@
 
         ?>
 
+        <br/>
+        Two way integration : <br/>
+        These options are related to how the plugin will pull payout data and comments onto your wordpress blog. <br/>
+        <?php
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate two way integration (BETA) ";
+        submit_button('Save all changes', 'primary','submit', TRUE); ?>
 
-        <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
+
     </form>
     <p><?php
 

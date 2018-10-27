@@ -167,14 +167,18 @@ class Steempress_sp {
         $this->loader->add_action( 'transition_post_status', $plugin_admin, 'Steempress_sp_post', 15, 3 );
 
 
-        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'custom_bulk_actions' );
-        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'custom_bulk_action_handler', 10, 3 );
-        $this->loader->add_action( 'admin_notices', $plugin_admin,'custom_bulk_action_admin_notice' );
+        //$this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_action' );
+        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_publish_action' );
+        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_publish_handler', 10, 3 );
+        //$this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_handler', 10, 3 );
+        $this->loader->add_action( 'admin_notices', $plugin_admin,'steempress_sp_bulk_publish_notice' );
+        //$this->loader->add_action( 'admin_notices', $plugin_admin,'steempress_sp_bulk_update_notice' );
 
 
         $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'createSteemPublishField' );
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
-
+        $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
+        $this->loader->add_action('save_post', $plugin_admin,  'steempress_sp_save_post_data');
 
 
     }
@@ -193,7 +197,7 @@ class Steempress_sp {
 		$plugin_public = new Steempress_sp_Public( $this->get_plugin_name(), $this->get_version() );
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+        $this->loader->add_filter('the_content',$plugin_public, 'steempress_sp_comments');
 	}
 
 	/**

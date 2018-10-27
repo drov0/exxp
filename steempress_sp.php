@@ -34,6 +34,10 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'steempress_sp_compte', '1.9.9');
+define( 'steempress_sp_api_url', 'https://api.steempress.io');
+define( 'steempress_sp_twoway_api_url', 'https://two.steempress.io');
+//define( 'api_url', 'http://localhost:8001');
+//define( 'twoway_api_url', 'http://localhost:8002');
 
 /**
  * The code that runs during plugin activation.

@@ -39,7 +39,6 @@ class Steempress_sp_Admin {
      */
     private $version;
 
-    private $api_url;
     /**
      * Initialize the class and set its properties.
      *
@@ -51,9 +50,6 @@ class Steempress_sp_Admin {
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        //$this->api_url = "https://api.steempress.io";
-        $this->api_url = "http://localhost:8001";
-        $this->twoway_api_url = "http://localhost:8002";
     }
 
     /**
@@ -300,9 +296,10 @@ class Steempress_sp_Admin {
         // Last minute checks before sending it to the server
         if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
             // Post to the api who will publish it on the steem blockchain.
-            $result = wp_remote_post($this->api_url, $data);
+            $result = wp_remote_post(steempress_sp_api_url, $data);
             if (!isset($result->errors)) {
-                add_post_meta($id, "steempress_sp_permlink", $result['body'], true);
+                update_post_meta($id,'steempress_sp_permlink',$result['body']);
+                update_post_meta($id,'steempress_sp_author',$username);
             }
         }
     }
@@ -482,13 +479,13 @@ class Steempress_sp_Admin {
 
         $body = "
               <p>These options are only for advanced users regarding steem integration</p>
-              <label for=\"steempress_sp_username\">Author : </label><br>
-              <input type='text' name='steempress_sp_username' value='".$author."'/><br>
+              <label for=\"steempress_sp_author\">Author : </label><br>
+              <input type='text' name='steempress_sp_author' value='".$author."'/><br>
               <label for=\"steempress_sp_author\">Permlink</label> 
               <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
               ";
         // Minified js to handle the "test parameters" function
-        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".$this->twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_username\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".steempress_sp_twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
 
         $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
@@ -518,8 +515,9 @@ class Steempress_sp_Admin {
 
     function steempress_sp_save_post_data($post_id)
     {
-        if (array_key_exists('steempress_sp_permlink', $_POST)) {
+        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
             update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
         }
     }
 
@@ -637,7 +635,7 @@ class Steempress_sp_Admin {
                 if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                     // Post to the api who will update it on the steem blockchain.
                     return -1;
-                    $result = wp_remote_post($this->api_url . "/update", $data);
+                    $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
                         $data = $result['body'];
                         if ($data == "ok")

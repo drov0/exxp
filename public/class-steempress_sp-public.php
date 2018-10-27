@@ -134,15 +134,13 @@ class Steempress_sp_Public {
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
 
-            if (sizeof($permlink) == 1 && $author != "") {
-
-
+            if ($permlink != "" && $author != "") {
                 // If it's the front page, we display a smaller iframe.
                $steempress = "<div id='steempress_sp_comment_feed'>";
                 if (is_front_page())
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800 , heightCalculationMethod:'min'})\" src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800 , heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
                 else
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800, scrolling:true, heightCalculationMethod:'min'})\" src=\"http://localhost:8002/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800, scrolling:true, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
 
                 $steempress .= "</div>";
             }

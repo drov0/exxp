@@ -175,7 +175,7 @@
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post($this->api_url."/test", $data);
+        $result = wp_remote_post(steempress_sp_api_url."/test", $data);
         if (is_array($result) or ($result instanceof Traversable)) {
             echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
@@ -193,7 +193,7 @@
                     echo "Name : ".$users[$i]->data->display_name."<br/>";
                     echo "Role : ".$users[$i]->roles[0]."<br/>";
                     $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
-                    $result = wp_remote_post($this->api_url."/test", $data);
+                    $result = wp_remote_post(steempress_sp_api_url."/test", $data);
                     $text = $result['body'];
                     if ($text == "ok")
                         echo "Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?<br/>";

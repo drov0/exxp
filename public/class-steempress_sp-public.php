@@ -108,6 +108,8 @@ class Steempress_sp_Public {
 
         if (!isset($options["twoway"]))
             $options["twoway"] = "off";
+        if (!isset($options["twoway-front"]))
+            $options["twoway-front"] = "off";
 
         if ($options['twoway'] == "on") {
             $id = get_the_ID();
@@ -134,6 +136,8 @@ class Steempress_sp_Public {
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
 
+            $steempress = "";
+
             if ($permlink != "" && $author != "") {
                 // If it's the front page, we display a smaller iframe.
                $steempress = "<div id='steempress_sp_comment_feed'>";
@@ -144,6 +148,10 @@ class Steempress_sp_Public {
 
                 $steempress .= "</div>";
             }
+
+            if ($options["twoway-front"] === "off" && is_front_page())
+                return $content;
+
             return $content .  $steempress;
         } else
             return $content;

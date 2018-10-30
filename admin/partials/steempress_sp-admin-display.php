@@ -155,11 +155,11 @@
         ?>
 
         <br/>
-        Two way integration : <br/>
-        These options are related to how the plugin will pull payout data and comments onto your wordpress blog. <br/>
+        Two way integration (BETA) <br/>
+        Displays Steem features including, upvotes, pending rewards, comments and Steem log in on the blog interface. <br/>
         <?php
-        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate two way integration (BETA)  <br/>";
-        echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "")."> Display the two way integration in the front page.";
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate for posts.  <br/>";
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "").">  Activate for front page (requires two way integration for posts to be active).";
 
 
         submit_button('Save all changes', 'primary','submit', TRUE); ?>

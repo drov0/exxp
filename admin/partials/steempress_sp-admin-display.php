@@ -11,6 +11,8 @@
  * @package    Sp
  * @subpackage Sp/admin/partials
  */
+
+
 ?>
 
 <div class="wrap">
@@ -51,6 +53,8 @@
         $options["update"] = "on";
     if (!isset($options["twoway-front"]))
         $options["twoway-front"] = "off";
+    if (!isset($options["wordlimit"]))
+        $options["wordlimit"] = "0";
 
 
     $users = get_users();
@@ -160,6 +164,13 @@
         <?php
         echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate for posts.  <br/>";
         echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "").">  Activate for front page (requires two way integration for posts to be active).";
+
+        ?>
+        <br />
+        <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
+        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
+        <br />
+        <?php
 
 
         submit_button('Save all changes', 'primary','submit', TRUE); ?>

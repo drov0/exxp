@@ -397,9 +397,9 @@ class Steempress_sp_Admin {
                     $this->Steempress_sp_publish($post->ID);
             }
             // Edited post
-        } /*else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
+        } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
             $this->steempress_sp_update($post->ID);
-        }*/
+        }
             return;
     }
 
@@ -635,7 +635,6 @@ class Steempress_sp_Admin {
                 $test = $data['body'];
                 if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                     // Post to the api who will update it on the steem blockchain.
-                    return -1;
                     $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
                         $data = $result['body'];

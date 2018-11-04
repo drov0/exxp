@@ -19,6 +19,11 @@
  * @package    Steempress_sp
  * @subpackage Steempress_sp/admin
  */
+
+require('partials/domlettersiterator.php');
+require('partials/DOMWordsIterator.php');
+require('partials/TruncateHTML.php');
+
 class Steempress_sp_Admin {
 
 	/**
@@ -152,6 +157,7 @@ class Steempress_sp_Admin {
         $valid['twoway'] = ((isset($input['twoway']) && !empty($input['twoway'])) && $input['twoway'] == 'on') ? 'on' : "off";
         $valid['twoway-front'] = ((isset($input['twoway-front']) && !empty($input['twoway-front'])) && $input['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";
+        $valid['wordlimit'] = ((isset($input['wordlimit']) && !empty($input['wordlimit']) && is_numeric($input['wordlimit']) && $input['wordlimit'] >= 0)) ?  htmlspecialchars($input['wordlimit'], ENT_QUOTES) : "0";
 
         $users = get_users();
 
@@ -206,7 +212,10 @@ class Steempress_sp_Admin {
             $options["featured"] = "on";
         if (!isset($options["footer"]))
             $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-        
+        if (!isset($options["wordlimit"]))
+            $options["wordlimit"] = "0";
+
+
         $post = get_post($id);
 
 
@@ -273,6 +282,10 @@ class Steempress_sp_Admin {
         $version = ((float)$version)*100;
 
 
+        if ($options['wordlimit'] != "0") {
+            $limit = intval($options["wordlimit"]);
+            $content = TruncateHTML::truncateWords($content, $limit, '');
+        }
 
         $data = array("body" => array(
             "title" => $post->post_title,
@@ -589,6 +602,8 @@ class Steempress_sp_Admin {
                 $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
             if (!isset($options["update"]))
                 $options["update"] = "on";
+            if (!isset($options["wordlimit"]))
+                $options["wordlimit"] = "0";
 
             if ($options["update"] == "on" || $bulk) {
 
@@ -643,6 +658,11 @@ class Steempress_sp_Admin {
                 $version = ((float)$version) * 100;
 
                 $permlink = get_post_meta($post_id, "steempress_sp_permlink");
+
+                if ($options['wordlimit'] != "0") {
+                    $limit = intval($options["wordlimit"]);
+                    $content = TruncateHTML::truncateWords($content, $limit, '');
+                }
 
                 $data = array("body" => array(
                     "title" => $post->post_title,

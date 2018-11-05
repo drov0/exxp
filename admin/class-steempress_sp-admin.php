@@ -319,7 +319,14 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_update_action($bulk_actions) {
-        $bulk_actions['update_to_steem'] = __( 'Update to STEEM', 'update_to_steem');
+        $options = get_option($this->plugin_name);
+
+        if (!isset($options["update"]))
+            $options["update"] = "on";
+
+        if ($options["update"] == "on")
+            $bulk_actions['update_to_steem'] = __('Update to STEEM', 'update_to_steem');
+
         return $bulk_actions;
     }
 
@@ -362,7 +369,7 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_update_notice() {
-        if ( ! empty( $_REQUEST['updated_to_steem'] ) ) {
+        if ( !empty( $_REQUEST['updated_to_steem']) ) {
             $published_count = intval( $_REQUEST['updated_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
                 _n( 'Added %s post to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
@@ -456,6 +463,14 @@ class Steempress_sp_Admin {
         }
 
         if (get_post_status ($post_id) != 'publish')
+            return;
+
+        $options = get_option($this->plugin_name);
+
+        if (!isset($options["update"]))
+            $options["update"] = "on";
+
+        if ($options["update"] != "on")
             return;
 
         wp_nonce_field('Steempress_sp_custom_update_nonce_'.$post_id, 'Steempress_sp_custom_update_nonce');

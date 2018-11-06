@@ -95,8 +95,68 @@ class Steempress_sp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name."iframeResizer", plugin_dir_url( __FILE__ ) . 'js/iframeResizer.min.js');
+		wp_enqueue_script( $this->plugin_name."public_js", plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+
+	public function steempress_sp_comments($content)
+    {
+
+        $options = get_option($this->plugin_name);
+
+        if (!isset($options["twoway"]))
+            $options["twoway"] = "off";
+        if (!isset($options["twoway-front"]))
+            $options["twoway-front"] = "off";
+
+        if ($options['twoway'] == "on") {
+            $id = get_the_ID();
+            
+            $post = get_post($id);
+
+            $permlink = get_post_meta($id, "steempress_sp_permlink", true);
+
+            $author_id = $post->post_author;
+
+            if (!isset($options["username"]))
+                $options["username"] = "";
+
+
+            $author = $options["username"];
+
+
+            if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+                $author = $options['username' . $author_id];
+            }
+
+            $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
+
+            if ($meta_author != $author && $meta_author != "")
+                $author = $meta_author;
+
+            $steempress = "";
+
+            if ($permlink != "" && $author != "") {
+                // If it's the front page, we display a smaller iframe.
+               $steempress = "<div id='steempress_sp_comment_feed'>";
+                if (is_front_page())
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800 , heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
+                else
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({maxHeight:800, scrolling:true, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
+
+                $steempress .= "</div>";
+            }
+
+            if ($options["twoway-front"] === "off" && is_front_page())
+                return $content;
+
+            return $content .  $steempress;
+        } else
+            return $content;
+
+        }
+
 
 }

@@ -11,11 +11,14 @@
  * @package    Sp
  * @subpackage Sp/admin/partials
  */
+
+
 ?>
 
 <div class="wrap">
 
     <?php
+
     //Grab all options
     $options = get_option($this->plugin_name);
 
@@ -44,6 +47,14 @@
         $options["featured"] = "on";
     if (!isset($options["footer"]))
         $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+    if (!isset($options["twoway"]))
+        $options["twoway"] = "off";
+    if (!isset($options["update"]))
+        $options["update"] = "on";
+    if (!isset($options["twoway-front"]))
+        $options["twoway-front"] = "off";
+    if (!isset($options["wordlimit"]))
+        $options["wordlimit"] = "0";
 
 
     $users = get_users();
@@ -95,8 +106,8 @@
         <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress blog" : $options["tags"]), ENT_QUOTES); ?>"/>
         <br />
-        <p> Delay posts : Your posts will get published to steem x minutes after being published on your blog. A value of 0 posts your articles to steem as soon as you publish them.</p>
-        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
+        <p> Delay posts : Your posts will get published to steem x minutes after being published on your blog. A value of 0 posts your articles to steem as soon as you publish them. maximum value is 87600, 2 months. </p>
+        <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
         <br />
         <br />
 
@@ -104,6 +115,7 @@
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-seo" name="<?php echo $this->plugin_name; ?>[seo]"  <?php echo $options['seo'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the end of the article.<br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>> Add featured images on top of the steem post.<br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>> Update the steem post when updating on wordpress.<br>
 
         <br/>
 
@@ -146,8 +158,24 @@
 
         ?>
 
+        <br/>
+        Two way integration (BETA) <br/>
+        Displays Steem features including, upvotes, pending rewards, comments and Steem log in on the blog interface. <br/>
+        <?php
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate for posts.  <br/>";
+        echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "").">  Activate for front page (requires two way integration for posts to be active).";
 
-        <?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
+        ?>
+        <br />
+        <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
+        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
+        <br />
+        <?php
+
+
+        submit_button('Save all changes', 'primary','submit', TRUE); ?>
+
+
     </form>
     <p><?php
 
@@ -163,7 +191,7 @@
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
 
         // Post to the api who will publish it on the steem blockchain.
-        $result = wp_remote_post($this->api_url."/test", $data);
+        $result = wp_remote_post(steempress_sp_api_url."/test", $data);
         if (is_array($result) or ($result instanceof Traversable)) {
             echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
@@ -181,7 +209,7 @@
                     echo "Name : ".$users[$i]->data->display_name."<br/>";
                     echo "Role : ".$users[$i]->roles[0]."<br/>";
                     $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
-                    $result = wp_remote_post($this->api_url."/test", $data);
+                    $result = wp_remote_post(steempress_sp_api_url."/test", $data);
                     $text = $result['body'];
                     if ($text == "ok")
                         echo "Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?<br/>";

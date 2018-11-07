@@ -369,7 +369,7 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_update_notice() {
-        if ( !empty( $_REQUEST['updated_to_steem']) ) {
+        if (!empty( $_REQUEST['updated_to_steem'])) {
             $published_count = intval( $_REQUEST['updated_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
                 _n( 'Added %s post to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
@@ -392,7 +392,7 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_publish_notice() {
-        if ( !empty($_REQUEST['published_to_steem'])) {
+        if (!empty($_REQUEST['published_to_steem'])) {
             $published_count = intval( $_REQUEST['published_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
                 _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',

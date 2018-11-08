@@ -16,7 +16,7 @@
 ?>
 
 <div class="wrap">
-
+    <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
     <?php
 
     //Grab all options

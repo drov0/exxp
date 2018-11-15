@@ -32,3 +32,11 @@
 .steempress_sp_active:after {
     content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
+
+.wp-block-gb-basic-01 {
+    color: #000000;
+    background: mistyrose;
+    border: 0.2rem solid red;
+    padding: 2rem;
+}
+

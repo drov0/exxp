@@ -80,6 +80,42 @@ class Steempress_sp_Admin {
 
     }
 
+    function gb_block_01_basic_editor_assets() {
+        // Scripts.
+        wp_enqueue_script(
+            'gb-block-01-basic', // Handle.
+            plugin_dir_url( __FILE__ ) . 'js/steempress_sp_gutenberg.js', // Block.js: We register the block here.
+            array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
+        );
+        // Styles.
+        wp_enqueue_style(
+            'gb-block-01-basic-editor', // Handle.
+            plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', // Block editor CSS.
+            array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
+
+        );
+    } // End function gb_block_01_basic_editor_assets().
+
+
+    /**
+     * Enqueue the block's assets for the frontend.
+     *
+     * @since 1.0.0
+     */
+    function gb_block_01_basic_block_assets() {
+        // Styles.
+        wp_enqueue_style(
+            'gb-block-01-basic-frontend', // Handle.
+            plugin_dir_url( __FILE__ ) . 'css/steempress_sp-admin.css', // Block frontend CSS.
+            array( 'wp-blocks' ) // Dependency to include the CSS after it.
+        );
+    } // End function gb_block_01_basic_block_assets().
+
+    function mdlr_block_static_jsx_example_backend_enqueue() {
+
+        wp_enqueue_script( $this->plugin_name."steempress_sp_backend", plugin_dir_url( __FILE__ ) . 'js/steempress_sp_gutenberg.js', array('wp-i18n', 'wp-element','wp-hooks', 'wp-components', 'wp-compose', 'wp-editor' ));
+    }
+
     /**
      * Register the JavaScript for the admin area.
      *

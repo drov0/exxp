@@ -181,8 +181,7 @@ class Steempress_sp {
         $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
         $this->loader->add_action('save_post', $plugin_admin,  'steempress_sp_save_post_data');
 
-        $this->loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'gb_block_01_basic_editor_assets' );
-        $this->loader->add_action( 'enqueue_block_assets', $plugin_admin, 'gb_block_01_basic_block_assets' );
+        $this->loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'my_block_cgb_editor_assets' );
     }
 
 

@@ -1,0 +1,30 @@
+{
+  "name": "steempress",
+  "version": "1.0.0",
+  "description": "- Contributors: howo,fredrikaa - Requires at least: 4.7 - Tested up to: 4.9.2 - License: GPLv2 or later - License URI: http://www.gnu.org/licenses/gpl-2.0.html",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production ./admin/js/source/*.js --output ./admin/js/steempress_sp-admin.js --module-bind js=babel-loader",
+    "dev": "webpack --mode development ./admin/js/source/*.js --output ./admin/js/steempress_sp-admin.js --module-bind js=babel-loader"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drov0/steempress.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drov0/steempress/issues"
+  },
+  "homepage": "https://github.com/drov0/steempress#readme",
+  "dependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

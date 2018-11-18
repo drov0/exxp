@@ -62,7 +62,7 @@ function isValidBlockType( name ) {
 
 }// end isValidBlockType()
 
-**
+/**
 * Filters registered block settings, extending attributes with our custom data.
 *
 * @param {Object} settings Original block settings.

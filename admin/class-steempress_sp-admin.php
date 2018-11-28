@@ -91,8 +91,6 @@ class Steempress_sp_Admin {
      * @since 1.0.0
      */
     function my_block_cgb_editor_assets() {
-
-
         // Scripts.
         wp_enqueue_script(
             'my_block-cgb-block-js', // Handle.
@@ -101,7 +99,6 @@ class Steempress_sp_Admin {
             // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
             true // Enqueue the script in the footer.
         );
-
     } // End function my_block_cgb_editor_assets().
 
 
@@ -543,39 +540,76 @@ class Steempress_sp_Admin {
     {
 
         $author_id = $post->post_author;
+        $post_id = get_the_ID();
 
-        $options = get_option($this->plugin_name);
+        // Not published yet.
+        if (get_post_status ($post_id) != 'publish')
+        {
 
-        if (!isset($options["username"]))
-            $options["username"] = "";
+            $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
+            if ($value == "0")
+                $checked = "";
+            else
+                $checked = "checked";
+
+            $body  = '<label><input type="checkbox" value="1" '.$checked.' name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>';
+
+            echo $body;
+
+        } else {
+
+            $options = get_option($this->plugin_name);
+
+            if (!isset($options["update"]))
+                $options["update"] = "on";
+
+            if ($options["update"] == "on")
+            {
 
 
-        $author = $options["username"];
+                $value = get_post_meta($post_id, 'Steempress_sp_steem_update', true);
+                if ($value == "0")
+                    $checked = "";
+                else
+                    $checked = "checked";
 
-        if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
-            $author = $options['username' . $author_id];
-        }
+                $body = '<div class="misc-pub-section misc-pub-section-last"><label><input type="checkbox" value="1"  '.$checked.'  name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to steem </label></div>';
+            } else
+            {
+                $body = "";
+            }
 
-        $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
-        $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
-        
-        if ($meta_author != $author && $meta_author != "")
-            $author = $meta_author;
 
-        $body = "
-              <p>These options are only for advanced users regarding steem integration</p>
+            if (!isset($options["username"]))
+                $options["username"] = "";
+
+
+            $author = $options["username"];
+
+            if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+                $author = $options['username' . $author_id];
+            }
+
+            $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
+            $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
+
+            if ($meta_author != $author && $meta_author != "")
+                $author = $meta_author;
+
+            $body .= "<p>These options are only for advanced users regarding steem integration</p>
               <label for=\"steempress_sp_author\">Author : </label><br>
-              <input type='text' name='steempress_sp_author' value='".$author."'/><br>
+              <input type='text' name='steempress_sp_author' value='" . $author . "'/><br>
               <label for=\"steempress_sp_author\">Permlink</label> 
-              <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
+              <input type='text' name='steempress_sp_permlink' value='" . $permlink . "'/><br>
               ";
-        // Minified js to handle the "test parameters" function
-        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".steempress_sp_twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+            // Minified js to handle the "test parameters" function
+            $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"" . steempress_sp_twoway_api_url . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
 
-        $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
+            $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
 
-        echo $body;
+            echo $body;
+        }
     }
 
     public function steempress_sp_add_custom_box()
@@ -585,9 +619,6 @@ class Steempress_sp_Admin {
         if (get_post_type($post_id) != 'post') {
             return;
         }
-
-        if (get_post_status ($post_id) != 'publish')
-            return;
 
         add_meta_box(
             'steempress_sp_box_id',

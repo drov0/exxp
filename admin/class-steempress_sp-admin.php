@@ -427,7 +427,7 @@ class Steempress_sp_Admin {
 
 
 
-    public function Steempress_sp_post($new_status, $old_status, $post)
+    public function steempress_sp_post($new_status, $old_status, $post)
     {
         // New post
         if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
@@ -442,7 +442,7 @@ class Steempress_sp_Admin {
         } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
-            $this->steempress_sp_update($post->ID);
+            $this->steempress_sp_update($post->ID, false, $_POST['Steempress_sp_steem_update']);
         }
             return;
     }
@@ -515,25 +515,29 @@ class Steempress_sp_Admin {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
-        if ((!isset($_POST['Steempress_sp_custom_nonce']) || !wp_verify_nonce($_POST['Steempress_sp_custom_nonce'], 'Steempress_sp_custom_nonce_'.$post_id)) && (!isset($_POST['Steempress_sp_custom_update_nonce']) || !wp_verify_nonce($_POST['Steempress_sp_custom_update_nonce'], 'Steempress_sp_custom_update_nonce_'.$post_id)))
-            return;
-
         if (!current_user_can('edit_post', $post_id))
             return;
 
-        if (get_post_status ($post_id) != 'publish') {
-            if (isset($_POST['Steempress_sp_steem_publish'])) {
-                update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
-            } else {
-                update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
-            }
-        } else {
-            if (isset($_POST['Steempress_sp_steem_update'])) {
-                update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
-            } else {
-                update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
-            }
+        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
+            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
         }
+
+
+        if (isset($_POST['Steempress_sp_steem_publish']) && $_POST['Steempress_sp_steem_publish'] === '1') {
+            $this->steempress_sp_update(181, false, "puuublish maggle");
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
+        } else {
+            update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
+        }
+
+        if (isset($_POST['Steempress_sp_steem_update']) && $_POST['Steempress_sp_steem_update'] === '1') {
+            $this->steempress_sp_update(181, false, "uuuupdaaaaaaaaaaate");
+            update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
+        } else {
+            update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
+        }
+
     }
 
     public function steempress_sp_custom_box_html($post)
@@ -552,6 +556,8 @@ class Steempress_sp_Admin {
             else
                 $checked = "checked";
 
+            wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
+
             $body  = '<label><input type="checkbox" value="1" '.$checked.' name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>';
 
             echo $body;
@@ -565,7 +571,7 @@ class Steempress_sp_Admin {
 
             if ($options["update"] == "on")
             {
-
+                wp_nonce_field('Steempress_sp_custom_update_nonce_'.$post_id, 'Steempress_sp_custom_update_nonce');
 
                 $value = get_post_meta($post_id, 'Steempress_sp_steem_update', true);
                 if ($value == "0")
@@ -629,25 +635,22 @@ class Steempress_sp_Admin {
         );
     }
 
-    function steempress_sp_save_post_data($post_id)
-    {
-        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
-            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
-            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
-        }
-    }
-
     /* Returned codes :
     1 : ok
     -1 : metadata is incorrect
     -2 : update is not activated
     -3 : Post is not in the published state
-
     */
-    function steempress_sp_update($post_id, $bulk = false)
+    function steempress_sp_update($post_id, $bulk = false, $post_data = "jelepasetdeso")
     {
         $post = get_post($post_id);
         if ($post->post_status == "publish") {
+
+            $update = json_encode($post_data);//get_post_meta($post_id, "Steempress_sp_steem_update", true);
+
+            if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
+                return;
+
             $options = get_option($this->plugin_name);
 
             // Avoid undefined errors
@@ -749,6 +752,7 @@ class Steempress_sp_Admin {
                     "permlink" => $permlink[0],
                     "vote"=> $options["vote"],
                     "reward" => $options['reward'],
+                    "update" => $update
                 ));
 
 

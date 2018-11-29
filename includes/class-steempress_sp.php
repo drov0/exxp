@@ -164,7 +164,7 @@ class Steempress_sp {
 
 
         $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
-        $this->loader->add_action( 'transition_post_status', $plugin_admin, 'Steempress_sp_post', 15, 3 );
+        $this->loader->add_action( 'transition_post_status', $plugin_admin, 'steempress_sp_post', 15, 3 );
 
 
         $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_action' );
@@ -175,13 +175,8 @@ class Steempress_sp {
         $this->loader->add_action( 'admin_notices', $plugin_admin,'steempress_sp_bulk_update_notice' );
 
 
-        $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'createSteemPublishField' );
-        $this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin,'create_update_checkbox' );
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
         $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
-        $this->loader->add_action('save_post', $plugin_admin,  'steempress_sp_save_post_data');
-
-
     }
 
 

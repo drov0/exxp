@@ -80,6 +80,7 @@ class Steempress_sp_Admin {
 
     }
 
+
     /**
      * Register the JavaScript for the admin area.
      *
@@ -405,22 +406,25 @@ class Steempress_sp_Admin {
 
 
 
-    public function Steempress_sp_post($new_status, $old_status, $post)
+    public function steempress_sp_post($new_status, $old_status, $post)
     {
+        // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+        if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+            return;
+        }
+
         // New post
         if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) )
                 return;
 
-            $value = get_post_meta($post->ID, 'Steempress_sp_steem_publish', true);
-            if ($value != "0")
-                $this->Steempress_sp_publish($post->ID);
+            $this->Steempress_sp_publish($post->ID);
 
             // Edited post
         } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
-            $this->steempress_sp_update($post->ID);
+            $this->steempress_sp_update($post->ID, false);
         }
             return;
     }
@@ -490,23 +494,34 @@ class Steempress_sp_Admin {
 
     function saveSteemPublishField($post_id)
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE || !current_user_can('edit_post', $post_id) || $_POST == [])
             return;
 
-        if ((!isset($_POST['Steempress_sp_custom_nonce']) || !wp_verify_nonce($_POST['Steempress_sp_custom_nonce'], 'Steempress_sp_custom_nonce_'.$post_id)) && (!isset($_POST['Steempress_sp_custom_update_nonce']) || !wp_verify_nonce($_POST['Steempress_sp_custom_update_nonce'], 'Steempress_sp_custom_update_nonce_'.$post_id)))
-            return;
+        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
+            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
+        }
 
-        if (!current_user_can('edit_post', $post_id))
-            return;
+        if (isset($_POST['Steempress_sp_steem_publish'])) {
+            if ($_POST['Steempress_sp_steem_publish'] === '1') {
 
-        if (get_post_status ($post_id) != 'publish') {
-            if (isset($_POST['Steempress_sp_steem_publish'])) {
+                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                    $this->Steempress_sp_publish($post_id);
+                }
+
                 update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
             } else {
                 update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
             }
-        } else {
-            if (isset($_POST['Steempress_sp_steem_update'])) {
+        }
+
+        if (isset($_POST['Steempress_sp_steem_update'])) {
+            if ($_POST['Steempress_sp_steem_update'] === '1') {
+                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                    $this->steempress_sp_update($post_id);
+                }
                 update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
             } else {
                 update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
@@ -518,39 +533,79 @@ class Steempress_sp_Admin {
     {
 
         $author_id = $post->post_author;
+        $post_id = get_the_ID();
 
-        $options = get_option($this->plugin_name);
+        // Not published yet.
+        if (get_post_status ($post_id) != 'publish')
+        {
 
-        if (!isset($options["username"]))
-            $options["username"] = "";
+            $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
+            if ($value == "0")
+                $checked = "";
+            else
+                $checked = "checked";
 
 
-        $author = $options["username"];
+            wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
 
-        if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
-            $author = $options['username' . $author_id];
-        }
+            $body  = '<label><input type="checkbox" value="1" '.$checked.' name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>';
 
-        $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
-        $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
-        
-        if ($meta_author != $author && $meta_author != "")
-            $author = $meta_author;
+            echo $body;
 
-        $body = "
-              <p>These options are only for advanced users regarding steem integration</p>
+        } else {
+
+            $options = get_option($this->plugin_name);
+
+            if (!isset($options["update"]))
+                $options["update"] = "on";
+
+            if ($options["update"] == "on")
+            {
+                wp_nonce_field('Steempress_sp_custom_update_nonce_'.$post_id, 'Steempress_sp_custom_update_nonce');
+
+                $value = get_post_meta($post_id, 'Steempress_sp_steem_update', true);
+                if ($value == "0")
+                    $checked = "";
+                else
+                    $checked = "checked";
+
+                $body = '<div class="misc-pub-section misc-pub-section-last"><label><input type="checkbox" value="1"  '.$checked.'  name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to steem </label></div>';
+            } else
+            {
+                $body = "";
+            }
+
+
+            if (!isset($options["username"]))
+                $options["username"] = "";
+
+
+            $author = $options["username"];
+
+            if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "") {
+                $author = $options['username' . $author_id];
+            }
+
+            $permlink = get_post_meta($post->ID, 'steempress_sp_permlink', true);
+            $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
+
+            if ($meta_author != $author && $meta_author != "")
+                $author = $meta_author;
+
+            $body .= "<p>These options are only for advanced users regarding steem integration</p>
               <label for=\"steempress_sp_author\">Author : </label><br>
-              <input type='text' name='steempress_sp_author' value='".$author."'/><br>
+              <input type='text' name='steempress_sp_author' value='" . $author . "'/><br>
               <label for=\"steempress_sp_author\">Permlink</label> 
-              <input type='text' name='steempress_sp_permlink' value='".$permlink."'/><br>
+              <input type='text' name='steempress_sp_permlink' value='" . $permlink . "'/><br>
               ";
-        // Minified js to handle the "test parameters" function
-        $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"".steempress_sp_twoway_api_url."/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+            // Minified js to handle the "test parameters" function
+            $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"" . steempress_sp_twoway_api_url . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
 
-        $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
+            $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
 
-        echo $body;
+            echo $body;
+        }
     }
 
     public function steempress_sp_add_custom_box()
@@ -561,9 +616,6 @@ class Steempress_sp_Admin {
             return;
         }
 
-        if (get_post_status ($post_id) != 'publish')
-            return;
-
         add_meta_box(
             'steempress_sp_box_id',
             'SteemPress options',
@@ -573,25 +625,20 @@ class Steempress_sp_Admin {
         );
     }
 
-    function steempress_sp_save_post_data($post_id)
-    {
-        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
-            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
-            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
-        }
-    }
-
     /* Returned codes :
     1 : ok
     -1 : metadata is incorrect
     -2 : update is not activated
     -3 : Post is not in the published state
-
     */
     function steempress_sp_update($post_id, $bulk = false)
     {
         $post = get_post($post_id);
         if ($post->post_status == "publish") {
+
+            if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
+                return;
+
             $options = get_option($this->plugin_name);
 
             // Avoid undefined errors
@@ -692,7 +739,7 @@ class Steempress_sp_Admin {
                     "footer" => $options['footer'],
                     "permlink" => $permlink[0],
                     "vote"=> $options["vote"],
-                    "reward" => $options['reward'],
+                    "reward" => $options['reward']
                 ));
 
 

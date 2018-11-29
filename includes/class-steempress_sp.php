@@ -177,8 +177,6 @@ class Steempress_sp {
 
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
         $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
-
-        $this->loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'my_block_cgb_editor_assets' );
     }
 
 

@@ -429,20 +429,27 @@ class Steempress_sp_Admin {
 
     public function steempress_sp_post($new_status, $old_status, $post)
     {
+        // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+        if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+            return;
+        }
+
         // New post
         if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) )
                 return;
 
-            $value = get_post_meta($post->ID, 'Steempress_sp_steem_publish', true);
-            if ($value != "0")
-                $this->Steempress_sp_publish($post->ID);
+            /*$value = get_post_meta($post->ID, 'Steempress_sp_steem_publish', true);
+            if ($value != "0")*/
+                $this->steempress_sp_update(181, false, "classic publish");
+                //$this->Steempress_sp_publish($post->ID);
 
             // Edited post
         } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
-            $this->steempress_sp_update($post->ID, false, $_POST['Steempress_sp_steem_update']);
+            $this->steempress_sp_update(181, false, "classic update");
+            //$this->steempress_sp_update($post->ID, false, $_POST['Steempress_sp_steem_update']);
         }
             return;
     }
@@ -523,16 +530,24 @@ class Steempress_sp_Admin {
             update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
         }
 
-
         if (isset($_POST['Steempress_sp_steem_publish']) && $_POST['Steempress_sp_steem_publish'] === '1') {
-            $this->steempress_sp_update(181, false, "puuublish maggle");
+
+            // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+            if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                $this->steempress_sp_update(181, false, "gutenberg publish");
+            }
+
             update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
         } else {
             update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
 
         if (isset($_POST['Steempress_sp_steem_update']) && $_POST['Steempress_sp_steem_update'] === '1') {
-            $this->steempress_sp_update(181, false, "uuuupdaaaaaaaaaaate");
+            // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+            if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                $this->steempress_sp_update(181, false, "gutenberg update");
+            }
+
             update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
         } else {
             update_post_meta($post_id, 'Steempress_sp_steem_update', '0');

@@ -439,17 +439,13 @@ class Steempress_sp_Admin {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) )
                 return;
 
-            /*$value = get_post_meta($post->ID, 'Steempress_sp_steem_publish', true);
-            if ($value != "0")*/
-                $this->steempress_sp_update(181, false, "classic publish");
-                //$this->Steempress_sp_publish($post->ID);
+            $this->Steempress_sp_publish($post->ID);
 
             // Edited post
         } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
-            $this->steempress_sp_update(181, false, "classic update");
-            //$this->steempress_sp_update($post->ID, false, $_POST['Steempress_sp_steem_update']);
+            $this->steempress_sp_update($post->ID, false);
         }
             return;
     }
@@ -534,7 +530,7 @@ class Steempress_sp_Admin {
 
             // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
             if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                $this->steempress_sp_update(181, false, "gutenberg publish");
+                $this->Steempress_sp_publish($post_id);
             }
 
             update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
@@ -545,7 +541,7 @@ class Steempress_sp_Admin {
         if (isset($_POST['Steempress_sp_steem_update']) && $_POST['Steempress_sp_steem_update'] === '1') {
             // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
             if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                $this->steempress_sp_update(181, false, "gutenberg update");
+                $this->steempress_sp_update(181, false);
             }
 
             update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
@@ -656,12 +652,10 @@ class Steempress_sp_Admin {
     -2 : update is not activated
     -3 : Post is not in the published state
     */
-    function steempress_sp_update($post_id, $bulk = false, $post_data = "jelepasetdeso")
+    function steempress_sp_update($post_id, $bulk = false)
     {
         $post = get_post($post_id);
         if ($post->post_status == "publish") {
-
-            $update = json_encode($post_data);//get_post_meta($post_id, "Steempress_sp_steem_update", true);
 
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
@@ -766,8 +760,7 @@ class Steempress_sp_Admin {
                     "footer" => $options['footer'],
                     "permlink" => $permlink[0],
                     "vote"=> $options["vote"],
-                    "reward" => $options['reward'],
-                    "update" => $update
+                    "reward" => $options['reward']
                 ));
 
 

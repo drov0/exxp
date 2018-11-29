@@ -149,7 +149,7 @@ class Steempress_sp_Admin {
         $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? htmlspecialchars($input['posting-key'], ENT_QUOTES) : "";
         $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
-        $valid['seo'] = ((isset($input['seo']) && !empty($input['seo'])) && $input['seo'] == 'on') ? 'on' : "off";
+        $valid['footer-display'] = ((isset($input['footer-display']) && !empty($input['footer-display'])) && $input['footer-display'] == 'on') ? 'on' : "off";
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0 && $input['delay'] <= 87600)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
@@ -201,8 +201,8 @@ class Steempress_sp_Admin {
             $options["reward"] = "100";
         if (!isset($options["tags"]))
             $options["tags"] = "";
-        if (!isset($options["seo"]))
-            $options["seo"] = "on";
+        if (!isset($options["footer-display"]))
+            $options["footer-display"] = "on";
         if (!isset($options["vote"]))
             $options["vote"] = "on";
         if (!isset($options["append"]))
@@ -259,7 +259,7 @@ class Steempress_sp_Admin {
             $tags = $options["tags"];
         $link = get_permalink($post->ID);
 
-        if ($options['seo'] == "on")
+        if ($options['footer-display'] == "on")
             $display_backlink = "true";
         else
             $display_backlink = "false";
@@ -650,8 +650,8 @@ class Steempress_sp_Admin {
                 $options["reward"] = "100";
             if (!isset($options["tags"]))
                 $options["tags"] = "";
-            if (!isset($options["seo"]))
-                $options["seo"] = "on";
+            if (!isset($options["footer-display"]))
+                $options["footer-display"] = "on";
             if (!isset($options["vote"]))
                 $options["vote"] = "on";
             if (!isset($options["append"]))
@@ -697,7 +697,7 @@ class Steempress_sp_Admin {
                     $tags = $options["tags"];
                 $link = get_permalink($post->ID);
 
-                if ($options['seo'] == "on")
+                if ($options['footer-display'] == "on")
                     $display_backlink = "true";
                 else
                     $display_backlink = "false";

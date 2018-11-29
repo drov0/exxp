@@ -82,27 +82,6 @@ class Steempress_sp_Admin {
 
 
     /**
-     * Enqueue Gutenberg block assets for backend editor.
-     *
-     * `wp-blocks`: includes block type registration and related functions.
-     * `wp-element`: includes the WordPress Element abstraction for describing the structure of your blocks.
-     * `wp-i18n`: To internationalize the block's text.
-     *
-     * @since 1.0.0
-     */
-    function my_block_cgb_editor_assets() {
-        // Scripts.
-        wp_enqueue_script(
-            'my_block-cgb-block-js', // Handle.
-            plugin_dir_url( __FILE__ ) . 'js/steempress_sp-admin.js', // Block.build.js: We register the block here. Built with Webpack.
-            array( 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
-            // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
-            true // Enqueue the script in the footer.
-        );
-    } // End function my_block_cgb_editor_assets().
-
-
-    /**
      * Register the JavaScript for the admin area.
      *
      * @since    1.0.0
@@ -515,10 +494,7 @@ class Steempress_sp_Admin {
 
     function saveSteemPublishField($post_id)
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-            return;
-
-        if (!current_user_can('edit_post', $post_id))
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE || !current_user_can('edit_post', $post_id) || $_POST == [])
             return;
 
         if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
@@ -526,29 +502,31 @@ class Steempress_sp_Admin {
             update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
         }
 
-        if (isset($_POST['Steempress_sp_steem_publish']) && $_POST['Steempress_sp_steem_publish'] === '1') {
+        if (isset($_POST['Steempress_sp_steem_publish'])) {
+            if ($_POST['Steempress_sp_steem_publish'] === '1') {
 
-            // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-            if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                $this->Steempress_sp_publish($post_id);
+                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                    $this->Steempress_sp_publish($post_id);
+                }
+
+                update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
+            } else {
+                update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
             }
-
-            update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
-        } else {
-            update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
         }
 
-        if (isset($_POST['Steempress_sp_steem_update']) && $_POST['Steempress_sp_steem_update'] === '1') {
-            // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-            if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                $this->steempress_sp_update(181, false);
+        if (isset($_POST['Steempress_sp_steem_update'])) {
+            if ($_POST['Steempress_sp_steem_update'] === '1') {
+                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                    $this->steempress_sp_update($post_id);
+                }
+                update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
+            } else {
+                update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
             }
-
-            update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
-        } else {
-            update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
         }
-
     }
 
     public function steempress_sp_custom_box_html($post)
@@ -566,6 +544,7 @@ class Steempress_sp_Admin {
                 $checked = "";
             else
                 $checked = "checked";
+
 
             wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
 

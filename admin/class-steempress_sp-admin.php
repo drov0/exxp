@@ -404,10 +404,10 @@ class Steempress_sp_Admin {
         }
     }
 
-
-
     public function steempress_sp_post($new_status, $old_status, $post)
     {
+
+
         // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
         if ($_POST == [] || !isset($_POST['hidden_mm'])) {
             return;
@@ -417,6 +417,8 @@ class Steempress_sp_Admin {
         if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) )
                 return;
+
+
 
             $this->Steempress_sp_publish($post->ID);
 
@@ -497,18 +499,16 @@ class Steempress_sp_Admin {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE || !current_user_can('edit_post', $post_id) || $_POST == [])
             return;
 
-        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
-            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
-            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
-        }
 
         if (isset($_POST['Steempress_sp_steem_publish'])) {
-            if ($_POST['Steempress_sp_steem_publish'] === '1') {
 
-                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                    $this->Steempress_sp_publish($post_id);
-                }
+
+            if ($_POST['Steempress_sp_steem_publish'] === '1' && get_post_status ($post_id) == 'publish') {
+                    // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                    if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                        if (get_post_meta($post_id, 'steempress_sp_author', true ) == "")
+                            $this->Steempress_sp_publish($post_id);
+                    }
 
                 update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
             } else {
@@ -522,10 +522,16 @@ class Steempress_sp_Admin {
                 if ($_POST == [] || !isset($_POST['hidden_mm'])) {
                     $this->steempress_sp_update($post_id);
                 }
+
                 update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
             } else {
                 update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
             }
+        }
+
+        if (array_key_exists('steempress_sp_permlink', $_POST) && array_key_exists('steempress_sp_author', $_POST)) {
+            update_post_meta($post_id,'steempress_sp_permlink',$_POST['steempress_sp_permlink']);
+            update_post_meta($post_id,'steempress_sp_author',$_POST['steempress_sp_author']);
         }
     }
 
@@ -709,7 +715,6 @@ class Steempress_sp_Admin {
                         $content = "<center>" . $thumbnail . "</center> <br/>" . $post->post_content;
                 }
 
-
                 $version = steempress_sp_compte;
 
                 $pos = strrpos(steempress_sp_compte, ".");
@@ -763,5 +768,16 @@ class Steempress_sp_Admin {
         } else
             return -3;
     }
+
+
+    // Small func to easily test post data when debugging.
+    function steempress_sp_test_post($data = "no data")
+    {
+        $data = array("body" => array(
+            "data_test" => json_encode($data)
+        ));
+        wp_remote_post(steempress_sp_api_url . "/update", $data);
+    }
+
 
 }

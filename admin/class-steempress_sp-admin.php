@@ -404,6 +404,10 @@ class Steempress_sp_Admin {
         }
     }
 
+    function steempress_sp_future_post( $post_id ) {
+        $this->Steempress_sp_publish($post_id);
+    }
+
     public function steempress_sp_post($new_status, $old_status, $post)
     {
 

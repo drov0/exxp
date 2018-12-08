@@ -165,6 +165,7 @@ class Steempress_sp {
 
         $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
         $this->loader->add_action( 'transition_post_status', $plugin_admin, 'steempress_sp_post', 15, 3 );
+        $this->loader->add_action( 'publish_future_post',$plugin_admin, 'steempress_sp_future_post' );
 
 
         $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_action' );

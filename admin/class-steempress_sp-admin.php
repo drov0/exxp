@@ -189,7 +189,6 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_publish($id)
     {
-
         $options = get_option($this->plugin_name);
 
         // Avoid undefined errors
@@ -219,13 +218,15 @@ class Steempress_sp_Admin {
 
         $post = get_post($id);
 
+        $error = [];
 
         $categories = get_the_category($id);
 
         for($i = 0; $i < sizeof($categories); $i++)
         {
-            if (isset($options['cat'.$categories[$i]->cat_ID]) && $options['cat'.$categories[$i]->cat_ID] == "on")
-                return;
+            if (isset($options['cat'.$categories[$i]->cat_ID]) && $options['cat'.$categories[$i]->cat_ID] == "on") {
+                array_push($error, $categories[$i]->name);
+            }
         }
 
 
@@ -303,19 +304,17 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
+            "error" => json_encode($error)
         ));
 
-        // A few local verifications as to not overload the server with useless txs
 
-        $test = $data['body'];
         // Last minute checks before sending it to the server
-        if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
-            // Post to the api who will publish it on the steem blockchain.
-            $result = wp_remote_post(steempress_sp_api_url, $data);
-            if (!isset($result->errors)) {
-                update_post_meta($id,'steempress_sp_permlink',$result['body']);
-                update_post_meta($id,'steempress_sp_author',$username);
-            }
+
+        // Post to the api who will publish it on the steem blockchain.
+        $result = wp_remote_post(steempress_sp_api_url, $data);
+        if (!isset($result->errors)) {
+            update_post_meta($id,'steempress_sp_permlink',$result['body']);
+            update_post_meta($id,'steempress_sp_author',$username);
         }
     }
 
@@ -411,28 +410,35 @@ class Steempress_sp_Admin {
     public function steempress_sp_post($new_status, $old_status, $post)
     {
 
+        // Status change concerns publish or update :
+        if (($new_status == 'publish' &&  $old_status != 'publish') || ($new_status == 'publish' &&  $old_status == 'publish') && $post->post_type == 'post'){
 
-        // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-        if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-            return;
+
+            // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+            if ($_POST == [] || !isset($_POST['hidden_mm'])) {
+                $mutex = get_post_meta($post->ID, 'steempress_sp_mutex', true);
+
+                if ($mutex == "1") {
+                    update_post_meta($post->ID, 'steempress_sp_mutex', '0');
+                    return;
+                }
+                update_post_meta($post->ID, 'steempress_sp_mutex', '1');
+            }
+
+            // New post
+            if ($new_status == 'publish' && $old_status != 'publish') {
+                if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']))
+                    return;
+                $this->Steempress_sp_publish($post->ID);
+
+                // Edited post
+            } else if ($new_status == 'publish' && $old_status == 'publish') {
+                if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']))
+                    return;
+                $this->steempress_sp_update($post->ID, false);
+            }
         }
-
-        // New post
-        if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
-            if (!isset($_POST['Steempress_sp_steem_publish']) && isset($_POST['Steempress_sp_steem_do_not_publish']) )
-                return;
-
-
-
-            $this->Steempress_sp_publish($post->ID);
-
-            // Edited post
-        } else if ($new_status == 'publish' &&  $old_status == 'publish' && $post->post_type == 'post') {
-            if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
-                return;
-            $this->steempress_sp_update($post->ID, false);
-        }
-            return;
+        return;
     }
 
 
@@ -508,12 +514,6 @@ class Steempress_sp_Admin {
 
 
             if ($_POST['Steempress_sp_steem_publish'] === '1' && get_post_status ($post_id) == 'publish') {
-                    // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-                    if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                        if (get_post_meta($post_id, 'steempress_sp_author', true ) == "")
-                            $this->Steempress_sp_publish($post_id);
-                    }
-
                 update_post_meta($post_id, 'Steempress_sp_steem_publish', $_POST['Steempress_sp_steem_publish']);
             } else {
                 update_post_meta($post_id, 'Steempress_sp_steem_publish', '0');
@@ -522,11 +522,6 @@ class Steempress_sp_Admin {
 
         if (isset($_POST['Steempress_sp_steem_update'])) {
             if ($_POST['Steempress_sp_steem_update'] === '1') {
-                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
-                if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                    $this->steempress_sp_update($post_id);
-                }
-
                 update_post_meta($post_id, 'Steempress_sp_steem_update', $_POST['Steempress_sp_steem_update']);
             } else {
                 update_post_meta($post_id, 'Steempress_sp_steem_update', '0');
@@ -644,6 +639,7 @@ class Steempress_sp_Admin {
     function steempress_sp_update($post_id, $bulk = false)
     {
         $post = get_post($post_id);
+
         if ($post->post_status == "publish") {
 
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
@@ -780,7 +776,7 @@ class Steempress_sp_Admin {
         $data = array("body" => array(
             "data_test" => json_encode($data)
         ));
-        wp_remote_post(steempress_sp_api_url . "/update", $data);
+        wp_remote_post(steempress_sp_api_url . "/dev", $data);
     }
 
 

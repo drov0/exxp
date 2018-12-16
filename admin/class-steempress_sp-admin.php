@@ -189,7 +189,6 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_publish($id)
     {
-
         $options = get_option($this->plugin_name);
 
         // Avoid undefined errors
@@ -219,13 +218,15 @@ class Steempress_sp_Admin {
 
         $post = get_post($id);
 
+        $error = [];
 
         $categories = get_the_category($id);
 
         for($i = 0; $i < sizeof($categories); $i++)
         {
-            if (isset($options['cat'.$categories[$i]->cat_ID]) && $options['cat'.$categories[$i]->cat_ID] == "on")
-                return;
+            if (isset($options['cat'.$categories[$i]->cat_ID]) && $options['cat'.$categories[$i]->cat_ID] == "on") {
+                array_push($error, $categories[$i]->name);
+            }
         }
 
 
@@ -303,19 +304,17 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
+            "error" => json_encode($error)
         ));
 
-        // A few local verifications as to not overload the server with useless txs
 
-        $test = $data['body'];
         // Last minute checks before sending it to the server
-        if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
-            // Post to the api who will publish it on the steem blockchain.
-            $result = wp_remote_post(steempress_sp_api_url, $data);
-            if (!isset($result->errors)) {
-                update_post_meta($id,'steempress_sp_permlink',$result['body']);
-                update_post_meta($id,'steempress_sp_author',$username);
-            }
+
+        // Post to the api who will publish it on the steem blockchain.
+        $result = wp_remote_post(steempress_sp_api_url, $data);
+        if (!isset($result->errors)) {
+            update_post_meta($id,'steempress_sp_permlink',$result['body']);
+            update_post_meta($id,'steempress_sp_author',$username);
         }
     }
 

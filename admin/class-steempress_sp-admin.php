@@ -503,14 +503,13 @@ class Steempress_sp_Admin {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE || !current_user_can('edit_post', $post_id) || $_POST == [])
             return;
 
+        if (isset($_POST['Steempress_sp_steem_publish']) || isset($_POST['Steempress_sp_steem_do_not_publish']) ) {
 
-        if (isset($_POST['Steempress_sp_steem_publish'])) {
+            if ($_POST['Steempress_sp_steem_publish'] === '1' ) {
 
-
-            if ($_POST['Steempress_sp_steem_publish'] === '1' && get_post_status ($post_id) == 'publish') {
-                    // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
+                // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
                     if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                        if (get_post_meta($post_id, 'steempress_sp_author', true ) == "")
+                        if (get_post_meta($post_id, 'steempress_sp_author', true ) == "" && get_post_status ($post_id) == 'publish')
                             $this->Steempress_sp_publish($post_id);
                     }
 
@@ -780,7 +779,7 @@ class Steempress_sp_Admin {
         $data = array("body" => array(
             "data_test" => json_encode($data)
         ));
-        wp_remote_post(steempress_sp_api_url . "/update", $data);
+        wp_remote_post(steempress_sp_api_url . "/dev", $data);
     }
 
 

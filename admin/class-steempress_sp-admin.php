@@ -13,8 +13,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
+ * Defines the plugin name, version and all the logic for steempress's inner working.
  *
  * @package    Steempress_sp
  * @subpackage Steempress_sp/admin

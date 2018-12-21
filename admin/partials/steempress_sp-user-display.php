@@ -16,76 +16,107 @@
 ?>
 
 <div class="wrap">
+
+
     <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
     <?php
 
     //Grab all options
-    $options = get_option($this->plugin_name);
+    $options = [];
 
     // avoid undefined errors when running it for the first time :
-    if (!isset($options["username"]))
+    if (get_the_author_meta( $this->plugin_name."-username" , $user->ID) == "")
         $options["username"] = "";
-    if (!isset($options["posting-key"]))
+    else
+        $options["username"] = get_the_author_meta( $this->plugin_name."-username" , $user->ID);
+
+    if (get_the_author_meta( $this->plugin_name."posting-key" , $user->ID) == "")
         $options["posting-key"] = "";
-    if (!isset($options["reward"]))
+    else
+        $options["posting-key"] = get_the_author_meta( $this->plugin_name."posting-key" , $user->ID);
+
+    if (get_the_author_meta( $this->plugin_name."reward" , $user->ID) == "")
         $options["reward"] = "50";
-    if (!isset($options["tags"]))
+    else
+        $options["reward"] = get_the_author_meta( $this->plugin_name."reward" , $user->ID);
+
+    if (get_the_author_meta( $this->plugin_name."tags" , $user->ID))
         $options["tags"] = "";
-    if (!isset($options["footer-display"]))
+    else
+        $options["tags"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+    if (get_the_author_meta( $this->plugin_name."footer-display" , $user->ID))
         $options["footer-display"] = "on";
-    if (!isset($options["vote"]))
+    else
+        $options["footer-display"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."vote" , $user->ID))
         $options["vote"] = "on";
-    if (!isset($options["append"]))
+    else
+        $options["vote"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."append" , $user->ID))
         $options["append"] = "off";
-    if (!isset($options["delay"]))
+    else
+        $options["append"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."delay" , $user->ID))
         $options["delay"] = "0";
-    if (!isset($options["featured"]))
+    else
+        $options["delay"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."featured" , $user->ID))
         $options["featured"] = "on";
-    if (!isset($options["footer"]))
+    else
+        $options["featured"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."footer" , $user->ID))
         $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-    if (!isset($options["twoway"]))
-        $options["twoway"] = "off";
-    if (!isset($options["update"]))
+    else
+        $options["footer"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+
+    if (get_the_author_meta( $this->plugin_name."update" , $user->ID))
         $options["update"] = "on";
-    if (!isset($options["twoway-front"]))
-        $options["twoway-front"] = "off";
-    if (!isset($options["wordlimit"]))
+    else
+        $options["update"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
+
+    if (get_the_author_meta( $this->plugin_name."wordlimit" , $user->ID))
         $options["wordlimit"] = "0";
+    else
+        $options["wordlimit"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
 
-
-    $users = get_users();
     $categories = get_categories(array('hide_empty' => FALSE));
-
-    for ($i = 0; $i < sizeof($users); $i++) {
-        if (!isset($options['username'.$users[$i]->data->ID]))
-            $options['username'.$users[$i]->data->ID] = "";
-        if (!isset($options['posting-key'.$users[$i]->data->ID]))
-            $options['posting-key'.$users[$i]->data->ID] = "";
-    }
-
 
     for ($i = 0; $i < sizeof($categories); $i++)
     {
-        if (!isset($options['cat'.$categories[$i]->cat_ID]))
+        if (get_the_author_meta( $this->plugin_name.'cat'.$categories[$i]->cat_ID , $user->ID) == "")
             $options['cat'.$categories[$i]->cat_ID] = "off";
+        else
+            $options['cat'.$categories[$i]->cat_ID] = get_the_author_meta( $this->plugin_name.'cat'.$categories[$i]->cat_ID , $user->ID);
     }
 
     ?>
 
-    <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
+    <h2> SteemPress Options</h2>
 
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
         <!-- remove some meta and generators from the <head> -->
 
-        <p>Default steem account : </p>
+        <p>STEEM account : </p>
         <p>Steem Username : </p>
         <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "")
-            echo "Don't have a steem account ? Sign up <a href='https://signup.steemit.com/'> here</a>"
+            echo "Don't have a steem account ? Sign up <a href='https://steemit.com/pick_account'> here</a>"
         ?>
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
@@ -119,30 +150,6 @@
         <br/>
         <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
         <br />
-
-
-        <button class="steempress_sp_collapsible" type="button">Define more users</button>
-        <div class="steempress_sp_content">
-            <br/>
-            If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
-        <br />
-        <br />
-        <?php
-
-        for ($i = 0; $i < sizeof($users); $i++)
-        {
-            echo "Name : ".$users[$i]->data->display_name."<br/>";
-            echo "Role : ".$users[$i]->roles[0]."<br/>";
-
-            echo '<p> Steem username :</p>';
-            echo '<input type="text" class="regular-text" id="'.$this->plugin_name.'-username-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[username'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["username".$users[$i]->data->ID], ENT_QUOTES).'"/><br />';
-            echo '<p>Private Posting key : </p> <input type="text" class="regular-text" id="'.$this->plugin_name.'-posting-key-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[posting-key'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["posting-key".$users[$i]->data->ID], ENT_QUOTES).'"/><br/><br/>';
-        }
-
-
-        ?>
-        </div>
-        <br/>
         Category filter : <br/>
         Check the categories that you want steempress to ignore.<br/>
         <?php
@@ -153,16 +160,8 @@
         }
 
         ?>
-
         <br/>
-        Two way integration (BETA) <br/>
-        Displays Steem features including, upvotes, pending rewards, comments and Steem log in on the blog interface. <br/>
-        <?php
-        echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> Activate for posts.  <br/>";
-        echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "").">  Activate for front page (requires two way integration for posts to be active).";
 
-        ?>
-        <br />
         <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
         <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
         <br />

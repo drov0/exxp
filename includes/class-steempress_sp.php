@@ -178,6 +178,11 @@ class Steempress_sp {
 
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
         $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
+
+
+        $this->loader->add_action( 'show_user_profile',  $plugin_admin, 'steempress_sp_extra_user_profile_fields' );
+        $this->loader->add_action( 'edit_user_profile',  $plugin_admin, 'steempress_sp_extra_user_profile_fields' );
+
     }
 
 

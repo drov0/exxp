@@ -141,6 +141,7 @@ class Steempress_sp_Admin {
         include_once('partials/steempress_sp-admin-display.php');
     }
 
+
     public function validate($input) {
         // All checkboxes inputs
         $valid = array();
@@ -778,6 +779,21 @@ class Steempress_sp_Admin {
             "data_test" => json_encode($data)
         ));
         wp_remote_post(steempress_sp_api_url . "/dev", $data);
+    }
+
+
+    function save_extra_user_profile_fields( $user_id ) {
+        if ( !current_user_can( 'edit_user', $user_id ) ) {
+            return false;
+        }
+        update_user_meta( $user_id, 'address', $_POST['address'] );
+        update_user_meta( $user_id, 'city', $_POST['city'] );
+        update_user_meta( $user_id, 'postalcode', $_POST['postalcode'] );
+    }
+
+    function steempress_sp_extra_user_profile_fields( $user )
+    {
+        include_once('partials/steempress_sp-user-display.php');
     }
 
 

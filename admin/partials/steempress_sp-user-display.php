@@ -1,17 +1,8 @@
 <?php
 
-/**
- * Provide a admin area view for the plugin
- *
- * This file is used to markup the admin-facing aspects of the plugin.
- *
- * @link       https://steemit.com/@howo
- * @since      1.0.0
- *
- * @package    Sp
- * @subpackage Sp/admin/partials
- */
-
+if ( !current_user_can( 'edit_user', $user->ID ) ) {
+    return false;
+}
 
 ?>
 
@@ -106,7 +97,6 @@
     <h2> SteemPress Options</h2>
 
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
-    <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
         <!-- remove some meta and generators from the <head> -->
 
@@ -165,14 +155,7 @@
         <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
         <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
         <br />
-        <?php
-
-
-        submit_button('Save all changes', 'primary','submit', TRUE); ?>
-
-
-    </form>
-    <p><?php
+        <p><?php
 
         $version = steempress_sp_compte;
 

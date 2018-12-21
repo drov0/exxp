@@ -175,26 +175,6 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
             else if ($text == "wif ok")
                 echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> ";
 
-            echo "<br/>";
-            echo "<br/>";
-            for ($i = 0; $i < sizeof($users); $i++)
-            {
-                if ($options['username'.$users[$i]->data->ID] != "" && $options['posting-key'.$users[$i]->data->ID] != "")
-                {
-                    echo "Name : ".$users[$i]->data->display_name."<br/>";
-                    echo "Role : ".$users[$i]->roles[0]."<br/>";
-                    $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
-                    $result = wp_remote_post(steempress_sp_api_url."/test", $data);
-                    $text = $result['body'];
-                    if ($text == "ok")
-                        echo "Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?<br/>";
-                    else if ($text == "wif ok")
-                        echo "username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
-
-                    echo "<br/>";
-                }
-            }
-
         }
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";

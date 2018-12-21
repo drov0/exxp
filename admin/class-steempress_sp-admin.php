@@ -146,39 +146,35 @@ class Steempress_sp_Admin {
         if ( !current_user_can( 'edit_user', $user_id ) ) {
             return false;
         }
-
-
-        $this->steempress_sp_test_post($_POST);
-
         // All checkboxes inputs
         $valid = array();
-        $valid['reward'] = (isset($_POST[$this->plugin_name.'-reward']) && !empty($_POST[$this->plugin_name.'-reward'] ) && ($_POST[$this->plugin_name.'-reward'] == "50" || $_POST[$this->plugin_name.'-reward'] == "100")) ? $_POST[$this->plugin_name.'-reward'] : "50";
-        $valid['posting-key'] = (isset($_POST[$this->plugin_name.'-posting-key']) && !empty($_POST[$this->plugin_name.'-posting-key'])) ? htmlspecialchars($_POST[$this->plugin_name.'-posting-key'], ENT_QUOTES) : "";
-        $valid['tags'] = (isset($_POST[$this->plugin_name.'-tags']) && !empty($_POST[$this->plugin_name.'-tags'])) ? htmlspecialchars($_POST[$this->plugin_name.'-tags'], ENT_QUOTES) : "";
-        $valid['username'] = (isset($_POST[$this->plugin_name.'-username']) && !empty($_POST[$this->plugin_name.'-username'])) ? htmlspecialchars($_POST[$this->plugin_name.'-username'], ENT_QUOTES) : "";
-        $valid['footer-display'] = ((isset($_POST[$this->plugin_name.'-footer-display']) && !empty($_POST[$this->plugin_name.'-footer-display'])) && $_POST[$this->plugin_name.'-footer-display'] == 'on') ? 'on' : "off";
-        $valid['vote'] = ((isset($_POST[$this->plugin_name.'-vote']) && !empty($_POST[$this->plugin_name.'-vote'])) && $_POST[$this->plugin_name.'-vote'] == 'on') ? 'on' : "off";
-        $valid['append'] = ((isset($_POST[$this->plugin_name.'-append']) && !empty($_POST[$this->plugin_name.'-append'])) && $_POST[$this->plugin_name.'-append'] == 'on') ? 'on' : "off";
-        $valid['delay'] = ((isset($_POST[$this->plugin_name.'-delay']) && !empty($_POST[$this->plugin_name.'-delay']) && is_numeric($_POST[$this->plugin_name.'-delay']) && $_POST[$this->plugin_name.'-delay'] >= 0 && $_POST[$this->plugin_name.'-delay'] <= 87600)) ?  htmlspecialchars($_POST[$this->plugin_name.'-delay'], ENT_QUOTES) : "0";
-        $valid['featured'] = ((isset($_POST[$this->plugin_name.'-featured']) && !empty($_POST[$this->plugin_name.'-featured'])) && $_POST[$this->plugin_name.'-featured'] == 'on') ? 'on' : "off";
-        $valid['footer'] = (isset($_POST[$this->plugin_name.'-footer']) && !empty($_POST[$this->plugin_name.'-footer'])) ? $_POST[$this->plugin_name.'-footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-        $valid['twoway'] = ((isset($_POST[$this->plugin_name.'-twoway']) && !empty($_POST[$this->plugin_name.'-twoway'])) && $_POST[$this->plugin_name.'-twoway'] == 'on') ? 'on' : "off";
-        $valid['twoway-front'] = ((isset($_POST[$this->plugin_name.'-twoway-front']) && !empty($_POST[$this->plugin_name.'-twoway-front'])) && $_POST[$this->plugin_name.'-twoway-front'] == 'on') ? 'on' : "off";
-        $valid['update'] = ((isset($_POST[$this->plugin_name.'-update']) && !empty($_POST[$this->plugin_name.'-update'])) && $_POST[$this->plugin_name.'-update'] == 'on') ? 'on' : "off";
-        $valid['wordlimit'] = ((isset($_POST[$this->plugin_name.'-wordlimit']) && !empty($_POST[$this->plugin_name.'-wordlimit']) && is_numeric($_POST[$this->plugin_name.'-wordlimit']) && $_POST[$this->plugin_name.'-wordlimit'] >= 0)) ?  htmlspecialchars($_POST[$this->plugin_name.'-wordlimit'], ENT_QUOTES) : "0";
-
+        $valid['reward'] = (isset($_POST['steempress_sp']['reward']) && !empty($_POST['steempress_sp']['reward'] ) && ($_POST['steempress_sp']['reward'] == "50" || $_POST['steempress_sp']['reward'] == "100")) ? $_POST['steempress_sp']['reward'] : "50";
+        $valid['posting-key'] = (isset($_POST['steempress_sp']['posting-key']) && !empty($_POST['steempress_sp']['posting-key'])) ? htmlspecialchars($_POST['steempress_sp']['posting-key'], ENT_QUOTES) : "";
+        $valid['tags'] = (isset($_POST['steempress_sp']['tags']) && !empty($_POST['steempress_sp']['tags'])) ? htmlspecialchars($_POST['steempress_sp']['tags'], ENT_QUOTES) : "";
+        $valid['username'] = (isset($_POST['steempress_sp']['username']) && !empty($_POST['steempress_sp']['username'])) ? htmlspecialchars($_POST['steempress_sp']['username'], ENT_QUOTES) : "";
+        $valid['footer-display'] = ((isset($_POST['steempress_sp']['footer-display']) && !empty($_POST['steempress_sp']['footer-display'])) && $_POST['steempress_sp']['footer-display'] == 'on') ? 'on' : "off";
+        $valid['vote'] = ((isset($_POST['steempress_sp']['vote']) && !empty($_POST['steempress_sp']['vote'])) && $_POST['steempress_sp']['vote'] == 'on') ? 'on' : "off";
+        $valid['append'] = ((isset($_POST['steempress_sp']['append']) && !empty($_POST['steempress_sp']['append'])) && $_POST['steempress_sp']['append'] == 'on') ? 'on' : "off";
+        $valid['delay'] = ((isset($_POST['steempress_sp']['delay']) && !empty($_POST['steempress_sp']['delay']) && is_numeric($_POST['steempress_sp']['delay']) && $_POST['steempress_sp']['delay'] >= 0 && $_POST['steempress_sp']['delay'] <= 87600)) ?  htmlspecialchars($_POST['steempress_sp']['delay'], ENT_QUOTES) : "0";
+        $valid['featured'] = ((isset($_POST['steempress_sp']['featured']) && !empty($_POST['steempress_sp']['featured'])) && $_POST['steempress_sp']['featured'] == 'on') ? 'on' : "off";
+        $valid['footer'] = (isset($_POST['steempress_sp']['footer']) && !empty($_POST['steempress_sp']['footer'])) ? $_POST['steempress_sp']['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $valid['twoway'] = ((isset($_POST['steempress_sp']['twoway']) && !empty($_POST['steempress_sp']['twoway'])) && $_POST['steempress_sp']['twoway'] == 'on') ? 'on' : "off";
+        $valid['twoway-front'] = ((isset($_POST['steempress_sp']['twoway-front']) && !empty($_POST['steempress_sp']['twoway-front'])) && $_POST['steempress_sp']['twoway-front'] == 'on') ? 'on' : "off";
+        $valid['update'] = ((isset($_POST['steempress_sp']['update']) && !empty($_POST['steempress_sp']['update'])) && $_POST['steempress_sp']['update'] == 'on') ? 'on' : "off";
+        $valid['wordlimit'] = ((isset($_POST['steempress_sp']['wordlimit']) && !empty($_POST['steempress_sp']['wordlimit']) && is_numeric($_POST['steempress_sp']['wordlimit']) && $_POST['steempress_sp']['wordlimit'] >= 0)) ?  htmlspecialchars($_POST['steempress_sp']['wordlimit'], ENT_QUOTES) : "0";
 
         $categories = get_categories(array('hide_empty' => FALSE));
 
         for ($i = 0; $i < sizeof($categories); $i++)
         {
-            $valid['cat'.$categories[$i]->cat_ID] = ((isset($_POST[$this->plugin_name.'-cat'.$categories[$i]->cat_ID]) && !empty($_POST[$this->plugin_name.'-cat'.$categories[$i]->cat_ID])) && $_POST[$this->plugin_name.'-cat'.$categories[$i]->cat_ID] == 'on') ? 'on' : "off";
+            $valid['cat'.$categories[$i]->cat_ID] = ((isset($_POST['steempress_sp']['cat'.$categories[$i]->cat_ID]) && !empty($_POST['steempress_sp']['cat'.$categories[$i]->cat_ID])) && $_POST['steempress_sp']['cat'.$categories[$i]->cat_ID] == 'on') ? 'on' : "off";
         }
 
+        foreach ($valid as $key => $value) {
+            update_user_meta( $user_id, $this->plugin_name.$key , $value);
+        }
 
-        //update_user_meta( $user_id, 'address', $_POST['address']);
-
-
+        $this->steempress_sp_test_post(get_user_meta($user_id), "username");
 
     }
 

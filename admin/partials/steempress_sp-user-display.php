@@ -12,7 +12,6 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
     <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
     <?php
 
-    //Grab all options
     $options = [];
 
     // avoid undefined errors when running it for the first time :

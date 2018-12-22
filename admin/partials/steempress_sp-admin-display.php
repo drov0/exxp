@@ -53,16 +53,7 @@
         $options["wordlimit"] = "0";
 
 
-    $users = get_users();
     $categories = get_categories(array('hide_empty' => FALSE));
-
-    for ($i = 0; $i < sizeof($users); $i++) {
-        if (!isset($options['username'.$users[$i]->data->ID]))
-            $options['username'.$users[$i]->data->ID] = "";
-        if (!isset($options['posting-key'.$users[$i]->data->ID]))
-            $options['posting-key'.$users[$i]->data->ID] = "";
-    }
-
 
     for ($i = 0; $i < sizeof($categories); $i++)
     {

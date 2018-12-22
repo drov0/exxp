@@ -226,34 +226,10 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_publish($id)
     {
-        $options = get_option($this->plugin_name);
-
-        // Avoid undefined errors
-        if (!isset($options["username"]))
-            $options["username"] = "";
-        if (!isset($options["posting-key"]))
-            $options["posting-key"] = "";
-        if (!isset($options["reward"]))
-            $options["reward"] = "100";
-        if (!isset($options["tags"]))
-            $options["tags"] = "";
-        if (!isset($options["footer-display"]))
-            $options["footer-display"] = "on";
-        if (!isset($options["vote"]))
-            $options["vote"] = "on";
-        if (!isset($options["append"]))
-            $options["append"] = "off";
-        if (!isset($options["delay"]))
-            $options["delay"] = "0";
-        if (!isset($options["featured"]))
-            $options["featured"] = "on";
-        if (!isset($options["footer"]))
-            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-        if (!isset($options["wordlimit"]))
-            $options["wordlimit"] = "0";
-
 
         $post = get_post($id);
+
+        $options = steempress_sp_get_options($post);
 
         $error = [];
 
@@ -266,17 +242,8 @@ class Steempress_sp_Admin {
             }
         }
 
-
-        $author_id = $post->post_author;
-
         $username = $options["username"];
         $posting_key = $options["posting-key"];
-
-        if (isset($options['username'.$author_id]) && $options['username'.$author_id] != "" && isset($options['posting-key'.$author_id]) && $options['posting-key'.$author_id] != "")
-        {
-            $username = $options['username'.$author_id];
-            $posting_key = $options['posting-key'.$author_id];
-        }
 
         $wp_tags = wp_get_post_tags($id);
 
@@ -356,7 +323,9 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_update_action($bulk_actions) {
-        $options = get_option($this->plugin_name);
+
+
+        $options = steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -511,7 +480,7 @@ class Steempress_sp_Admin {
         if (get_post_status ($post_id) != 'publish')
             return;
 
-        $options = get_option($this->plugin_name);
+        $options = steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -599,7 +568,8 @@ class Steempress_sp_Admin {
 
         } else {
 
-            $options = get_option($this->plugin_name);
+            $options = steempress_sp_get_options($post);
+
 
             if (!isset($options["update"]))
                 $options["update"] = "on";
@@ -670,6 +640,135 @@ class Steempress_sp_Admin {
         );
     }
 
+
+    function steempress_sp_get_options($post) {
+        if (isset($post))
+            $author_id = $post->post_author;
+        else
+            $author_id = get_current_user_id();
+
+        $options = get_option($this->plugin_name);
+
+        // avoid undefined errors when running it for the first time :
+        if (!isset($options["username"]))
+            $options["username"] = "";
+        if (!isset($options["posting-key"]))
+            $options["posting-key"] = "";
+        if (!isset($options["reward"]))
+            $options["reward"] = "50";
+        if (!isset($options["tags"]))
+            $options["tags"] = "";
+        if (!isset($options["footer-display"]))
+            $options["footer-display"] = "on";
+        if (!isset($options["vote"]))
+            $options["vote"] = "on";
+        if (!isset($options["append"]))
+            $options["append"] = "off";
+        if (!isset($options["delay"]))
+            $options["delay"] = "0";
+        if (!isset($options["featured"]))
+            $options["featured"] = "on";
+        if (!isset($options["footer"]))
+            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        if (!isset($options["twoway"]))
+            $options["twoway"] = "off";
+        if (!isset($options["update"]))
+            $options["update"] = "on";
+        if (!isset($options["twoway-front"]))
+            $options["twoway-front"] = "off";
+        if (!isset($options["wordlimit"]))
+            $options["wordlimit"] = "0";
+
+        $categories = get_categories(array('hide_empty' => FALSE));
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+            if (!isset($options['cat'.$categories[$i]->cat_ID]))
+                $options['cat'.$categories[$i]->cat_ID] = "off";
+        }
+
+
+        if (get_the_author_meta( $this->plugin_name."username" , $author_id) == "" || get_the_author_meta( $this->plugin_name."posting-key" , $author_id) == "") {
+            // avoid undefined errors when running it for the first time :
+            if (get_the_author_meta($this->plugin_name . "username", $author_id) == "")
+                $options["username"] = "";
+            else
+                $options["username"] = get_the_author_meta($this->plugin_name . "username", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "posting-key", $author_id) == "")
+                $options["posting-key"] = "";
+            else
+                $options["posting-key"] = get_the_author_meta($this->plugin_name . "posting-key", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "reward", $author_id) == "")
+                $options["reward"] = "50";
+            else
+                $options["reward"] = get_the_author_meta($this->plugin_name . "reward", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "tags", $author_id))
+                $options["tags"] = "";
+            else
+                $options["tags"] = get_the_author_meta($this->plugin_name . "tags", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id))
+                $options["footer-display"] = "on";
+            else
+                $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "vote", $author_id))
+                $options["vote"] = "on";
+            else
+                $options["vote"] = get_the_author_meta($this->plugin_name . "vote", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "append", $author_id))
+                $options["append"] = "off";
+            else
+                $options["append"] = get_the_author_meta($this->plugin_name . "append", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "delay", $author_id))
+                $options["delay"] = "0";
+            else
+                $options["delay"] = get_the_author_meta($this->plugin_name . "delay", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "featured", $author_id))
+                $options["featured"] = "on";
+            else
+                $options["featured"] = get_the_author_meta($this->plugin_name . "featured", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "footer", $author_id))
+                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+            else
+                $options["footer"] = get_the_author_meta($this->plugin_name . "footer", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "update", $author_id))
+                $options["update"] = "on";
+            else
+                $options["update"] = get_the_author_meta($this->plugin_name . "update", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id))
+                $options["wordlimit"] = "0";
+            else
+                $options["wordlimit"] = get_the_author_meta($this->plugin_name . "wordlimit", $author_id);
+
+            $categories = get_categories(array('hide_empty' => FALSE));
+
+            for ($i = 0; $i < sizeof($categories); $i++) {
+                if (get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id) == "")
+                    $options['cat' . $categories[$i]->cat_ID] = "off";
+                else
+                    $options['cat' . $categories[$i]->cat_ID] = get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id);
+            }
+        }
+
+        return $options;
+    }
+
     /* Returned codes :
     1 : ok
     -1 : metadata is incorrect
@@ -684,45 +783,13 @@ class Steempress_sp_Admin {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
 
-            $options = get_option($this->plugin_name);
 
-            // Avoid undefined errors
-            if (!isset($options["username"]))
-                $options["username"] = "";
-            if (!isset($options["posting-key"]))
-                $options["posting-key"] = "";
-            if (!isset($options["reward"]))
-                $options["reward"] = "100";
-            if (!isset($options["tags"]))
-                $options["tags"] = "";
-            if (!isset($options["footer-display"]))
-                $options["footer-display"] = "on";
-            if (!isset($options["vote"]))
-                $options["vote"] = "on";
-            if (!isset($options["append"]))
-                $options["append"] = "off";
-            if (!isset($options["delay"]))
-                $options["delay"] = "0";
-            if (!isset($options["featured"]))
-                $options["featured"] = "on";
-            if (!isset($options["footer"]))
-                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-            if (!isset($options["update"]))
-                $options["update"] = "on";
-            if (!isset($options["wordlimit"]))
-                $options["wordlimit"] = "0";
+            $options = steempress_sp_get_options($post);
 
             if ($options["update"] == "on" || $bulk) {
 
-                $author_id = $post->post_author;
-
                 $username = $options["username"];
                 $posting_key = $options["posting-key"];
-
-                if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "" && isset($options['posting-key' . $author_id]) && $options['posting-key' . $author_id] != "") {
-                    $username = $options['username' . $author_id];
-                    $posting_key = $options['posting-key' . $author_id];
-                }
 
                 $wp_tags = wp_get_post_tags($post_id);
 

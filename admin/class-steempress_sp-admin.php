@@ -174,8 +174,6 @@ class Steempress_sp_Admin {
             update_user_meta( $user_id, $this->plugin_name.$key , $value);
         }
 
-        $this->steempress_sp_test_post(get_user_meta($user_id), "username");
-
     }
 
 

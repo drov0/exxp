@@ -12,6 +12,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
     <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
     <?php
 
+    //Grab all options
     $options = [];
 
     // avoid undefined errors when running it for the first time :
@@ -30,53 +31,53 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
     else
         $options["reward"] = get_the_author_meta( $this->plugin_name."reward" , $user->ID);
 
-    if (get_the_author_meta( $this->plugin_name."tags" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."tags" , $user->ID) == "")
         $options["tags"] = "";
     else
         $options["tags"] = get_the_author_meta( $this->plugin_name."tags" , $user->ID);
 
-    if (get_the_author_meta( $this->plugin_name."footer-display" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."footer-display" , $user->ID) == "")
         $options["footer-display"] = "on";
     else
         $options["footer-display"] = get_the_author_meta( $this->plugin_name."footer-display" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."vote" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."vote" , $user->ID) == "")
         $options["vote"] = "on";
     else
         $options["vote"] = get_the_author_meta( $this->plugin_name."vote" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."append" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."append" , $user->ID) == "")
         $options["append"] = "off";
     else
         $options["append"] = get_the_author_meta( $this->plugin_name."append" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."delay" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."delay" , $user->ID) == "")
         $options["delay"] = "0";
     else
         $options["delay"] = get_the_author_meta( $this->plugin_name."delay" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."featured" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."featured" , $user->ID) == "")
         $options["featured"] = "on";
     else
         $options["featured"] = get_the_author_meta( $this->plugin_name."featured" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."footer" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."footer" , $user->ID) == "")
         $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
     else
         $options["footer"] = get_the_author_meta( $this->plugin_name."footer" , $user->ID);
 
 
-    if (get_the_author_meta( $this->plugin_name."update" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."update" , $user->ID) == "")
         $options["update"] = "on";
     else
         $options["update"] = get_the_author_meta( $this->plugin_name."update" , $user->ID);
 
-    if (get_the_author_meta( $this->plugin_name."wordlimit" , $user->ID))
+    if (get_the_author_meta( $this->plugin_name."wordlimit" , $user->ID) == "")
         $options["wordlimit"] = "0";
     else
         $options["wordlimit"] = get_the_author_meta( $this->plugin_name."wordlimit" , $user->ID);

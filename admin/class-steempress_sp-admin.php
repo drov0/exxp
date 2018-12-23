@@ -639,8 +639,8 @@ class Steempress_sp_Admin {
     }
 
 
-    function steempress_sp_get_options($post = []) {
-        if ($post == [])
+    function steempress_sp_get_options($post = null) {
+        if ($post != null)
             $author_id = $post->post_author;
         else
             $author_id = get_current_user_id();
@@ -686,7 +686,7 @@ class Steempress_sp_Admin {
         }
 
 
-        if (get_the_author_meta( $this->plugin_name."username" , $author_id) == "" || get_the_author_meta( $this->plugin_name."posting-key" , $author_id) == "") {
+        if (get_the_author_meta( $this->plugin_name."username" , $author_id) != "" && get_the_author_meta( $this->plugin_name."posting-key" , $author_id) != "") {
             // avoid undefined errors when running it for the first time :
             if (get_the_author_meta($this->plugin_name . "username", $author_id) == "")
                 $options["username"] = "";
@@ -763,6 +763,8 @@ class Steempress_sp_Admin {
                     $options['cat' . $categories[$i]->cat_ID] = get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id);
             }
         }
+
+
 
         return $options;
     }

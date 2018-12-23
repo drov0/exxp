@@ -703,53 +703,53 @@ class Steempress_sp_Admin {
             else
                 $options["reward"] = get_the_author_meta($this->plugin_name . "reward", $author_id);
 
-            if (get_the_author_meta($this->plugin_name . "tags", $author_id))
+            if (get_the_author_meta($this->plugin_name . "tags", $author_id) == "")
                 $options["tags"] = "";
             else
                 $options["tags"] = get_the_author_meta($this->plugin_name . "tags", $author_id);
 
-            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id))
+            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id) == "")
                 $options["footer-display"] = "on";
             else
                 $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "vote", $author_id))
+            if (get_the_author_meta($this->plugin_name . "vote", $author_id) == "")
                 $options["vote"] = "on";
             else
                 $options["vote"] = get_the_author_meta($this->plugin_name . "vote", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "append", $author_id))
+            if (get_the_author_meta($this->plugin_name . "append", $author_id) == "")
                 $options["append"] = "off";
             else
                 $options["append"] = get_the_author_meta($this->plugin_name . "append", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "delay", $author_id))
+            if (get_the_author_meta($this->plugin_name . "delay", $author_id) == "")
                 $options["delay"] = "0";
             else
                 $options["delay"] = get_the_author_meta($this->plugin_name . "delay", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "featured", $author_id))
+            if (get_the_author_meta($this->plugin_name . "featured", $author_id) == "")
                 $options["featured"] = "on";
             else
                 $options["featured"] = get_the_author_meta($this->plugin_name . "featured", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "footer", $author_id))
+            if (get_the_author_meta($this->plugin_name . "footer", $author_id) == "")
                 $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
             else
                 $options["footer"] = get_the_author_meta($this->plugin_name . "footer", $author_id);
 
 
-            if (get_the_author_meta($this->plugin_name . "update", $author_id))
+            if (get_the_author_meta($this->plugin_name . "update", $author_id) == "")
                 $options["update"] = "on";
             else
                 $options["update"] = get_the_author_meta($this->plugin_name . "update", $author_id);
 
-            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id))
+            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id) == "")
                 $options["wordlimit"] = "0";
             else
                 $options["wordlimit"] = get_the_author_meta($this->plugin_name . "wordlimit", $author_id);
@@ -784,14 +784,20 @@ class Steempress_sp_Admin {
                 return;
 
 
+
             $options = $this->steempress_sp_get_options($post);
 
             if ($options["update"] == "on" || $bulk) {
+
+
+
 
                 $username = $options["username"];
                 $posting_key = $options["posting-key"];
 
                 $wp_tags = wp_get_post_tags($post_id);
+
+
 
                 if (sizeof($wp_tags) != 0) {
 
@@ -853,11 +859,6 @@ class Steempress_sp_Admin {
                     "reward" => $options['reward']
                 ));
 
-
-                // A few local verifications as to not overload the server with useless txs
-
-                $test = $data['body'];
-                if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                     // Post to the api who will update it on the steem blockchain.
                     $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
@@ -867,8 +868,6 @@ class Steempress_sp_Admin {
                         else
                             return -1;
                     }
-                } else
-                    return -1;
             } else
                 return -2;
         } else

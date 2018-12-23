@@ -227,7 +227,7 @@ class Steempress_sp_Admin {
 
         $post = get_post($id);
 
-        $options = steempress_sp_get_options($post);
+        $options = $this->steempress_sp_get_options($post);
 
         $error = [];
 
@@ -323,7 +323,7 @@ class Steempress_sp_Admin {
     public function steempress_sp_bulk_update_action($bulk_actions) {
 
 
-        $options = steempress_sp_get_options();
+        $options = $this->steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -478,7 +478,7 @@ class Steempress_sp_Admin {
         if (get_post_status ($post_id) != 'publish')
             return;
 
-        $options = steempress_sp_get_options();
+        $options = $this->steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -566,7 +566,7 @@ class Steempress_sp_Admin {
 
         } else {
 
-            $options = steempress_sp_get_options($post);
+            $options = $this->steempress_sp_get_options($post);
 
 
             if (!isset($options["update"]))
@@ -639,8 +639,8 @@ class Steempress_sp_Admin {
     }
 
 
-    function steempress_sp_get_options($post) {
-        if (isset($post))
+    function steempress_sp_get_options($post = []) {
+        if ($post == [])
             $author_id = $post->post_author;
         else
             $author_id = get_current_user_id();
@@ -782,7 +782,7 @@ class Steempress_sp_Admin {
                 return;
 
 
-            $options = steempress_sp_get_options($post);
+            $options = $this->steempress_sp_get_options($post);
 
             if ($options["update"] == "on" || $bulk) {
 

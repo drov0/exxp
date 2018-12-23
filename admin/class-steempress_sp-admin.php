@@ -783,15 +783,9 @@ class Steempress_sp_Admin {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
 
-
-
             $options = $this->steempress_sp_get_options($post);
 
             if ($options["update"] == "on" || $bulk) {
-
-
-
-
                 $username = $options["username"];
                 $posting_key = $options["posting-key"];
 

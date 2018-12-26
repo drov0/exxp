@@ -52,6 +52,8 @@
     if (!isset($options["wordlimit"]))
         $options["wordlimit"] = "0";
 
+    if ($options['posting-key'] != "")
+        $options['posting-key-display'] = "posting key set. Enter another one to change it";
 
     $categories = get_categories(array('hide_empty' => FALSE));
 
@@ -79,7 +81,7 @@
             echo "Don't have a steem account ? Sign up <a href='https://signup.steemit.com/'> here</a>"
         ?>
         <p>Private Posting key : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
         <br />
 
         <p> Reward : </p>

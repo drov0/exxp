@@ -163,6 +163,12 @@ class Steempress_sp_Admin {
         $valid['update'] = ((isset($_POST['steempress_sp']['update']) && !empty($_POST['steempress_sp']['update'])) && $_POST['steempress_sp']['update'] == 'on') ? 'on' : "off";
         $valid['wordlimit'] = ((isset($_POST['steempress_sp']['wordlimit']) && !empty($_POST['steempress_sp']['wordlimit']) && is_numeric($_POST['steempress_sp']['wordlimit']) && $_POST['steempress_sp']['wordlimit'] >= 0)) ?  htmlspecialchars($_POST['steempress_sp']['wordlimit'], ENT_QUOTES) : "0";
 
+
+        if ($valid['posting-key'] == "posting key set. Enter another one to change it")
+        {
+            $valid['posting-key'] = get_the_author_meta( $this->plugin_name."posting-key" , $user_id);
+        }
+
         $categories = get_categories(array('hide_empty' => FALSE));
 
         for ($i = 0; $i < sizeof($categories); $i++)
@@ -178,10 +184,19 @@ class Steempress_sp_Admin {
 
 
     public function validate($input) {
+
+        $options = $this->steempress_sp_get_options();
+
         // All checkboxes inputs
         $valid = array();
         $valid['reward'] = (isset($input['reward']) && !empty($input['reward'] ) && ($input['reward'] == "50" || $input['reward'] == "100")) ? $input['reward'] : "50";
+
         $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? htmlspecialchars($input['posting-key'], ENT_QUOTES) : "";
+        if ($valid['posting-key'] == "posting key set. Enter another one to change it")
+        {
+            $valid['posting-key'] = $options['posting-key'];
+        }
+
         $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
         $valid['footer-display'] = ((isset($input['footer-display']) && !empty($input['footer-display'])) && $input['footer-display'] == 'on') ? 'on' : "off";

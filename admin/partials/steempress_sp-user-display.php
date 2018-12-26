@@ -82,6 +82,10 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
     else
         $options["wordlimit"] = get_the_author_meta( $this->plugin_name."wordlimit" , $user->ID);
 
+
+    if ($options['posting-key'] != "")
+        $options['posting-key-display'] = "posting key set. Enter another one to change it";
+
     $categories = get_categories(array('hide_empty' => FALSE));
 
     for ($i = 0; $i < sizeof($categories); $i++)
@@ -106,7 +110,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) ) {
             echo "Don't have a steem account ? Sign up <a href='https://steemit.com/pick_account'> here</a>"
         ?>
         <p>Private Posting key : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
         <br />
 
         <p> Reward : </p>

@@ -31,10 +31,6 @@
         $options["reward"] = "50";
     if (!isset($options["tags"]))
         $options["tags"] = "";
-    if (!isset($options["tags"]))
-        $options["tags"] = "";
-    if (!isset($options["tags"]))
-        $options["tags"] = "";
     if (!isset($options["footer-display"]))
         $options["footer-display"] = "on";
     if (!isset($options["vote"]))
@@ -57,16 +53,7 @@
         $options["wordlimit"] = "0";
 
 
-    $users = get_users();
     $categories = get_categories(array('hide_empty' => FALSE));
-
-    for ($i = 0; $i < sizeof($users); $i++) {
-        if (!isset($options['username'.$users[$i]->data->ID]))
-            $options['username'.$users[$i]->data->ID] = "";
-        if (!isset($options['posting-key'.$users[$i]->data->ID]))
-            $options['posting-key'.$users[$i]->data->ID] = "";
-    }
-
 
     for ($i = 0; $i < sizeof($categories); $i++)
     {
@@ -89,7 +76,7 @@
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "")
-            echo "Don't have a steem account ? Sign up <a href='https://steemit.com/pick_account'> here</a>"
+            echo "Don't have a steem account ? Sign up <a href='https://signup.steemit.com/'> here</a>"
         ?>
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key"], ENT_QUOTES); ?>"/>
@@ -199,47 +186,8 @@
                       echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
             else if ($text == "wif ok")
                 echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> ";
-
-            echo "<br/>";
-            echo "<br/>";
-            for ($i = 0; $i < sizeof($users); $i++)
-            {
-                if ($options['username'.$users[$i]->data->ID] != "" && $options['posting-key'.$users[$i]->data->ID] != "")
-                {
-                    echo "Name : ".$users[$i]->data->display_name."<br/>";
-                    echo "Role : ".$users[$i]->roles[0]."<br/>";
-                    $data = array("body" => array("author" => $options['username'.$users[$i]->data->ID], "wif" => $options['posting-key'.$users[$i]->data->ID], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
-                    $result = wp_remote_post(steempress_sp_api_url."/test", $data);
-                    $text = $result['body'];
-                    if ($text == "ok")
-                        echo "Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?<br/>";
-                    else if ($text == "wif ok")
-                        echo "username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
-
-                    echo "<br/>";
-                }
-            }
-
         }
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
         ?> </p>
 </div>
-
-
-<script>
-    var coll = document.getElementsByClassName("steempress_sp_collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.maxHeight){
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    }
-</script>

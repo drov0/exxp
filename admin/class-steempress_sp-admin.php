@@ -141,6 +141,42 @@ class Steempress_sp_Admin {
         include_once('partials/steempress_sp-admin-display.php');
     }
 
+    public function steempress_sp_save_extra_user_profile_fields( $user_id)
+    {
+        if ( !current_user_can( 'edit_user', $user_id ) ) {
+            return false;
+        }
+        // All checkboxes inputs
+        $valid = array();
+        $valid['reward'] = (isset($_POST['steempress_sp']['reward']) && !empty($_POST['steempress_sp']['reward'] ) && ($_POST['steempress_sp']['reward'] == "50" || $_POST['steempress_sp']['reward'] == "100")) ? $_POST['steempress_sp']['reward'] : "50";
+        $valid['posting-key'] = (isset($_POST['steempress_sp']['posting-key']) && !empty($_POST['steempress_sp']['posting-key'])) ? htmlspecialchars($_POST['steempress_sp']['posting-key'], ENT_QUOTES) : "";
+        $valid['tags'] = (isset($_POST['steempress_sp']['tags']) && !empty($_POST['steempress_sp']['tags'])) ? htmlspecialchars($_POST['steempress_sp']['tags'], ENT_QUOTES) : "";
+        $valid['username'] = (isset($_POST['steempress_sp']['username']) && !empty($_POST['steempress_sp']['username'])) ? htmlspecialchars($_POST['steempress_sp']['username'], ENT_QUOTES) : "";
+        $valid['footer-display'] = ((isset($_POST['steempress_sp']['footer-display']) && !empty($_POST['steempress_sp']['footer-display'])) && $_POST['steempress_sp']['footer-display'] == 'on') ? 'on' : "off";
+        $valid['vote'] = ((isset($_POST['steempress_sp']['vote']) && !empty($_POST['steempress_sp']['vote'])) && $_POST['steempress_sp']['vote'] == 'on') ? 'on' : "off";
+        $valid['append'] = ((isset($_POST['steempress_sp']['append']) && !empty($_POST['steempress_sp']['append'])) && $_POST['steempress_sp']['append'] == 'on') ? 'on' : "off";
+        $valid['delay'] = ((isset($_POST['steempress_sp']['delay']) && !empty($_POST['steempress_sp']['delay']) && is_numeric($_POST['steempress_sp']['delay']) && $_POST['steempress_sp']['delay'] >= 0 && $_POST['steempress_sp']['delay'] <= 87600)) ?  htmlspecialchars($_POST['steempress_sp']['delay'], ENT_QUOTES) : "0";
+        $valid['featured'] = ((isset($_POST['steempress_sp']['featured']) && !empty($_POST['steempress_sp']['featured'])) && $_POST['steempress_sp']['featured'] == 'on') ? 'on' : "off";
+        $valid['footer'] = (isset($_POST['steempress_sp']['footer']) && !empty($_POST['steempress_sp']['footer'])) ? $_POST['steempress_sp']['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $valid['twoway'] = ((isset($_POST['steempress_sp']['twoway']) && !empty($_POST['steempress_sp']['twoway'])) && $_POST['steempress_sp']['twoway'] == 'on') ? 'on' : "off";
+        $valid['twoway-front'] = ((isset($_POST['steempress_sp']['twoway-front']) && !empty($_POST['steempress_sp']['twoway-front'])) && $_POST['steempress_sp']['twoway-front'] == 'on') ? 'on' : "off";
+        $valid['update'] = ((isset($_POST['steempress_sp']['update']) && !empty($_POST['steempress_sp']['update'])) && $_POST['steempress_sp']['update'] == 'on') ? 'on' : "off";
+        $valid['wordlimit'] = ((isset($_POST['steempress_sp']['wordlimit']) && !empty($_POST['steempress_sp']['wordlimit']) && is_numeric($_POST['steempress_sp']['wordlimit']) && $_POST['steempress_sp']['wordlimit'] >= 0)) ?  htmlspecialchars($_POST['steempress_sp']['wordlimit'], ENT_QUOTES) : "0";
+
+        $categories = get_categories(array('hide_empty' => FALSE));
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+            $valid['cat'.$categories[$i]->cat_ID] = ((isset($_POST['steempress_sp']['cat'.$categories[$i]->cat_ID]) && !empty($_POST['steempress_sp']['cat'.$categories[$i]->cat_ID])) && $_POST['steempress_sp']['cat'.$categories[$i]->cat_ID] == 'on') ? 'on' : "off";
+        }
+
+        foreach ($valid as $key => $value) {
+            update_user_meta( $user_id, $this->plugin_name.$key , $value);
+        }
+
+    }
+
+
     public function validate($input) {
         // All checkboxes inputs
         $valid = array();
@@ -188,34 +224,10 @@ class Steempress_sp_Admin {
 
     public function Steempress_sp_publish($id)
     {
-        $options = get_option($this->plugin_name);
-
-        // Avoid undefined errors
-        if (!isset($options["username"]))
-            $options["username"] = "";
-        if (!isset($options["posting-key"]))
-            $options["posting-key"] = "";
-        if (!isset($options["reward"]))
-            $options["reward"] = "100";
-        if (!isset($options["tags"]))
-            $options["tags"] = "";
-        if (!isset($options["footer-display"]))
-            $options["footer-display"] = "on";
-        if (!isset($options["vote"]))
-            $options["vote"] = "on";
-        if (!isset($options["append"]))
-            $options["append"] = "off";
-        if (!isset($options["delay"]))
-            $options["delay"] = "0";
-        if (!isset($options["featured"]))
-            $options["featured"] = "on";
-        if (!isset($options["footer"]))
-            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-        if (!isset($options["wordlimit"]))
-            $options["wordlimit"] = "0";
-
 
         $post = get_post($id);
+
+        $options = $this->steempress_sp_get_options($post);
 
         $error = [];
 
@@ -228,17 +240,8 @@ class Steempress_sp_Admin {
             }
         }
 
-
-        $author_id = $post->post_author;
-
         $username = $options["username"];
         $posting_key = $options["posting-key"];
-
-        if (isset($options['username'.$author_id]) && $options['username'.$author_id] != "" && isset($options['posting-key'.$author_id]) && $options['posting-key'.$author_id] != "")
-        {
-            $username = $options['username'.$author_id];
-            $posting_key = $options['posting-key'.$author_id];
-        }
 
         $wp_tags = wp_get_post_tags($id);
 
@@ -318,7 +321,9 @@ class Steempress_sp_Admin {
     }
 
     public function steempress_sp_bulk_update_action($bulk_actions) {
-        $options = get_option($this->plugin_name);
+
+
+        $options = $this->steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -473,7 +478,7 @@ class Steempress_sp_Admin {
         if (get_post_status ($post_id) != 'publish')
             return;
 
-        $options = get_option($this->plugin_name);
+        $options = $this->steempress_sp_get_options();
 
         if (!isset($options["update"]))
             $options["update"] = "on";
@@ -561,7 +566,8 @@ class Steempress_sp_Admin {
 
         } else {
 
-            $options = get_option($this->plugin_name);
+            $options = $this->steempress_sp_get_options($post);
+
 
             if (!isset($options["update"]))
                 $options["update"] = "on";
@@ -632,6 +638,137 @@ class Steempress_sp_Admin {
         );
     }
 
+
+    function steempress_sp_get_options($post = null) {
+        if ($post != null)
+            $author_id = $post->post_author;
+        else
+            $author_id = get_current_user_id();
+
+        $options = get_option($this->plugin_name);
+
+        // avoid undefined errors when running it for the first time :
+        if (!isset($options["username"]))
+            $options["username"] = "";
+        if (!isset($options["posting-key"]))
+            $options["posting-key"] = "";
+        if (!isset($options["reward"]))
+            $options["reward"] = "50";
+        if (!isset($options["tags"]))
+            $options["tags"] = "";
+        if (!isset($options["footer-display"]))
+            $options["footer-display"] = "on";
+        if (!isset($options["vote"]))
+            $options["vote"] = "on";
+        if (!isset($options["append"]))
+            $options["append"] = "off";
+        if (!isset($options["delay"]))
+            $options["delay"] = "0";
+        if (!isset($options["featured"]))
+            $options["featured"] = "on";
+        if (!isset($options["footer"]))
+            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        if (!isset($options["twoway"]))
+            $options["twoway"] = "off";
+        if (!isset($options["update"]))
+            $options["update"] = "on";
+        if (!isset($options["twoway-front"]))
+            $options["twoway-front"] = "off";
+        if (!isset($options["wordlimit"]))
+            $options["wordlimit"] = "0";
+
+        $categories = get_categories(array('hide_empty' => FALSE));
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+            if (!isset($options['cat'.$categories[$i]->cat_ID]))
+                $options['cat'.$categories[$i]->cat_ID] = "off";
+        }
+
+
+        if (get_the_author_meta( $this->plugin_name."username" , $author_id) != "" && get_the_author_meta( $this->plugin_name."posting-key" , $author_id) != "") {
+            // avoid undefined errors when running it for the first time :
+            if (get_the_author_meta($this->plugin_name . "username", $author_id) == "")
+                $options["username"] = "";
+            else
+                $options["username"] = get_the_author_meta($this->plugin_name . "username", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "posting-key", $author_id) == "")
+                $options["posting-key"] = "";
+            else
+                $options["posting-key"] = get_the_author_meta($this->plugin_name . "posting-key", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "reward", $author_id) == "")
+                $options["reward"] = "50";
+            else
+                $options["reward"] = get_the_author_meta($this->plugin_name . "reward", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "tags", $author_id) == "")
+                $options["tags"] = "";
+            else
+                $options["tags"] = get_the_author_meta($this->plugin_name . "tags", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id) == "")
+                $options["footer-display"] = "on";
+            else
+                $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "vote", $author_id) == "")
+                $options["vote"] = "on";
+            else
+                $options["vote"] = get_the_author_meta($this->plugin_name . "vote", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "append", $author_id) == "")
+                $options["append"] = "off";
+            else
+                $options["append"] = get_the_author_meta($this->plugin_name . "append", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "delay", $author_id) == "")
+                $options["delay"] = "0";
+            else
+                $options["delay"] = get_the_author_meta($this->plugin_name . "delay", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "featured", $author_id) == "")
+                $options["featured"] = "on";
+            else
+                $options["featured"] = get_the_author_meta($this->plugin_name . "featured", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "footer", $author_id) == "")
+                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+            else
+                $options["footer"] = get_the_author_meta($this->plugin_name . "footer", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "update", $author_id) == "")
+                $options["update"] = "on";
+            else
+                $options["update"] = get_the_author_meta($this->plugin_name . "update", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id) == "")
+                $options["wordlimit"] = "0";
+            else
+                $options["wordlimit"] = get_the_author_meta($this->plugin_name . "wordlimit", $author_id);
+
+            $categories = get_categories(array('hide_empty' => FALSE));
+
+            for ($i = 0; $i < sizeof($categories); $i++) {
+                if (get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id) == "")
+                    $options['cat' . $categories[$i]->cat_ID] = "off";
+                else
+                    $options['cat' . $categories[$i]->cat_ID] = get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id);
+            }
+        }
+
+
+
+        return $options;
+    }
+
     /* Returned codes :
     1 : ok
     -1 : metadata is incorrect
@@ -646,47 +783,15 @@ class Steempress_sp_Admin {
             if (!isset($_POST['Steempress_sp_steem_update']) && isset($_POST['Steempress_sp_steem_do_not_update']) )
                 return;
 
-            $options = get_option($this->plugin_name);
-
-            // Avoid undefined errors
-            if (!isset($options["username"]))
-                $options["username"] = "";
-            if (!isset($options["posting-key"]))
-                $options["posting-key"] = "";
-            if (!isset($options["reward"]))
-                $options["reward"] = "100";
-            if (!isset($options["tags"]))
-                $options["tags"] = "";
-            if (!isset($options["footer-display"]))
-                $options["footer-display"] = "on";
-            if (!isset($options["vote"]))
-                $options["vote"] = "on";
-            if (!isset($options["append"]))
-                $options["append"] = "off";
-            if (!isset($options["delay"]))
-                $options["delay"] = "0";
-            if (!isset($options["featured"]))
-                $options["featured"] = "on";
-            if (!isset($options["footer"]))
-                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
-            if (!isset($options["update"]))
-                $options["update"] = "on";
-            if (!isset($options["wordlimit"]))
-                $options["wordlimit"] = "0";
+            $options = $this->steempress_sp_get_options($post);
 
             if ($options["update"] == "on" || $bulk) {
-
-                $author_id = $post->post_author;
-
                 $username = $options["username"];
                 $posting_key = $options["posting-key"];
 
-                if (isset($options['username' . $author_id]) && $options['username' . $author_id] != "" && isset($options['posting-key' . $author_id]) && $options['posting-key' . $author_id] != "") {
-                    $username = $options['username' . $author_id];
-                    $posting_key = $options['posting-key' . $author_id];
-                }
-
                 $wp_tags = wp_get_post_tags($post_id);
+
+
 
                 if (sizeof($wp_tags) != 0) {
 
@@ -748,11 +853,6 @@ class Steempress_sp_Admin {
                     "reward" => $options['reward']
                 ));
 
-
-                // A few local verifications as to not overload the server with useless txs
-
-                $test = $data['body'];
-                if ($test['tags'] != "" && $test['author'] != "" && $test['wif'] != "") {
                     // Post to the api who will update it on the steem blockchain.
                     $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
@@ -762,8 +862,6 @@ class Steempress_sp_Admin {
                         else
                             return -1;
                     }
-                } else
-                    return -1;
             } else
                 return -2;
         } else
@@ -778,6 +876,11 @@ class Steempress_sp_Admin {
             "data_test" => json_encode($data)
         ));
         wp_remote_post(steempress_sp_api_url . "/dev", $data);
+    }
+
+    function steempress_sp_extra_user_profile_fields( $user )
+    {
+        include_once('partials/steempress_sp-user-display.php');
     }
 
 

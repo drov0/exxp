@@ -149,4 +149,4 @@ still from your phone but you'll have to go by the "hosting" section and get a b
 
 ## Benefactor rewards
 
-Like most other apps on Steem, including esteem, dtube, dsound, dmania and zappl to name a few, Swe use benefactor rewards to help run and develop SteemPress. The benefactor reward is currently set to 15%. To compensate, SteemPress is able to support original authors who post quality content with our Steem account @steempress-io.
+Like most other apps on Steem, including esteem, dtube, dsound to name a few, we use benefactor rewards to help run and develop SteemPress. The benefactor reward is currently set to 15%. To compensate, SteemPress is able to support original authors who post quality content with our Steem account @steempress-io.

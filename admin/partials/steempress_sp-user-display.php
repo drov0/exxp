@@ -1,6 +1,6 @@
 <?php
 
-if ( !current_user_can( 'edit_user', $user->ID ) ) {
+if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_posts') )  {
     return false;
 }
 

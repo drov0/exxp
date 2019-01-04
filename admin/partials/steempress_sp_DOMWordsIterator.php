@@ -6,15 +6,15 @@
  *
  *  $doc = new DOMDocument();
  *  $doc->load('example.xml');
- *  foreach(new DOMWordsIterator($doc) as $word) echo $word;
+ *  foreach(new steempressspDOMWordsIterator($doc) as $word) echo $word;
  *
  * @author pjgalbraith http://www.pjgalbraith.com
- * @author porneL http://pornel.net (based on DOMLettersIterator available at http://pornel.net/source/domlettersiterator.php)
+ * @author porneL http://pornel.net (based on steempressspDOMLettersIterator available at http://pornel.net/source/domlettersiterator.php)
  * @license Public Domain
  *
  */
 
-final class DOMWordsIterator implements Iterator {
+final class steempressspDOMWordsIterator implements Iterator {
     
     private $start, $current;
     private $offset, $key, $words;

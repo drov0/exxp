@@ -8,7 +8,7 @@
  *
  *  $doc = new DOMDocument();
  *  $doc->load('example.xml');
- *  foreach(new DOMLettersIterator($doc) as $letter) echo $letter;
+ *  foreach(new steempressspDOMLettersIterator($doc) as $letter) echo $letter;
  *
  * NB: If you only need characters without their position
  *     in the document, use DOMNode->textContent instead.
@@ -17,7 +17,7 @@
  * @license Public Domain
  *
  */
-final class DOMLettersIterator implements Iterator
+final class steempressspDOMLettersIterator implements Iterator
 {
     private $start, $current;
     private $offset, $key, $letters;

@@ -19,9 +19,9 @@
  * @subpackage Steempress_sp/admin
  */
 
-require('partials/domlettersiterator.php');
-require('partials/DOMWordsIterator.php');
-require('partials/TruncateHTML.php');
+require('partials/steempress_sp_DOMLettersIterator.php');
+require('partials/steempress_sp_DOMWordsIterator.php');
+require('partials/steempress_sp_TruncateHTML.php');
 
 class Steempress_sp_Admin {
 
@@ -303,7 +303,7 @@ class Steempress_sp_Admin {
 
         if ($options['wordlimit'] != "0") {
             $limit = intval($options["wordlimit"]);
-            $content = TruncateHTML::truncateWords($content, $limit, '');
+            $content = steempressspTruncateHTML::truncateWords($content, $limit, '');
         }
 
         $data = array("body" => array(
@@ -849,7 +849,7 @@ class Steempress_sp_Admin {
 
                 if ($options['wordlimit'] != "0") {
                     $limit = intval($options["wordlimit"]);
-                    $content = TruncateHTML::truncateWords($content, $limit, '');
+                    $content = steempressspTruncateHTML::truncateWords($content, $limit, '');
                 }
 
                 $data = array("body" => array(

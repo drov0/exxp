@@ -110,31 +110,9 @@
 
         <p> Footer text : <br>  the tag [%original_link%] will be replaced by the link of the article on your blog. </p>
         <br/>
-        <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
+        <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?></textarea>
         <br />
 
-
-        <button class="steempress_sp_collapsible" type="button">Define more users</button>
-        <div class="steempress_sp_content">
-            <br/>
-            If user x publishes a post and you have set his username/private key, it will get posted on his account instead of the default one.
-        <br />
-        <br />
-        <?php
-
-        for ($i = 0; $i < sizeof($users); $i++)
-        {
-            echo "Name : ".$users[$i]->data->display_name."<br/>";
-            echo "Role : ".$users[$i]->roles[0]."<br/>";
-
-            echo '<p> Steem username :</p>';
-            echo '<input type="text" class="regular-text" id="'.$this->plugin_name.'-username-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[username'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["username".$users[$i]->data->ID], ENT_QUOTES).'"/><br />';
-            echo '<p>Private Posting key : </p> <input type="text" class="regular-text" id="'.$this->plugin_name.'-posting-key-'.$users[$i]->data->ID.'" name="'.$this->plugin_name.'[posting-key'.$users[$i]->data->ID.']" value="'.htmlspecialchars($options["posting-key".$users[$i]->data->ID], ENT_QUOTES).'"/><br/><br/>';
-        }
-
-
-        ?>
-        </div>
         <br/>
         Category filter : <br/>
         Check the categories that you want steempress to ignore.<br/>

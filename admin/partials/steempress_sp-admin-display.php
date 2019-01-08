@@ -148,11 +148,13 @@
 
         $version = steempress_sp_compte;
 
-        $pos = strrpos(steempress_sp_compte, ".");
+        $pos = explode(".", $version);
 
-        if($pos !== false)
-            $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
-
+        if(sizeof($pos) > 2)
+        {
+            $pos = strrpos($version, ".");
+            $version = substr_replace($version, "", $pos, strlen("."));
+        }
         $version = ((float)$version)*100;
 
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));

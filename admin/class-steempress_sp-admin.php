@@ -423,7 +423,11 @@ class Steempress_sp_Admin {
     }
 
     function steempress_sp_future_post( $post_id ) {
-        $this->Steempress_sp_publish($post_id);
+
+        // See if the publish to steem checkbox is checked.
+        $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
+        if ($value != "0")
+            $this->Steempress_sp_publish($post_id);
     }
 
     public function steempress_sp_post($new_status, $old_status, $post)

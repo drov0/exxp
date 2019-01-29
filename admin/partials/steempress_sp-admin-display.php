@@ -187,13 +187,27 @@
 
         // Post to the api who will publish it on the steem blockchain.
         $result = wp_remote_post(steempress_sp_api_url."/test", $data);
+
+
         if (is_array($result) or ($result instanceof Traversable)) {
             echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
+
+            var_dump($text);
+
             if ($text == "ok")
-                      echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
-            else if ($text == "wif ok")
-                echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> ";
+                echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
+            else if ($text == "wif ok" || is_numeric($text) || $text == "noexist" || $text == "expired") {
+                echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
+
+                if (is_numeric($text))
+                    echo "Steempress premium : <b style='color: darkgreen'>Ok</b> Expiration date : ".date('d/m/Y H:i', $text);
+                else if ($text == "noexist")
+                    echo "Steempress premium : <b style='color: red'>License key not found</b>";
+                else if ($text == "expired")
+                    echo "Steempress premium : <b style='color: red'>Your premium package has expired please renew it at <a href='#'>https://premium.steempress.io</a></b>";
+
+            }
         }
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";

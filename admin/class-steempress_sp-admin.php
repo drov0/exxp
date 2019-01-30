@@ -322,7 +322,8 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
-            "error" => json_encode($error)
+            "error" => json_encode($error),
+            "license" => $options['license']
         ));
 
 
@@ -696,6 +697,8 @@ class Steempress_sp_Admin {
             $options["twoway-front"] = "off";
         if (!isset($options["wordlimit"]))
             $options["wordlimit"] = "0";
+        if (!isset($options["license-key"]))
+            $options["license-key"] = "";
 
         $categories = get_categories(array('hide_empty' => FALSE));
 

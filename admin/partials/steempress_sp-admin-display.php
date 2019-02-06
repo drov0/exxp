@@ -193,8 +193,6 @@
             echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
 
-            var_dump($text);
-
             if ($text == "ok")
                 echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
             else if ($text == "wif ok" || is_numeric($text) || $text == "noexist" || $text == "expired") {

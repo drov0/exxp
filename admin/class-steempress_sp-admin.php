@@ -323,7 +323,7 @@ class Steempress_sp_Admin {
             "version" =>  $version,
             "footer" =>$options['footer'],
             "error" => json_encode($error),
-            "license" => $options['license']
+            "license" => $options['license-key']
         ));
 
 

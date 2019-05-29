@@ -34,10 +34,11 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'steempress_sp_compte', '2.3.1');
 define( 'steempress_sp_api_url', 'https://api.steempress.io');
-define( 'steempress_sp_twoway_api_url', 'https://two.steempress.io');
+//define( 'steempress_sp_twoway_api_url', 'https://two.steempress.io');
 
 //define( 'steempress_sp_api_url', 'http://localhost:8001');
-//define( 'steempress_sp_twoway_api_url', 'http://localhost:8002');
+//define( 'steempress_sp_twoway_api_url', 'http://demo.steempress.io');
+define( 'steempress_sp_twoway_api_url', 'http://localhost:3000');
 
 /**
  * The code that runs during plugin activation.

@@ -17,6 +17,7 @@
 
 <div class="wrap">
     <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
+
     <?php
 
     //Grab all options
@@ -51,6 +52,8 @@
         $options["twoway-front"] = "off";
     if (!isset($options["wordlimit"]))
         $options["wordlimit"] = "0";
+    if (!isset($options["license-key"]))
+        $options["license-key"] = "";
 
     if ($options['posting-key'] != "")
         $options['posting-key-display'] = "posting key set. Enter another one to change it";
@@ -64,13 +67,27 @@
     }
 
     ?>
-
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
 
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
         <!-- remove some meta and generators from the <head> -->
+
+
+        <div style="float: right; margin-right: 40%; margin-top: -5%">
+
+
+            <h2><a href="#">Go pro </a></h2>
+
+            <label for="<?php echo $this->plugin_name; ?>-license-key">License key :</label> <br/><br/>
+            <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-license-key" name="<?php echo $this->plugin_name; ?>[license-key]" value="<?php echo htmlspecialchars($options["license-key"], ENT_QUOTES); ?>"/>
+
+
+
+
+        </div>
+
 
         <p>Default steem account : </p>
         <p>Steem Username : </p>
@@ -137,8 +154,9 @@
         <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
         <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
         <br />
-        <?php
 
+
+        <?php
 
         submit_button('Save all changes', 'primary','submit', TRUE); ?>
 
@@ -157,17 +175,37 @@
         }
         $version = ((float)$version)*100;
 
-        $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
+        $data = array("body" => array(
+                "author" => $options['username'],
+            "wif" => $options['posting-key'],
+            "vote" => $options['vote'],
+            "reward" => $options['reward'],
+            "version" =>  $version,
+            "footer" => $options['footer'],
+            "license" => $options['license-key']
+        ));
 
         // Post to the api who will publish it on the steem blockchain.
         $result = wp_remote_post(steempress_sp_api_url."/test", $data);
+
+
         if (is_array($result) or ($result instanceof Traversable)) {
             echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
+
             if ($text == "ok")
-                      echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
-            else if ($text == "wif ok")
-                echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> ";
+                echo "Default Username/posting key  : <b style='color: red'> Wrong</b> <br/> Are you sure you used the private posting key and not the public posting key or password ?";
+            else if ($text == "wif ok" || is_numeric($text) || $text == "noexist" || $text == "expired") {
+                echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
+
+                if (is_numeric($text))
+                    echo "Steempress premium : <b style='color: darkgreen'>Ok</b> Expiration date : ".date('d/m/Y H:i', $text);
+                else if ($text == "noexist")
+                    echo "Steempress premium : <b style='color: red'>License key not found</b>";
+                else if ($text == "expired")
+                    echo "Steempress premium : <b style='color: red'>Your premium package has expired please renew it at <a href='#'>https://premium.steempress.io</a></b>";
+
+            }
         }
         else
             echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";

@@ -209,6 +209,7 @@ class Steempress_sp_Admin {
         $valid['twoway-front'] = ((isset($input['twoway-front']) && !empty($input['twoway-front'])) && $input['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";
         $valid['wordlimit'] = ((isset($input['wordlimit']) && !empty($input['wordlimit']) && is_numeric($input['wordlimit']) && $input['wordlimit'] >= 0)) ?  htmlspecialchars($input['wordlimit'], ENT_QUOTES) : "0";
+        $valid['license-key'] = (isset($input['license-key']) && !empty($input['license-key'])) ? htmlspecialchars($input['license-key'], ENT_QUOTES) : "";
 
         $users = get_users();
 
@@ -321,7 +322,8 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
-            "error" => json_encode($error)
+            "error" => json_encode($error),
+            "license" => $options['license-key']
         ));
 
 
@@ -695,6 +697,8 @@ class Steempress_sp_Admin {
             $options["twoway-front"] = "off";
         if (!isset($options["wordlimit"]))
             $options["wordlimit"] = "0";
+        if (!isset($options["license-key"]))
+            $options["license-key"] = "";
 
         $categories = get_categories(array('hide_empty' => FALSE));
 
@@ -809,8 +813,6 @@ class Steempress_sp_Admin {
                 $posting_key = $options["posting-key"];
 
                 $wp_tags = wp_get_post_tags($post_id);
-
-
 
                 if (sizeof($wp_tags) != 0) {
 

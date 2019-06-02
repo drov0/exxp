@@ -78,13 +78,10 @@
         <div style="float: right; margin-right: 40%; margin-top: -5%">
 
 
-            <h2><a href="#">Go pro </a></h2>
-
+            <!--<h2><a href="#">Go pro</a></h2>-->
+            <p> This is a placeholder for a future feature.</p>
             <label for="<?php echo $this->plugin_name; ?>-license-key">License key :</label> <br/><br/>
             <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-license-key" name="<?php echo $this->plugin_name; ?>[license-key]" value="<?php echo htmlspecialchars($options["license-key"], ENT_QUOTES); ?>"/>
-
-
-
 
         </div>
 

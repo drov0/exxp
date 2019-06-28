@@ -179,7 +179,8 @@
             "reward" => $options['reward'],
             "version" =>  $version,
             "footer" => $options['footer'],
-            "license" => $options['license-key']
+            "license" => $options['license-key'],
+            "domain" => get_site_url()
         ));
 
         // Post to the api who will publish it on the steem blockchain.

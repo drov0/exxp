@@ -6,7 +6,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
 ?>
 
-<div class="wrap">
+<label class="wrap">
 
 
     <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
@@ -134,12 +134,12 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     <br />
     <br />
 
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-append-tags" name="<?php echo $this->plugin_name; ?>[append]"  <?php echo $options['append'] == "off" ? '' : 'checked="checked"' ?>> Always add the default tags before the post tags. (For instance if the post tags are "life travel" and your default tag is "french", the tags used on the post will be "french life travel") <br/>
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-display" name="<?php echo $this->plugin_name; ?>[footer-display]"  <?php echo $options['footer-display'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the end of the article.<br>
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-top" name="<?php echo $this->plugin_name; ?>[footer-top]"  <?php echo $options['footer-top'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the top of the article.<br>
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>> Add featured images on top of the steem post.<br>
-    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>> Update the steem post when updating on wordpress.<br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-append-tags" name="<?php echo $this->plugin_name; ?>[append]"  <?php echo $options['append'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-append-tags"> Always add the default tags before the post tags. (For instance if the post tags are "life travel" and your default tag is "french", the tags used on the post will be "french life travel") </label><br/>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-vote"> Self vote </label><br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-display" name="<?php echo $this->plugin_name; ?>[footer-display]"  <?php echo $options['footer-display'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-footer-display"> Add the footer text to the end of the article. </label><br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-top" name="<?php echo $this->plugin_name; ?>[footer-top]"  <?php echo $options['footer-top'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-footer-top"> Add the footer text to the top of the article.</label><br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-featured"> Add featured images on top of the steem post.</label><br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>> <label for="<?php echo $this->plugin_name; ?>-update">Update the steem post when updating on wordpress.</label><br>
 
     <br/>
 

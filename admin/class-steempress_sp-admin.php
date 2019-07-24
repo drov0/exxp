@@ -325,7 +325,7 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
-            "footer-top" =>$options['footer-top'],
+            "footer_top" =>$options['footer-top'],
             "error" => json_encode($error),
             "license" => $options['license-key'],
         ));
@@ -878,7 +878,7 @@ class Steempress_sp_Admin {
                     "original_link" => $link,
                     "wordpress_id" => $post_id,
                     "display_backlink" => $display_backlink,
-                    "footer-top" => $options['footer-top'],
+                    "footerTop" => $options['footer-top'],
                     "version" => $version,
                     "footer" => $options['footer'],
                     "permlink" => $permlink[0],

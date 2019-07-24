@@ -41,6 +41,11 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     else
         $options["footer-display"] = get_the_author_meta( $this->plugin_name."footer-display" , $user->ID);
 
+    if (get_the_author_meta( $this->plugin_name."footer-top" , $user->ID) == "")
+        $options["footer-top"] = "off";
+    else
+        $options["footer-top"] = get_the_author_meta( $this->plugin_name."footer-top" , $user->ID);
+
 
     if (get_the_author_meta( $this->plugin_name."vote" , $user->ID) == "")
         $options["vote"] = "on";
@@ -132,6 +137,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     <input type="checkbox" id="<?php echo $this->plugin_name; ?>-append-tags" name="<?php echo $this->plugin_name; ?>[append]"  <?php echo $options['append'] == "off" ? '' : 'checked="checked"' ?>> Always add the default tags before the post tags. (For instance if the post tags are "life travel" and your default tag is "french", the tags used on the post will be "french life travel") <br/>
     <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>> Self vote<br>
     <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-display" name="<?php echo $this->plugin_name; ?>[footer-display]"  <?php echo $options['footer-display'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the end of the article.<br>
+    <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-top" name="<?php echo $this->plugin_name; ?>[footer-top]"  <?php echo $options['footer-top'] == "off" ? '' : 'checked="checked"' ?>> Add the footer text to the top of the article.<br>
     <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>> Add featured images on top of the steem post.<br>
     <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>> Update the steem post when updating on wordpress.<br>
 

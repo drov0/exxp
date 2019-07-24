@@ -153,6 +153,7 @@ class Steempress_sp_Admin {
         $valid['tags'] = (isset($_POST['steempress_sp']['tags']) && !empty($_POST['steempress_sp']['tags'])) ? htmlspecialchars($_POST['steempress_sp']['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($_POST['steempress_sp']['username']) && !empty($_POST['steempress_sp']['username'])) ? htmlspecialchars($_POST['steempress_sp']['username'], ENT_QUOTES) : "";
         $valid['footer-display'] = ((isset($_POST['steempress_sp']['footer-display']) && !empty($_POST['steempress_sp']['footer-display'])) && $_POST['steempress_sp']['footer-display'] == 'on') ? 'on' : "off";
+        $valid['footer-top'] = ((isset($_POST['steempress_sp']['footer-top']) && !empty($_POST['steempress_sp']['footer-top'])) && $_POST['steempress_sp']['footer-top'] == 'on') ? 'on' : "off";
         $valid['vote'] = ((isset($_POST['steempress_sp']['vote']) && !empty($_POST['steempress_sp']['vote'])) && $_POST['steempress_sp']['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($_POST['steempress_sp']['append']) && !empty($_POST['steempress_sp']['append'])) && $_POST['steempress_sp']['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($_POST['steempress_sp']['delay']) && !empty($_POST['steempress_sp']['delay']) && is_numeric($_POST['steempress_sp']['delay']) && $_POST['steempress_sp']['delay'] >= 0 && $_POST['steempress_sp']['delay'] <= 87600)) ?  htmlspecialchars($_POST['steempress_sp']['delay'], ENT_QUOTES) : "0";
@@ -200,6 +201,8 @@ class Steempress_sp_Admin {
         $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
         $valid['footer-display'] = ((isset($input['footer-display']) && !empty($input['footer-display'])) && $input['footer-display'] == 'on') ? 'on' : "off";
+        $valid['footer-top'] = ((isset($input['footer-top']) && !empty($input['footer-top'])) && $input['footer-top'] == 'on') ? 'on' : "off";
+
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0 && $input['delay'] <= 87600)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
@@ -322,6 +325,7 @@ class Steempress_sp_Admin {
             "display_backlink" => $display_backlink,
             "version" =>  $version,
             "footer" =>$options['footer'],
+            "footer-top" =>$options['footer-top'],
             "error" => json_encode($error),
             "license" => $options['license-key'],
         ));
@@ -679,6 +683,8 @@ class Steempress_sp_Admin {
             $options["tags"] = "";
         if (!isset($options["footer-display"]))
             $options["footer-display"] = "on";
+        if (!isset($options["footer-top"]))
+            $options["footer-top"] = "off";
         if (!isset($options["vote"]))
             $options["vote"] = "on";
         if (!isset($options["append"]))
@@ -735,6 +741,11 @@ class Steempress_sp_Admin {
                 $options["footer-display"] = "on";
             else
                 $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "footer-top", $author_id) == "")
+                $options["footer-top"] = "off";
+            else
+                $options["footer-top"] = get_the_author_meta($this->plugin_name . "footer-top", $author_id);
 
 
             if (get_the_author_meta($this->plugin_name . "vote", $author_id) == "")
@@ -867,11 +878,12 @@ class Steempress_sp_Admin {
                     "original_link" => $link,
                     "wordpress_id" => $post_id,
                     "display_backlink" => $display_backlink,
+                    "footer-top" => $options['footer-top'],
                     "version" => $version,
                     "footer" => $options['footer'],
                     "permlink" => $permlink[0],
                     "vote"=> $options["vote"],
-                    "reward" => $options['reward']
+                    "reward" => $options['reward'],
                 ));
 
                     // Post to the api who will update it on the steem blockchain.

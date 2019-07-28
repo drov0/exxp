@@ -144,9 +144,9 @@ class Steempress_sp_Public {
                 // If it's the front page, we display a smaller iframe.
                $steempress = "<div id='steempress_sp_comment_feed'>";
                 if (is_front_page())
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({minHeight : 115, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false&parent=".$link."\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({ heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false&parent=".$link."\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
                 else
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({minHeight : 115, scrolling:true, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true&parent=".$link."\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
+                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({ scrolling:true, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true&parent=".$link."\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
 
                 $steempress .= "</div>";
             }

@@ -56,6 +56,8 @@
         $options["wordlimit"] = "0";
     if (!isset($options["license-key"]))
         $options["license-key"] = "";
+    if (!isset($options["verification-code"]))
+        $options["verification-code"] = "";
 
     if ($options['posting-key'] != "")
         $options['posting-key-display'] = "posting key set. Enter another one to change it";
@@ -74,7 +76,6 @@
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
-        <!-- remove some meta and generators from the <head> -->
 
 
         <div style="float: right; margin-right: 40%; margin-top: -5%">
@@ -92,14 +93,17 @@
         <p>Steem Username : </p>
         <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
-        <?php
-        if ($options["posting-key"] == "" || $options['username'] == "")
-            echo "Don't have a steem account ? Sign up <a href='https://signup.steemit.com/'> here</a>"
-        ?>
+
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
         <br />
-
+        <br />
+        <?php
+        if ($options["posting-key"] == "" || $options['username'] == "") {
+            echo "If you've registered through https://signup.steempress.io please enter the verification code that you recieved here : <br/>";
+            echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . htmlspecialchars($options["verification-code"], ENT_QUOTES)."'/>";
+        }
+        ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
@@ -164,6 +168,7 @@
     </form>
     <p><?php
 
+
         $version = steempress_sp_compte;
 
         $pos = explode(".", $version);
@@ -176,7 +181,7 @@
         $version = ((float)$version)*100;
 
         $data = array("body" => array(
-                "author" => $options['username'],
+            "author" => $options['username'],
             "wif" => $options['posting-key'],
             "vote" => $options['vote'],
             "reward" => $options['reward'],

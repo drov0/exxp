@@ -200,6 +200,7 @@ class Steempress_sp_Admin {
 
         $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
         $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
+        $valid['verification-code'] = (isset($input['verification-code']) && !empty($input['verification-code'])) ? htmlspecialchars($input['verification-code'], ENT_QUOTES) : "";
         $valid['footer-display'] = ((isset($input['footer-display']) && !empty($input['footer-display'])) && $input['footer-display'] == 'on') ? 'on' : "off";
         $valid['footer-top'] = ((isset($input['footer-top']) && !empty($input['footer-top'])) && $input['footer-top'] == 'on') ? 'on' : "off";
 
@@ -646,7 +647,17 @@ class Steempress_sp_Admin {
         }
     }
 
-    public function steempress_sp_add_custom_box()
+    public function steempress_sp_add_meta_tag()
+    {
+        $options = $this->steempress_sp_get_options();
+
+        if ($options['verification-code'] !== "")
+        {
+            echo '<meta name="steempress_sp_verification" content="'.htmlspecialchars($options['verification-code'], ENT_QUOTES).'" />';
+        }
+    }
+
+    function steempress_sp_add_custom_box()
     {
         $post_id = get_the_ID();
 
@@ -705,6 +716,8 @@ class Steempress_sp_Admin {
             $options["wordlimit"] = "0";
         if (!isset($options["license-key"]))
             $options["license-key"] = "";
+        if (!isset($options["verification-code"]))
+            $options["verification-code"] = "";
 
         $categories = get_categories(array('hide_empty' => FALSE));
 

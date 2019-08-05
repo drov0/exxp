@@ -188,7 +188,8 @@
             "version" =>  $version,
             "footer" => $options['footer'],
             "license" => $options['license-key'],
-            "domain" => get_site_url()
+            "domain" => get_site_url(),
+            "verification_code" => $options['verification-code']
         ));
 
         // Post to the api who will publish it on the steem blockchain.

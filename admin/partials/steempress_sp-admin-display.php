@@ -16,10 +16,14 @@
 ?>
 
 <div class="wrap">
-    <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>
+
 
     <?php
 
+
+    if ($options["posting-key"] != "" && $options['username'] != "") {
+        echo '<div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>';
+    }
     //Grab all options
     $options = get_option($this->plugin_name);
 
@@ -79,13 +83,14 @@
 
 
         <div style="float: right; margin-right: 40%; margin-top: -5%">
+            <?php
 
-
-            <!--<h2><a href="#">Go pro</a></h2>-->
-            <p> This is a placeholder for a future feature.</p>
-            <label for="<?php echo $this->plugin_name; ?>-license-key">License key :</label> <br/><br/>
-            <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-license-key" name="<?php echo $this->plugin_name; ?>[license-key]" value="<?php echo htmlspecialchars($options["license-key"], ENT_QUOTES); ?>"/>
-
+            if ($options["posting-key"] != "" && $options['username'] != "") {
+                echo "<p > This is a placeholder for a future feature .</p >";
+                echo "<label for=".$this->plugin_name."-license-key> License key :</label > <br /><br />";
+                echo "<input type = 'text' class='regular-text' id ='".$this->plugin_name."-license-key' name = '".$this->plugin_name."[license-key]' value = '".htmlspecialchars($options["license-key"], ENT_QUOTES)."' />";
+            }
+            ?>
         </div>
 
 
@@ -100,10 +105,15 @@
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "") {
-            echo "If you've registered through https://signup.steempress.io please enter the verification code that you recieved here : <br/>";
+            echo "If you've registered through <a href='https://steempress.io/signup'>https://steempress.io/signup</a> please enter the verification code that you recieved here : <br/>";
             echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . htmlspecialchars($options["verification-code"], ENT_QUOTES)."'/>";
+
+            submit_button('Save all changes', 'primary','submit', TRUE);
+
+            exit("");
+
         }
-        ?>
+            ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>

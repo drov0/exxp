@@ -77,7 +77,7 @@
     ?>
     <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
 
-    <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
+    <p> Join us on the discord server : <a href="https://discord.gg/W2KyAbm">https://discord.gg/W2KyAbm</a> </p>
     <form method="post" name="cleanup_options" action="options.php">
         <?php settings_fields($this->plugin_name); ?>
 
@@ -110,10 +110,22 @@
 
             submit_button('Save all changes', 'primary','submit', TRUE);
 
+            if ($options["verification-code"] != "") {
+                $data = array("body" => array(
+                    "domain" => get_site_url(),
+                    "verification_code" => $options['verification-code']
+                ));
+                $result = wp_remote_post(steempress_sp_api_url."/verification_code", $data);
+                $text = $result['body'];
+                if ($text == "verification_ok" || $text == "verification_not_new")
+                    echo "Thank you for verifying your blog. You will receive an email with a sign up link once the application has been be reviewed, please check your spam folder.<br/> If you didn't receive anything after a week, contact us at <b>contact@steempress.io</b>";
+                else
+                    echo "Your verification code is incorrect, please make sure it's the right one that you recieved by email. If you believe this is an error, please contact us at <b>contact@steempress.io</b>";
+            }
             exit("");
 
         }
-            ?>
+        ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
             <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
@@ -198,8 +210,6 @@
             "version" =>  $version,
             "footer" => $options['footer'],
             "license" => $options['license-key'],
-            "domain" => get_site_url(),
-            "verification_code" => $options['verification-code']
         ));
 
         // Post to the api who will publish it on the steem blockchain.

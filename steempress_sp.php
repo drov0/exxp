@@ -13,10 +13,10 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Steempress
- * Description:       Publishes your article to the steem blockchain automatically to allow you to earn money and reach new audiences.
- * Version:           2.6.1
+ * Description:       Publishes your article to the hive blockchain automatically to allow you to earn money and reach new audiences.
+ * Version:           2.6.2
  * Author:            Martin Lees
- * Author URI:        https://steemit.com/@howo
+ * Author URI:        https://hive.blog/@howo
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       steempress_sp
@@ -32,11 +32,12 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  * using SemVer - https://semver.org
  */
-define( 'steempress_sp_compte', '2.6.1');
+define( 'steempress_sp_compte', '2.6.2');
 
 define( 'steempress_sp_api_url', 'https://api.steempress.io');
 define( 'steempress_sp_twoway_api_url', 'https://two.steempress.io');
 define( 'steempress_sp_twoway_api_back', 'https://sc.steempress.io');
+
 
 //define( 'steempress_sp_api_url', 'http://localhost:8001');
 //define( 'steempress_sp_twoway_api_url', 'http://localhost:3000');

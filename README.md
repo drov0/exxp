@@ -8,20 +8,20 @@
 
 ## Description
 
-SteemPress is a WordPress plugin that connects any blog to the Steem blockchain.
-Steem is a blockchain where content and contributions are rewarded with the crypto currency STEEM based on the upvotes from users. The STEEM tokens can then be traded online with 0 transaction costs and with 3 second transaction time.
-What benefits can a blog owner get by sharing posts on the Steem blockchain?
-    • It can help you reach new audiences as people browsing nay app or website displaying content stored on the Steem blockchain can see your post.
-    • It may provide a new source of income through earning STEEM tokens.
+SteemPress is a WordPress plugin that connects any blog to the hive blockchain.
+Hive is a blockchain where content and contributions are rewarded with the crypto currency HIVE based on the upvotes from users. The HIVE tokens can then be traded online with 0 transaction costs and with 3 second transaction time.
+What benefits can a blog owner get by sharing posts on the Hive blockchain?
+    • It can help you reach new audiences as people browsing nay app or website displaying content stored on the Hive blockchain can see your post.
+    • It may provide a new source of income through earning HIVE tokens.
     • It will help store your content securely on an un-censorable blockchain.
-To use SteemPress you will need a Steem account which can be made for free when signing up through www.steemit.com
-You can also follow the value of a STEEM token here: https://coinmarketcap.com/currencies/steem/
+To use SteemPress you will need a Hive account which can be made for free when signing up through www.hive.blog
+You can also follow the value of a HIVE token here: https://coinmarketcap.com/currencies/hive/
 If you have any questions, feel free to contact us by email on contact@steempress.io, or join our Discord channel together with many other users through https://discord.gg/W2KyAbm
 
 
 ## Features
 
-• Automatic posting of articles to the Steem blockchain
+• Automatic posting of articles to the Hive blockchain
 • Conversion and cleaning of text to look good on different websites
 • Automatic self-vote
 • Add an original link to your blog
@@ -30,37 +30,37 @@ If you have any questions, feel free to contact us by email on contact@steempres
 • Optional posting
 • Bulk posting
 • Post scheduling
-• Multiple steem account support
-• Add (or not) the featured image on top of the steem post
+• Multiple hive account support
+• Add (or not) the featured image on top of the hive post
 • Category filtering
-• Custom footer on steem
+• Custom footer on hive
 
 
 ## Installation
 
-If you don't already have an account on Steem, please get one at https://signup.steemit.com/. Validation can take a few days.
+If you don't already have an account on Hive, please get one at https://signup.hive.blog/. Validation can take a few days.
 
 Then simply go to settings and fill your username, private posting key and default tags, and you're good to go :)
 
 A setup guide can be found here:
-https://steemit.com/utopian-io/@apkmopo.com/tutorials-steempress-to-write-steemit-post-on-wordpress
+https://hive.blog/utopian-io/@apkmopo.com/tutorials-steempress-to-write-steemit-post-on-wordpress
 
 Setup guides are also available in various languages :
 French :
-https://steemit.com/utopian-io/@zonguin/steempress-unoutilformidablepourfairefonctionnerwordpressavecsteemittutorielcomplet-6kc5upw8re
+https://hive.blog/utopian-io/@zonguin/steempress-unoutilformidablepourfairefonctionnerwordpressavecsteemittutorielcomplet-6kc5upw8re
 Indonesian :
-https://steemit.com/sevenfingers/@arie.steem/steempress-iohasbeenattendedtocontentcreatorswith1msteempower-5w4ikna7lm
+https://hive.blog/sevenfingers/@arie.hive/steempress-iohasbeenattendedtocontentcreatorswith1msteempower-5w4ikna7lm
 Japanese :
-https://steemit.com/japanese/@charincharin/steempress-vl4qqd8krj
+https://hive.blog/japanese/@charincharin/steempress-vl4qqd8krj
 Turkish :
-https://steemit.com/steempress/@damla/steempressnedirvenaslkullanlrturkishtutorialreview-fophokno8h
+https://hive.blog/steempress/@damla/steempressnedirvenaslkullanlrturkishtutorialreview-fophokno8h
 
 Note that all the guides are made by fans and may contain inaccuracies.
 
 ## Frequently Asked Questions
 
-For all the questions related to Steem please see:
-https://steemit.com/faq.html
+For all the questions related to Hive please see:
+https://hive.blog/faq.html
 
 ### What's the difference between wordpress.com and wordpress
 
@@ -105,7 +105,7 @@ Look at the "benefactor rewards" section
 
 ### How can I protect the SEO of my website/will the SEO of my blog be affected ?
 
-The delay feature allow you to publish first on your blog and then publish to steem after a few days/hours/minutes (you decide the delay). Which means that google and other search engines will index your blog first and tag steemit.com as a duplicate. And so your blog's seo ranking won't be hurt.
+The delay feature allow you to publish first on your blog and then publish to hive after a few days/hours/minutes (you decide the delay). Which means that google and other search engines will index your blog first and tag hive.blog as a duplicate. And so your blog's seo ranking won't be hurt.
 We recommend a 7 days delay for maximum security.
 
 
@@ -127,11 +127,11 @@ don't talk to @howo directly unless it's a very specific and urgent problem, ins
 
 Still on the discord : https://discord.gg/W2KyAbm 
 
-### I published my post on wordpress but it was not published on steem what's up ? 
+### I published my post on wordpress but it was not published on hive what's up ? 
 
 Check the plugin settings to make sure that you have set everything correctly. you should see 
 
-"Connectivity to the steem server : Ok 
+"Connectivity to the hive server : Ok 
 Username/posting key : Ok 
 "
 
@@ -149,4 +149,4 @@ still from your phone but you'll have to go by the "hosting" section and get a b
 
 ## Benefactor rewards
 
-Like most other apps on Steem, including esteem, dtube, dsound to name a few, we use benefactor rewards to help run and develop SteemPress. The benefactor reward is currently set to 15%. To compensate, SteemPress is able to support original authors who post quality content with our Steem account @steempress-io.
+Like most other apps on Hive, including esteem, dtube, dsound to name a few, we use benefactor rewards to help run and develop SteemPress. The benefactor reward is currently set to 15%. To compensate, SteemPress is able to support original authors who post quality content with our Hive account @steempress-io.

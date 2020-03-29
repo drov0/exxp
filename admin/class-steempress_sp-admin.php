@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://steemit.com/@howo
+ * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
  * @package    Steempress_sp
@@ -334,7 +334,7 @@ class Steempress_sp_Admin {
 
         // Last minute checks before sending it to the server
 
-        // Post to the api who will publish it on the steem blockchain.
+        // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(steempress_sp_api_url, $data);
         if (!isset($result->errors)) {
             update_post_meta($id,'steempress_sp_permlink',$result['body']);
@@ -351,13 +351,13 @@ class Steempress_sp_Admin {
             $options["update"] = "on";
 
         if ($options["update"] == "on")
-            $bulk_actions['update_to_steem'] = __('Update to STEEM', 'update_to_steem');
+            $bulk_actions['update_to_steem'] = __('Update to HIVE', 'update_to_steem');
 
         return $bulk_actions;
     }
 
     public function steempress_sp_bulk_publish_action($bulk_actions) {
-        $bulk_actions['publish_to_steem'] = __( 'Publish to STEEM', 'publish_to_steem');
+        $bulk_actions['publish_to_steem'] = __( 'Publish to hive', 'publish_to_steem');
         return $bulk_actions;
     }
 
@@ -398,8 +398,8 @@ class Steempress_sp_Admin {
         if (!empty( $_REQUEST['updated_to_steem'])) {
             $published_count = intval( $_REQUEST['updated_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
-                    'Added %s posts to be updated on STEEM. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                _n( 'Added %s post to be updated on HIVE. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                    'Added %s posts to be updated on HIVE. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
                     $published_count,
                     'updated_to_steem'
                 ) . '</div>', $published_count );
@@ -409,8 +409,8 @@ class Steempress_sp_Admin {
         {
             $published_count = intval( $_REQUEST['updated_to_steem_err'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Your post was not updated probably because the metadata was not correctly set. Please edit the article you wanted to update on STEEM and edit the metadata. Then resubmit it.',
-                    'Added %s posts to be updated on STEEM. Some were not updated probably because the metadata was not correctly set. Please edit the articles you want to update to STEEM and edit the metadata. Then resubmit them.',
+                _n( 'Your post was not updated probably because the metadata was not correctly set. Please edit the article you wanted to update on HIVE and edit the metadata. Then resubmit it.',
+                    'Added %s posts to be updated on HIVE. Some were not updated probably because the metadata was not correctly set. Please edit the articles you want to update to HIVE and edit the metadata. Then resubmit them.',
                     $published_count,
                     'updated_to_steem'
                 ) . '</div>', $published_count );
@@ -421,8 +421,8 @@ class Steempress_sp_Admin {
         if (!empty($_REQUEST['published_to_steem'])) {
             $published_count = intval( $_REQUEST['published_to_steem'] );
             printf( '<div id="message" class="updated fade">' .
-                _n( 'Added %s post to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io">https://steempress.io</a>  to track the progress.',
-                    'Added %s posts to be published on STEEM. STEEM only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io">https://steempress.io</a> to track the progress.',
+                _n( 'Added %s post to be published on HIVE. HIVE only allows one article to be published per 5 minutes so it may take a while. Check your posting queue on <a href="https://steempress.io/dashboard">https://steempress.io/dashboard</a>  to track the progress.',
+                    'Added %s posts to be published on HIVE. HIVE only allows one article to be published per 5 minutes so it may take a while. check your posting queue on <a href="https://steempress.io/dashboard">https://steempress.io/dashboard</a> to track the progress.',
                     $published_count,
                     'published_to_steem'
                 ) . '</div>', $published_count );
@@ -431,7 +431,7 @@ class Steempress_sp_Admin {
 
     function steempress_sp_future_post( $post_id ) {
 
-        // See if the publish to steem checkbox is checked.
+        // See if the publish to hive checkbox is checked.
         $value = get_post_meta($post_id, 'Steempress_sp_steem_publish', true);
         if ($value != "0")
             $this->Steempress_sp_publish($post_id);
@@ -488,7 +488,7 @@ class Steempress_sp_Admin {
 
         ?>
         <div class="misc-pub-section misc-pub-section-last">
-            <label><input type="checkbox" value="1" <?php echo $checked; ?> name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>
+            <label><input type="checkbox" value="1" <?php echo $checked; ?> name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to hive </label>
         </div>
         <?php
     }
@@ -522,7 +522,7 @@ class Steempress_sp_Admin {
 
         ?>
         <div class="misc-pub-section misc-pub-section-last">
-            <label><input type="checkbox" value="1" <?php echo $checked; ?> name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to steem </label>
+            <label><input type="checkbox" value="1" <?php echo $checked; ?> name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to hive </label>
         </div>
         <?php
     }
@@ -586,7 +586,7 @@ class Steempress_sp_Admin {
 
             wp_nonce_field('Steempress_sp_custom_nonce_'.$post_id, 'Steempress_sp_custom_nonce');
 
-            $body  = '<label><input type="checkbox" value="1" '.$checked.' name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to steem </label>';
+            $body  = '<label><input type="checkbox" value="1" '.$checked.' name="Steempress_sp_steem_publish" /> <input type="hidden" name="Steempress_sp_steem_do_not_publish" value="0" />Publish to hive </label>';
 
             echo $body;
 
@@ -608,7 +608,7 @@ class Steempress_sp_Admin {
                 else
                     $checked = "checked";
 
-                $body = '<div class="misc-pub-section misc-pub-section-last"><label><input type="checkbox" value="1"  '.$checked.'  name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to steem </label></div>';
+                $body = '<div class="misc-pub-section misc-pub-section-last"><label><input type="checkbox" value="1"  '.$checked.'  name="Steempress_sp_steem_update" /> <input type="hidden" name="Steempress_sp_steem_do_not_update" value="0" />Update to hive </label></div>';
             } else
             {
                 $body = "";
@@ -631,14 +631,14 @@ class Steempress_sp_Admin {
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
 
-            $body .= "<p>These options are only for advanced users regarding steem integration</p>
+            $body .= "<p>These options are only for advanced users regarding hive integration</p>
               <label for=\"steempress_sp_author\">Author : </label><br>
               <input type='text' name='steempress_sp_author' value='" . $author . "'/><br>
               <label for=\"steempress_sp_author\">Permlink</label> 
               <input type='text' name='steempress_sp_permlink' value='" . $permlink . "'/><br>
               ";
             // Minified js to handle the "test parameters" function
-            $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"" . steempress_sp_twoway_api_back . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://steemit.com/@\"+this.username+\"/\"+this.permlink+\"'>steem post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+            $body .= "<script>function steempress_sp_createCORSRequest(){var e=\"" . steempress_sp_twoway_api_back . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function steempress_sp_test_params(){document.getElementById(\"steempress_sp_status\").innerHTML=\"loading...\";var e=steempress_sp_createCORSRequest(),s=document.getElementsByName(\"steempress_sp_author\")[0].value,n=document.getElementsByName(\"steempress_sp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"steempress_sp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://hive.blog/@\"+this.username+\"/\"+this.permlink+\"'>hive post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
 
             $body .= "<button type=\"button\" onclick='steempress_sp_test_params()'>Test parameters</button><br/><p id='steempress_sp_status'></p>";
 
@@ -899,7 +899,7 @@ class Steempress_sp_Admin {
                     "reward" => $options['reward'],
                 ));
 
-                    // Post to the api who will update it on the steem blockchain.
+                    // Post to the api who will update it on the hive blockchain.
                     $result = wp_remote_post(steempress_sp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
                         $data = $result['body'];

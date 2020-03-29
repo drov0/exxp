@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://steemit.com/@howo
+ * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
  * @package    Steempress_sp

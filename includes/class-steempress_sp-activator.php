@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       https://steemit.com/@howo
+ * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
  * @package    Steempress_sp

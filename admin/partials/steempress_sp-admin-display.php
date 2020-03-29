@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://steemit.com/@howo
+ * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
  * @package    Sp
@@ -22,7 +22,7 @@
 
 
     if ($options["posting-key"] != "" && $options['username'] != "") {
-        echo '<div style="float: right; margin-right: 10%"> <a href="https://steempress.io/queue">Steempress post queue</a> </div>';
+        echo '<div style="float: right; margin-right: 10%"> <a href="https://steempress.io/dashboard">Steempress post queue</a> </div>';
     }
     //Grab all options
     $options = get_option($this->plugin_name);
@@ -94,8 +94,8 @@
         </div>
 
 
-        <p>Default steem account : </p>
-        <p>Steem Username : </p>
+        <p>Default hive account : </p>
+        <p>Hive Username : </p>
         <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
         <br />
 
@@ -116,6 +116,7 @@
                     "verification_code" => $options['verification-code']
                 ));
                 $result = wp_remote_post(steempress_sp_api_url."/verification_code", $data);
+                var_dump($result);
                 $text = $result['body'];
                 if ($text == "verification_ok" || $text == "verification_not_new")
                     echo "Thank you for verifying your blog. You will receive an email with a sign up link once the application has been be reviewed, please check your spam folder.<br/> If you didn't receive anything after a week, contact us at <b>contact@steempress.io</b>";
@@ -128,8 +129,8 @@
         ?>
         <p> Reward : </p>
         <select name="<?php echo $this->plugin_name; ?>[reward]" id="<?php echo $this->plugin_name; ?>-reward">
-            <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% Steem power 50% Steem Dollars</option>
-            <option value="100" <?php echo ($options["reward"] == "100" ?  'selected="selected"' : '');?>>100% Steem Power</option>
+            <option value="50" <?php echo ($options["reward"] == "50" ?  'selected="selected"' : '');?>>50% hive power 50% hive Dollars</option>
+            <option value="100" <?php echo ($options["reward"] == "100" ?  'selected="selected"' : '');?>>100% hive Power</option>
         </select>
 
 
@@ -137,7 +138,7 @@
         <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress blog" : $options["tags"]), ENT_QUOTES); ?>"/>
         <br />
-        <p> Delay posts : Your posts will get published to steem x minutes after being published on your blog. A value of 0 posts your articles to steem as soon as you publish them. maximum value is 87600, 2 months. </p>
+        <p> Delay posts : Your posts will get published to hive x minutes after being published on your blog. A value of 0 posts your articles to hive as soon as you publish them. maximum value is 87600, 2 months. </p>
         <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
         <br />
         <br />
@@ -146,8 +147,8 @@
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-vote" name="<?php echo $this->plugin_name; ?>[vote]"  <?php echo $options['vote'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-vote"> Self vote</label><br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-display" name="<?php echo $this->plugin_name; ?>[footer-display]"  <?php echo $options['footer-display'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-footer-display"> Add the footer text to the end of the article.</label><br>
         <input type="checkbox" id="<?php echo $this->plugin_name; ?>-footer-top" name="<?php echo $this->plugin_name; ?>[footer-top]"  <?php echo $options['footer-top'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-footer-top"> Add the footer text to the top of the article.</label><br>
-        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-featured"> Add featured images on top of the steem post.</label><br>
-        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-update"> Update the steem post when updating on wordpress.</label><br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-featured" name="<?php echo $this->plugin_name; ?>[featured]"  <?php echo $options['featured'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-featured"> Add featured images on top of the hive post.</label><br>
+        <input type="checkbox" id="<?php echo $this->plugin_name; ?>-update" name="<?php echo $this->plugin_name; ?>[update]"  <?php echo $options['update'] == "off" ? '' : 'checked="checked"' ?>><label for="<?php echo $this->plugin_name; ?>-update"> Update the hive post when updating on wordpress.</label><br>
 
         <br/>
 
@@ -170,14 +171,14 @@
 
         <br/>
         Two way integration (BETA) <br/>
-        Displays Steem features including, upvotes, pending rewards, comments and Steem log in on the blog interface. <br/>
+        Displays hive features including, upvotes, pending rewards, comments and hive log in on the blog interface. <br/>
         <?php
         echo "<input type='checkbox' id='".$this->plugin_name."-twoway' name='".$this->plugin_name."[twoway]' ".($options['twoway'] == "on" ? "checked='checked'" : "")."> <label for='".$this->plugin_name."-twoway'> Activate for posts </label>  <br/>";
         echo "<input type='checkbox' id='".$this->plugin_name."-twoway-front' name='".$this->plugin_name."[twoway-front]' ".($options['twoway-front'] == "on" ? "checked='checked'" : "")."><label for='".$this->plugin_name."-twoway-front'>  Activate for front page (requires two way integration for posts to be active)</label>";
 
         ?>
         <br />
-        <p> Word limit : only publish the first x words to the steem blockchain, set to 0 to publish the entire article. </p>
+        <p> Word limit : only publish the first x words to the hive blockchain, set to 0 to publish the entire article. </p>
         <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
         <br />
 
@@ -212,12 +213,12 @@
             "license" => $options['license-key'],
         ));
 
-        // Post to the api who will publish it on the steem blockchain.
+        // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(steempress_sp_api_url."/test", $data);
 
 
         if (is_array($result) or ($result instanceof Traversable)) {
-            echo "Connectivity to the steem server : <b style='color: darkgreen'>Ok</b> <br/>";
+            echo "Connectivity to the hive server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];
 
             if ($text == "ok")
@@ -235,6 +236,6 @@
             }
         }
         else
-            echo " Connectivity to the steem server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our steem server.";
+            echo " Connectivity to the hive server : <b style='color: red'>Connection error</b> <br /> Most likely your host isn't letting the plugin reach our hive server.";
         ?> </p>
 </div>

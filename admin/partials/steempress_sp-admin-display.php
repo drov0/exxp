@@ -116,7 +116,6 @@
                     "verification_code" => $options['verification-code']
                 ));
                 $result = wp_remote_post(steempress_sp_api_url."/verification_code", $data);
-                var_dump($result);
                 $text = $result['body'];
                 if ($text == "verification_ok" || $text == "verification_not_new")
                     echo "Thank you for verifying your blog. You will receive an email with a sign up link once the application has been be reviewed, please check your spam folder.<br/> If you didn't receive anything after a week, contact us at <b>contact@steempress.io</b>";

@@ -6,8 +6,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
 
 /**
@@ -17,10 +17,10 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
-class Steempress_sp_Loader {
+class Exxp_wp_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

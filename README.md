@@ -1,5 +1,5 @@
 
-# SteemPress
+# Exxp
 - Contributors: howo,fredrikaa
 - Requires at least: 4.7
 - Tested up to: 5.2.3
@@ -8,15 +8,15 @@
 
 ## Description
 
-SteemPress is a WordPress plugin that connects any blog to the hive blockchain.
+Exxp is a WordPress plugin that connects any blog to the hive blockchain.
 Hive is a blockchain where content and contributions are rewarded with the crypto currency HIVE based on the upvotes from users. The HIVE tokens can then be traded online with 0 transaction costs and with 3 second transaction time.
 What benefits can a blog owner get by sharing posts on the Hive blockchain?
     • It can help you reach new audiences as people browsing nay app or website displaying content stored on the Hive blockchain can see your post.
     • It may provide a new source of income through earning HIVE tokens.
     • It will help store your content securely on an un-censorable blockchain.
-To use SteemPress you will need a Hive account which can be made for free when signing up through www.hive.blog
+To use Exxp you will need a Hive account which can be made for free when signing up through www.hive.blog
 You can also follow the value of a HIVE token here: https://coinmarketcap.com/currencies/hive/
-If you have any questions, feel free to contact us by email on contact@steempress.io, or join our Discord channel together with many other users through https://discord.gg/W2KyAbm
+If you have any questions, feel free to contact us by email on contact@exxp.io, or join our Discord channel together with many other users through https://discord.gg/W2KyAbm
 
 
 ## Features
@@ -43,17 +43,17 @@ If you don't already have an account on Hive, please get one at https://signup.h
 Then simply go to settings and fill your username, private posting key and default tags, and you're good to go :)
 
 A setup guide can be found here:
-https://hive.blog/utopian-io/@apkmopo.com/tutorials-steempress-to-write-steemit-post-on-wordpress
+https://hive.blog/utopian-io/@apkmopo.com/tutorials-exxp-to-write-steemit-post-on-wordpress
 
 Setup guides are also available in various languages :
 French :
-https://hive.blog/utopian-io/@zonguin/steempress-unoutilformidablepourfairefonctionnerwordpressavecsteemittutorielcomplet-6kc5upw8re
+https://hive.blog/utopian-io/@zonguin/exxp-unoutilformidablepourfairefonctionnerwordpressavecsteemittutorielcomplet-6kc5upw8re
 Indonesian :
-https://hive.blog/sevenfingers/@arie.hive/steempress-iohasbeenattendedtocontentcreatorswith1msteempower-5w4ikna7lm
+https://hive.blog/sevenfingers/@arie.hive/exxp-iohasbeenattendedtocontentcreatorswith1msteempower-5w4ikna7lm
 Japanese :
-https://hive.blog/japanese/@charincharin/steempress-vl4qqd8krj
+https://hive.blog/japanese/@charincharin/exxp-vl4qqd8krj
 Turkish :
-https://hive.blog/steempress/@damla/steempressnedirvenaslkullanlrturkishtutorialreview-fophokno8h
+https://hive.blog/exxp/@damla/exxpnedirvenaslkullanlrturkishtutorialreview-fophokno8h
 
 Note that all the guides are made by fans and may contain inaccuracies.
 
@@ -64,12 +64,12 @@ https://hive.blog/faq.html
 
 ### What's the difference between wordpress.com and wordpress
 
-Wordpress is the blogging platform on which you run steempress.
+Wordpress is the blogging platform on which you run exxp.
 Wordpress.com is a business providing hosting for wordpress blogs.
 
 ### Do I need a wordpress.com business account ? 
 
-No, you can use any web hosting provider to host your blog and use steempress. 
+No, you can use any web hosting provider to host your blog and use exxp. 
 Wordpress.com is providing a free hosting service but to use plugins you have to upgrade to the highest plan which is
 very expensive compared to other plans. 
 
@@ -116,7 +116,7 @@ a tip, but you are happy when you get one. The same mentality applies.
 
 ### Who do I talk to about business and parnerships ? 
 
-Find @fredrikaa on the official steempress discord and talk to him 
+Find @fredrikaa on the official exxp discord and talk to him 
 
 the discord can be found here : https://discord.gg/W2KyAbm
 
@@ -149,4 +149,4 @@ still from your phone but you'll have to go by the "hosting" section and get a b
 
 ## Benefactor rewards
 
-Like most other apps on Hive, including esteem, dtube, dsound to name a few, we use benefactor rewards to help run and develop SteemPress. The benefactor reward is currently set to 15%. To compensate, SteemPress is able to support original authors who post quality content with our Hive account @steempress-io.
+Like most other apps on Hive, including esteem, dtube, dsound to name a few, we use benefactor rewards to help run and develop Exxp. The benefactor reward is currently set to 15%. To compensate, Exxp is able to support original authors who post quality content with our Hive account @exxp-io.

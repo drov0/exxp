@@ -6,8 +6,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
 
 /**
@@ -16,10 +16,10 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
-class Steempress_sp_Activator {
+class Exxp_wp_Activator {
 
 	/**
 	 * Short Description. (use period)

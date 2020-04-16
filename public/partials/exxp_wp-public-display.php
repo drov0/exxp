@@ -8,8 +8,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/public/partials
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/public/partials
  */
 ?>
 

@@ -4,8 +4,8 @@
  *
  * Example:
  *
- * $output = steempressspTruncateHTML::truncateChars($your_html, '40', '...');
- * $output = steempressspTruncateHTML::truncateWords($your_html, '7', '...');
+ * $output = exxpxpTruncateHTML::truncateChars($your_html, '40', '...');
+ * $output = exxpxpTruncateHTML::truncateWords($your_html, '7', '...');
  *
  * @author pjgalbraith http://www.pjgalbraith.com
  *
@@ -34,7 +34,7 @@
     THE SOFTWARE.
 */
 
-class steempressspTruncateHTML {
+class exxpxpTruncateHTML {
     
     public static function truncateChars($html, $limit, $ellipsis = '...') {
         
@@ -46,7 +46,7 @@ class steempressspTruncateHTML {
         
         $body = $dom->getElementsByTagName("body")->item(0);
         
-        $it = new steempressspDOMLettersIterator($body);
+        $it = new exxpxpDOMLettersIterator($body);
         
         foreach($it as $letter) {
             if($it->key() >= $limit) {
@@ -71,7 +71,7 @@ class steempressspTruncateHTML {
         
         $body = $dom->getElementsByTagName("body")->item(0);
         
-        $it = new steempressspDOMWordsIterator($body);
+        $it = new exxpxpDOMWordsIterator($body);
         
         foreach($it as $word) {            
             if($it->key() >= $limit) {

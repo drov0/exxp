@@ -9,8 +9,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
 
 /**
@@ -20,10 +20,10 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
-class Steempress_sp_i18n {
+class Exxp_wp_i18n {
 
 
 	/**
@@ -34,7 +34,7 @@ class Steempress_sp_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'steempress_sp',
+			'exxp_wp',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

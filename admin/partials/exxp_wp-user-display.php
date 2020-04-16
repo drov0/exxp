@@ -9,7 +9,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 <label class="wrap">
 
 
-    <div style="float: right; margin-right: 10%"> <a href="https://steempress.io/dashboard">Steempress post queue</a> </div>
+    <div style="float: right; margin-right: 10%"> <a href="https://exxp.io/dashboard">Exxp post queue</a> </div>
     <?php
 
     //Grab all options
@@ -72,7 +72,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
 
     if (get_the_author_meta( $this->plugin_name."footer" , $user->ID) == "")
-        $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
     else
         $options["footer"] = get_the_author_meta( $this->plugin_name."footer" , $user->ID);
 
@@ -103,7 +103,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
     ?>
 
-    <h2> SteemPress Options</h2>
+    <h2> Exxp Options</h2>
 
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
         <p>hive account : </p>
@@ -112,7 +112,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "")
-            echo "Don't have a hive account ? Sign up <a href='https://steempress.io/signup'> here</a>"
+            echo "Don't have a hive account ? Sign up <a href='https://exxp.io/signup'> here</a>"
         ?>
         <p>Private Posting key : </p>
         <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
@@ -127,7 +127,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
 
     <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
-    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress blog" : $options["tags"]), ENT_QUOTES); ?>"/>
+    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "exxp blog" : $options["tags"]), ENT_QUOTES); ?>"/>
     <br />
     <p> Delay posts : Your posts will get published to hive x minutes after being published on your blog. A value of 0 posts your articles to hive as soon as you publish them. maximum value is 87600, 2 months. </p>
     <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
@@ -145,10 +145,10 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
     <p> Footer text : <br>  the tag [%original_link%] will be replaced by the link of the article on your blog. </p>
     <br/>
-    <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
+    <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
     <br />
     Category filter : <br/>
-    Check the categories that you want steempress to ignore.<br/>
+    Check the categories that you want exxp to ignore.<br/>
     <?php
 
     for ($i = 0; $i < sizeof($categories); $i++)
@@ -164,19 +164,19 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     <br />
     <p><?php
 
-        $version = steempress_sp_compte;
+        $version = exxp_wp_compte;
 
-        $pos = strrpos(steempress_sp_compte, ".");
+        $pos = strrpos(exxp_wp_compte, ".");
 
         if($pos !== false)
-            $version = substr_replace(steempress_sp_compte, "", $pos, strlen("."));
+            $version = substr_replace(exxp_wp_compte, "", $pos, strlen("."));
 
         $version = ((float)$version)*100;
 
         $data = array("body" => array("author" => $options['username'], "wif" => $options['posting-key'], "vote" => $options['vote'], "reward" => $options['reward'], "version" =>  $version, "footer" => $options['footer']));
 
         // Post to the api who will publish it on the hive blockchain.
-        $result = wp_remote_post(steempress_sp_api_url."/test", $data);
+        $result = wp_remote_post(exxp_wp_api_url."/test", $data);
         if (is_array($result) or ($result instanceof Traversable)) {
             echo "Connectivity to the hive server : <b style='color: darkgreen'>Ok</b> <br/>";
             $text = $result['body'];

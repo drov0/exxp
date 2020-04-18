@@ -337,8 +337,8 @@ class Exxp_wp_Admin {
         // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(exxp_wp_api_url, $data);
         if (!isset($result->errors)) {
-            update_post_meta($id,'exxp_wp_permlink',$result['body']);
-            update_post_meta($id,'exxp_wp_author',$username);
+            update_post_meta($id,'exxp_wp_permlink', htmlspecialchars($result['body'], ENT_QUOTES));
+            update_post_meta($id,'exxp_wp_author', htmlspecialchars($username, ENT_QUOTES));
         }
     }
 
@@ -439,8 +439,6 @@ class Exxp_wp_Admin {
 
     public function exxp_wp_post($new_status, $old_status, $post)
     {
-
-
         // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
         if ($_POST == [] || !isset($_POST['hidden_mm'])) {
             return;
@@ -450,8 +448,6 @@ class Exxp_wp_Admin {
         if ($new_status == 'publish' &&  $old_status != 'publish' && $post->post_type == 'post') {
             if (!isset($_POST['Exxp_wp_steem_publish']) && isset($_POST['Exxp_wp_steem_do_not_publish']) )
                 return;
-
-
 
             $this->Exxp_wp_publish($post->ID);
 
@@ -562,8 +558,10 @@ class Exxp_wp_Admin {
         }
 
         if (array_key_exists('exxp_wp_permlink', $_POST) && array_key_exists('exxp_wp_author', $_POST)) {
-            update_post_meta($post_id,'exxp_wp_permlink',$_POST['exxp_wp_permlink']);
-            update_post_meta($post_id,'exxp_wp_author',$_POST['exxp_wp_author']);
+
+
+            update_post_meta($post_id,'exxp_wp_permlink', htmlspecialchars($_POST['exxp_wp_permlink'], ENT_QUOTES));
+            update_post_meta($post_id,'exxp_wp_author', htmlspecialchars($_POST['exxp_wp_author'], ENT_QUOTES));
         }
     }
 
@@ -630,6 +628,10 @@ class Exxp_wp_Admin {
 
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
+
+            // Sanitize
+            $author = htmlspecialchars($author, ENT_QUOTES);
+            $permlink = htmlspecialchars($permlink, ENT_QUOTES);
 
             $body .= "<p>These options are only for advanced users regarding hive integration</p>
               <label for=\"exxp_wp_author\">Author : </label><br>

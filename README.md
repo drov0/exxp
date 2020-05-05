@@ -11,6 +11,8 @@ Stores your WordPress blogs on the hive blockchain where posts are rewarded with
 
 == Description ==
 
+Credits to steempress, the original plugin and their creators howo, fredrikaa and themis
+
 Exxp is a WordPress plugin that connects any blog to the hive blockchain. It also allows you to benefit from a blockchain powered comment section.
 
 **Features :**
@@ -28,3 +30,5 @@ Exxp is a WordPress plugin that connects any blog to the hive blockchain. It als
     • Add (or not) the featured image on top of the hive post
     • Category filtering
     • Custom footer on hive
+    
+Copyright to steempress, the original plugin, see LICENSE.txt

@@ -13,7 +13,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Exxp wp
- * Description:       Publishes your article to the hive blockchain automatically to allow you to earn money and reach new audiences.
+ * Description:       Publishes your article to the hive blockchain automatically to allow you to ear n money and reach new audiences.
  * Version:           2.6.3
  * Author:            Martin Lees
  * Author URI:        https://hive.blog/@howo

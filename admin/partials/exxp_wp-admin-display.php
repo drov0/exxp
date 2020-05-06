@@ -88,7 +88,7 @@
             if ($options["posting-key"] != "" && $options['username'] != "") {
                 echo "<p > This is a placeholder for a future feature .</p >";
                 echo "<label for=".$this->plugin_name."-license-key> License key :</label > <br /><br />";
-                echo "<input type = 'text' class='regular-text' id ='".$this->plugin_name."-license-key' name = '".$this->plugin_name."[license-key]' value = '".htmlspecialchars($options["license-key"], ENT_QUOTES)."' />";
+                echo "<input type = 'text' class='regular-text' id ='".$this->plugin_name."-license-key' name = '".$this->plugin_name."[license-key]' value = '".sanitize_text_field($options["license-key"])."' />";
             }
             ?>
         </div>
@@ -96,17 +96,17 @@
 
         <p>Default hive account : </p>
         <p>Hive Username : </p>
-        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo sanitize_user($options["username"]); ?>"/>
         <br />
 
         <p>Private Posting key : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo sanitize_text_field($options["posting-key-display"]); ?>"/>
         <br />
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "") {
             echo "If you've registered through <a href='https://exxp.io/signup'>https://exxp.io/signup</a> please enter the verification code that you recieved here : <br/>";
-            echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . htmlspecialchars($options["verification-code"], ENT_QUOTES)."'/>";
+            echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . sanitize_text_field($options["verification-code"])."'/>";
 
             submit_button('Save all changes', 'primary','submit', TRUE);
 
@@ -135,10 +135,10 @@
 
 
         <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "exxp blog" : $options["tags"]), ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo sanitize_text_field(($options["tags"] == "" ? "exxp blog" : $options["tags"])); ?>"/>
         <br />
         <p> Delay posts : Your posts will get published to hive x minutes after being published on your blog. A value of 0 posts your articles to hive as soon as you publish them. maximum value is 87600, 2 months. </p>
-        <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
+        <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo (($options["delay"] == "" ? "0" : (int)$options["delay"])) ?>"/>
         <br />
         <br />
 
@@ -178,7 +178,7 @@
         ?>
         <br />
         <p> Word limit : only publish the first x words to the hive blockchain, set to 0 to publish the entire article. </p>
-        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
+        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo ($options["wordlimit"] == "" ? "0" : (int)$options["wordlimit"]); ?>"/>
         <br />
 
 

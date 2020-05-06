@@ -149,20 +149,20 @@ class Exxp_wp_Admin {
         // All checkboxes inputs
         $valid = array();
         $valid['reward'] = (isset($_POST['exxp_wp']['reward']) && !empty($_POST['exxp_wp']['reward'] ) && ($_POST['exxp_wp']['reward'] == "50" || $_POST['exxp_wp']['reward'] == "100")) ? $_POST['exxp_wp']['reward'] : "50";
-        $valid['posting-key'] = (isset($_POST['exxp_wp']['posting-key']) && !empty($_POST['exxp_wp']['posting-key'])) ? htmlspecialchars($_POST['exxp_wp']['posting-key'], ENT_QUOTES) : "";
-        $valid['tags'] = (isset($_POST['exxp_wp']['tags']) && !empty($_POST['exxp_wp']['tags'])) ? htmlspecialchars($_POST['exxp_wp']['tags'], ENT_QUOTES) : "";
-        $valid['username'] = (isset($_POST['exxp_wp']['username']) && !empty($_POST['exxp_wp']['username'])) ? htmlspecialchars($_POST['exxp_wp']['username'], ENT_QUOTES) : "";
+        $valid['posting-key'] = (isset($_POST['exxp_wp']['posting-key']) && !empty($_POST['exxp_wp']['posting-key'])) ? sanitize_text_field($_POST['exxp_wp']['posting-key']) : "";
+        $valid['tags'] = (isset($_POST['exxp_wp']['tags']) && !empty($_POST['exxp_wp']['tags'])) ? sanitize_text_field($_POST['exxp_wp']['tags']) : "";
+        $valid['username'] = (isset($_POST['exxp_wp']['username']) && !empty($_POST['exxp_wp']['username'])) ? sanitize_user($_POST['exxp_wp']['username']) : "";
         $valid['footer-display'] = ((isset($_POST['exxp_wp']['footer-display']) && !empty($_POST['exxp_wp']['footer-display'])) && $_POST['exxp_wp']['footer-display'] == 'on') ? 'on' : "off";
         $valid['footer-top'] = ((isset($_POST['exxp_wp']['footer-top']) && !empty($_POST['exxp_wp']['footer-top'])) && $_POST['exxp_wp']['footer-top'] == 'on') ? 'on' : "off";
         $valid['vote'] = ((isset($_POST['exxp_wp']['vote']) && !empty($_POST['exxp_wp']['vote'])) && $_POST['exxp_wp']['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($_POST['exxp_wp']['append']) && !empty($_POST['exxp_wp']['append'])) && $_POST['exxp_wp']['append'] == 'on') ? 'on' : "off";
-        $valid['delay'] = ((isset($_POST['exxp_wp']['delay']) && !empty($_POST['exxp_wp']['delay']) && is_numeric($_POST['exxp_wp']['delay']) && $_POST['exxp_wp']['delay'] >= 0 && $_POST['exxp_wp']['delay'] <= 87600)) ?  htmlspecialchars($_POST['exxp_wp']['delay'], ENT_QUOTES) : "0";
+        $valid['delay'] = ((isset($_POST['exxp_wp']['delay']) && !empty($_POST['exxp_wp']['delay']) && is_numeric($_POST['exxp_wp']['delay']) && $_POST['exxp_wp']['delay'] >= 0 && $_POST['exxp_wp']['delay'] <= 87600)) ?  (int) $_POST['exxp_wp']['delay'] : "0";
         $valid['featured'] = ((isset($_POST['exxp_wp']['featured']) && !empty($_POST['exxp_wp']['featured'])) && $_POST['exxp_wp']['featured'] == 'on') ? 'on' : "off";
         $valid['footer'] = (isset($_POST['exxp_wp']['footer']) && !empty($_POST['exxp_wp']['footer'])) ? $_POST['exxp_wp']['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
         $valid['twoway'] = ((isset($_POST['exxp_wp']['twoway']) && !empty($_POST['exxp_wp']['twoway'])) && $_POST['exxp_wp']['twoway'] == 'on') ? 'on' : "off";
         $valid['twoway-front'] = ((isset($_POST['exxp_wp']['twoway-front']) && !empty($_POST['exxp_wp']['twoway-front'])) && $_POST['exxp_wp']['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($_POST['exxp_wp']['update']) && !empty($_POST['exxp_wp']['update'])) && $_POST['exxp_wp']['update'] == 'on') ? 'on' : "off";
-        $valid['wordlimit'] = ((isset($_POST['exxp_wp']['wordlimit']) && !empty($_POST['exxp_wp']['wordlimit']) && is_numeric($_POST['exxp_wp']['wordlimit']) && $_POST['exxp_wp']['wordlimit'] >= 0)) ?  htmlspecialchars($_POST['exxp_wp']['wordlimit'], ENT_QUOTES) : "0";
+        $valid['wordlimit'] = ((isset($_POST['exxp_wp']['wordlimit']) && !empty($_POST['exxp_wp']['wordlimit']) && is_numeric($_POST['exxp_wp']['wordlimit']) && $_POST['exxp_wp']['wordlimit'] >= 0)) ? (int) $_POST['exxp_wp']['wordlimit'] : "0";
 
 
         if ($valid['posting-key'] == "posting key set. Enter another one to change it")
@@ -192,35 +192,35 @@ class Exxp_wp_Admin {
         $valid = array();
         $valid['reward'] = (isset($input['reward']) && !empty($input['reward'] ) && ($input['reward'] == "50" || $input['reward'] == "100")) ? $input['reward'] : "50";
 
-        $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? htmlspecialchars($input['posting-key'], ENT_QUOTES) : "";
+        $valid['posting-key'] = (isset($input['posting-key']) && !empty($input['posting-key'])) ? sanitize_text_field($input['posting-key']) : "";
         if ($valid['posting-key'] == "posting key set. Enter another one to change it")
         {
             $valid['posting-key'] = $options['posting-key'];
         }
 
-        $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? htmlspecialchars($input['tags'], ENT_QUOTES) : "";
-        $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? htmlspecialchars($input['username'], ENT_QUOTES) : "";
-        $valid['verification-code'] = (isset($input['verification-code']) && !empty($input['verification-code'])) ? htmlspecialchars($input['verification-code'], ENT_QUOTES) : "";
+        $valid['tags'] = (isset($input['tags']) && !empty($input['tags'])) ? sanitize_text_field($input['tags']) : "";
+        $valid['username'] = (isset($input['username']) && !empty($input['username'])) ? sanitize_user($input['username']) : "";
+        $valid['verification-code'] = (isset($input['verification-code']) && !empty($input['verification-code'])) ? sanitize_text_field($input['verification-code']) : "";
         $valid['footer-display'] = ((isset($input['footer-display']) && !empty($input['footer-display'])) && $input['footer-display'] == 'on') ? 'on' : "off";
         $valid['footer-top'] = ((isset($input['footer-top']) && !empty($input['footer-top'])) && $input['footer-top'] == 'on') ? 'on' : "off";
 
         $valid['vote'] = ((isset($input['vote']) && !empty($input['vote'])) && $input['vote'] == 'on') ? 'on' : "off";
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
-        $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0 && $input['delay'] <= 87600)) ?  htmlspecialchars($input['delay'], ENT_QUOTES) : "0";
+        $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0 && $input['delay'] <= 87600)) ?  (int) $input['delay'] : "0";
         $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
         $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? $input['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
         $valid['twoway'] = ((isset($input['twoway']) && !empty($input['twoway'])) && $input['twoway'] == 'on') ? 'on' : "off";
         $valid['twoway-front'] = ((isset($input['twoway-front']) && !empty($input['twoway-front'])) && $input['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";
-        $valid['wordlimit'] = ((isset($input['wordlimit']) && !empty($input['wordlimit']) && is_numeric($input['wordlimit']) && $input['wordlimit'] >= 0)) ?  htmlspecialchars($input['wordlimit'], ENT_QUOTES) : "0";
-        $valid['license-key'] = (isset($input['license-key']) && !empty($input['license-key'])) ? htmlspecialchars($input['license-key'], ENT_QUOTES) : "";
+        $valid['wordlimit'] = ((isset($input['wordlimit']) && !empty($input['wordlimit']) && is_numeric($input['wordlimit']) && $input['wordlimit'] >= 0)) ?  (int) $input['wordlimit'] : "0";
+        $valid['license-key'] = (isset($input['license-key']) && !empty($input['license-key'])) ? sanitize_text_field($input['license-key']) : "";
 
         $users = get_users();
 
         for ($i = 0; $i < sizeof($users); $i++)
         {
-            $valid['posting-key'.$users[$i]->data->ID] = (isset($input['posting-key'.$users[$i]->data->ID]) && !empty($input['posting-key'.$users[$i]->data->ID])) ? htmlspecialchars($input['posting-key'.$users[$i]->data->ID], ENT_QUOTES) : "";
-            $valid['username'.$users[$i]->data->ID] = (isset($input['username'.$users[$i]->data->ID]) && !empty($input['username'.$users[$i]->data->ID])) ? htmlspecialchars($input['username'.$users[$i]->data->ID], ENT_QUOTES) : "";
+            $valid['posting-key'.$users[$i]->data->ID] = (isset($input['posting-key'.$users[$i]->data->ID]) && !empty($input['posting-key'.$users[$i]->data->ID])) ? sanitize_text_field($input['posting-key'.$users[$i]->data->ID]) : "";
+            $valid['username'.$users[$i]->data->ID] = (isset($input['username'.$users[$i]->data->ID]) && !empty($input['username'.$users[$i]->data->ID])) ? sanitize_text_field($input['username'.$users[$i]->data->ID]) : "";
         }
 
         $categories = get_categories(array('hide_empty' => FALSE));
@@ -337,8 +337,8 @@ class Exxp_wp_Admin {
         // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(exxp_wp_api_url, $data);
         if (!isset($result->errors)) {
-            update_post_meta($id,'exxp_wp_permlink', htmlspecialchars($result['body'], ENT_QUOTES));
-            update_post_meta($id,'exxp_wp_author', htmlspecialchars($username, ENT_QUOTES));
+            update_post_meta($id,'exxp_wp_permlink', sanitize_text_field($result['body']));
+            update_post_meta($id,'exxp_wp_author', sanitize_user($username));
         }
     }
 
@@ -560,8 +560,8 @@ class Exxp_wp_Admin {
         if (array_key_exists('exxp_wp_permlink', $_POST) && array_key_exists('exxp_wp_author', $_POST)) {
 
 
-            update_post_meta($post_id,'exxp_wp_permlink', htmlspecialchars($_POST['exxp_wp_permlink'], ENT_QUOTES));
-            update_post_meta($post_id,'exxp_wp_author', htmlspecialchars($_POST['exxp_wp_author'], ENT_QUOTES));
+            update_post_meta($post_id,'exxp_wp_permlink', sanitize_text_field($_POST['exxp_wp_permlink']));
+            update_post_meta($post_id,'exxp_wp_author', sanitize_user($_POST['exxp_wp_author']));
         }
     }
 
@@ -630,8 +630,8 @@ class Exxp_wp_Admin {
                 $author = $meta_author;
 
             // Sanitize
-            $author = htmlspecialchars($author, ENT_QUOTES);
-            $permlink = htmlspecialchars($permlink, ENT_QUOTES);
+            $author = sanitize_user($author);
+            $permlink = sanitize_text_field($permlink);
 
             $body .= "<p>These options are only for advanced users regarding hive integration</p>
               <label for=\"exxp_wp_author\">Author : </label><br>
@@ -655,7 +655,7 @@ class Exxp_wp_Admin {
 
         if ($options['verification-code'] !== "")
         {
-            echo '<meta name="exxp_wp_verification" content="'.htmlspecialchars($options['verification-code'], ENT_QUOTES).'" />';
+            echo '<meta name="exxp_wp_verification" content="'.sanitize_text_field($options['verification-code']).'" />';
         }
     }
 

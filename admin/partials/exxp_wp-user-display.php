@@ -108,14 +108,14 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     <p> Join us on the discord server : https://discord.gg/W2KyAbm </p>
         <p>hive account : </p>
         <p>hive Username : </p>
-        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo sanitize_user($options["username"]); ?>"/>
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "")
             echo "Don't have a hive account ? Sign up <a href='https://exxp.io/signup'> here</a>"
         ?>
         <p>Private Posting key : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo sanitize_text_field($options["posting-key-display"]); ?>"/>
         <br />
 
         <p> Reward : </p>
@@ -127,10 +127,10 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
 
     <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
-    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "exxp blog" : $options["tags"]), ENT_QUOTES); ?>"/>
+    <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo sanitize_text_field(($options["tags"] == "" ? "exxp blog" : $options["tags"])); ?>"/>
     <br />
     <p> Delay posts : Your posts will get published to hive x minutes after being published on your blog. A value of 0 posts your articles to hive as soon as you publish them. maximum value is 87600, 2 months. </p>
-    <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
+    <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo ($options["delay"] == "" ? "0" : (int)$options["delay"]); ?>"/>
     <br />
     <br />
 
@@ -160,7 +160,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
     <br/>
 
     <p> Word limit : only publish the first x words to the hive blockchain, set to 0 to publish the entire article. </p>
-    <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
+    <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo ($options["wordlimit"] == "" ? "0" : (int)$options["wordlimit"]); ?>"/>
     <br />
     <p><?php
 

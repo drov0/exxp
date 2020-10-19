@@ -337,8 +337,8 @@ class Exxp_wp_Admin {
         // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(exxp_wp_api_url, $data);
         if (!isset($result->errors)) {
-            update_post_meta($id,'exxp_wp_permlink', sanitize_text_field($result['body']));
-            update_post_meta($id,'exxp_wp_author', sanitize_user($username));
+            update_post_meta($id,'steempress_wp_permlink', sanitize_text_field($result['body']));
+            update_post_meta($id,'steempress_wp_author', sanitize_user($username));
         }
     }
 
@@ -534,7 +534,7 @@ class Exxp_wp_Admin {
 
                 // If post is empty/ doesn't have the hidden_mm attribute this means that we are using gutenberg
                     if ($_POST == [] || !isset($_POST['hidden_mm'])) {
-                        if (get_post_meta($post_id, 'exxp_wp_author', true ) == "" && get_post_status ($post_id) == 'publish')
+                        if (get_post_meta($post_id, 'steempress_wp_author', true ) == "" && get_post_status ($post_id) == 'publish')
                             $this->Exxp_wp_publish($post_id);
                     }
 
@@ -557,11 +557,11 @@ class Exxp_wp_Admin {
             }
         }
 
-        if (array_key_exists('exxp_wp_permlink', $_POST) && array_key_exists('exxp_wp_author', $_POST)) {
+        if (array_key_exists('steempress_wp_permlink', $_POST) && array_key_exists('steempress_wp_author', $_POST)) {
 
 
-            update_post_meta($post_id,'exxp_wp_permlink', sanitize_text_field($_POST['exxp_wp_permlink']));
-            update_post_meta($post_id,'exxp_wp_author', sanitize_user($_POST['exxp_wp_author']));
+            update_post_meta($post_id,'steempress_wp_permlink', sanitize_text_field($_POST['steempress_wp_permlink']));
+            update_post_meta($post_id,'steempress_wp_author', sanitize_user($_POST['steempress_wp_author']));
         }
     }
 
@@ -623,8 +623,8 @@ class Exxp_wp_Admin {
                 $author = $options['username' . $author_id];
             }
 
-            $permlink = get_post_meta($post->ID, 'exxp_wp_permlink', true);
-            $meta_author = get_post_meta($post->ID, 'exxp_wp_author', true);
+            $permlink = get_post_meta($post->ID, 'steempress_wp_permlink', true);
+            $meta_author = get_post_meta($post->ID, 'steempress_wp_author', true);
 
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
@@ -634,13 +634,13 @@ class Exxp_wp_Admin {
             $permlink = sanitize_text_field($permlink);
 
             $body .= "<p>These options are only for advanced users regarding hive integration</p>
-              <label for=\"exxp_wp_author\">Author : </label><br>
-              <input type='text' name='exxp_wp_author' value='" . $author . "'/><br>
-              <label for=\"exxp_wp_author\">Permlink</label> 
-              <input type='text' name='exxp_wp_permlink' value='" . $permlink . "'/><br>
+              <label for=\"steempress_wp_author\">Author : </label><br>
+              <input type='text' name='steempress_wp_author' value='" . $author . "'/><br>
+              <label for=\"steempress_wp_author\">Permlink</label> 
+              <input type='text' name='steempress_wp_permlink' value='" . $permlink . "'/><br>
               ";
             // Minified js to handle the "test parameters" function
-            $body .= "<script>function exxp_wp_createCORSRequest(){var e=\"" . exxp_wp_twoway_api_back . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function exxp_wp_test_params(){document.getElementById(\"exxp_wp_status\").innerHTML=\"loading...\";var e=exxp_wp_createCORSRequest(),s=document.getElementsByName(\"exxp_wp_author\")[0].value,n=document.getElementsByName(\"exxp_wp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"exxp_wp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://hive.blog/@\"+this.username+\"/\"+this.permlink+\"'>hive post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
+            $body .= "<script>function exxp_wp_createCORSRequest(){var e=\"" . exxp_wp_twoway_api_back . "/test_param\",t=new XMLHttpRequest;return\"withCredentials\"in t?t.open(\"POST\",e,!0):\"undefined\"!=typeof XDomainRequest?(t=new XDomainRequest).open(\"POST\",e):t=null,t}function exxp_wp_test_params(){document.getElementById(\"exxp_wp_status\").innerHTML=\"loading...\";var e=exxp_wp_createCORSRequest(),s=document.getElementsByName(\"steempress_wp_author\")[0].value,n=document.getElementsByName(\"steempress_wp_permlink\")[0].value,r=\"username=\"+s+\"&permlink=\"+n;e.setRequestHeader(\"Content-type\",\"application/x-www-form-urlencoded\"),e&&(e.username=s,e.permlink=n,e.onload=function(){var t=e.responseText;document.getElementById(\"exxp_wp_status\").innerHTML=\"ok\"===t?\"The parameters are correct. this article is linked to this <a href='https://hive.blog/@\"+this.username+\"/\"+this.permlink+\"'>hive post</a>\":\"Error : the permlink or username is incorrect.\"},e.send(r))}</script>";
 
             $body .= "<button type=\"button\" onclick='exxp_wp_test_params()'>Test parameters</button><br/><p id='exxp_wp_status'></p>";
 
@@ -877,7 +877,7 @@ class Exxp_wp_Admin {
 
                 $version = ((float)$version) * 100;
 
-                $permlink = get_post_meta($post_id, "exxp_wp_permlink");
+                $permlink = get_post_meta($post_id, "steempress_wp_permlink");
 
                 if ($options['wordlimit'] != "0") {
                     $limit = intval($options["wordlimit"]);

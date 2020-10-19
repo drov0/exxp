@@ -11,9 +11,12 @@ Stores your WordPress blogs on the hive blockchain where posts are rewarded with
 
 == Description ==
 
-Exxp is a WordPress plugin that connects any blog to the hive blockchain. It also allows you to benefit from a blockchain powered comment section.
+Exxp connects your blog to the hive blockchain.
 
-Find out more on our discord server: https://discord.gg/Ar8KmzB
+It automatically backs up your posts to the hive blockchain improving your seo via backlinks and allowing you to earn tokens.
+You can also benefit from a comment section powered by hive, which allows you to improve engagement as your blog will be exposed on multiple other sites where readers can read and interact with your post.
+
+Find out more on our discord server https://discord.gg/Ar8KmzB and on our website: https://exxp.io
 
 **Features :**
 

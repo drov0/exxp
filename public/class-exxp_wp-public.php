@@ -116,7 +116,7 @@ class Exxp_wp_Public {
             
             $post = get_post($id);
 
-            $permlink = get_post_meta($id, "steempress_wp_permlink", true);
+            $permlink = get_post_meta($id, "steempress_sp_permlink", true);
 
             $author_id = $post->post_author;
 
@@ -131,7 +131,7 @@ class Exxp_wp_Public {
                 $author = $options['username' . $author_id];
             }
 
-            $meta_author = get_post_meta($post->ID, 'steempress_wp_author', true);
+            $meta_author = get_post_meta($post->ID, 'steempress_sp_author', true);
 
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;

@@ -19,7 +19,6 @@ You can also benefit from a comment section powered by hive, which allows you to
 Find out more on our discord server https://discord.gg/Ar8KmzB and on our website: https://exxp.io
 
 **Features :**
-
     • Automatic posting of articles to the Hive blockchain
     • Conversion and cleaning of text to look good on different websites
     • Automatic self-vote

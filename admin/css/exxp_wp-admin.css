@@ -1,4 +1,4 @@
-.steempress_sp_collapsible {
+.exxp_wp_collapsible {
     background-color: #8e8e8e;
     color: white;
     cursor: pointer;
@@ -9,11 +9,11 @@
     font-size: 15px;
 }
 
-.steempress_sp_active, .steempress_sp_collapsible:hover {
+.exxp_wp_active, .exxp_wp_collapsible:hover {
     background-color: #555;
 }
 
-.steempress_sp_content {
+.exxp_wp_content {
     padding: 0 18px;
     max-height: 0;
     overflow: hidden;
@@ -21,7 +21,7 @@
     background-color: #f1f1f1;
 }
 
-.steempress_sp_collapsible:after {
+.exxp_wp_collapsible:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: white;
@@ -29,6 +29,6 @@
     margin-left: 5px;
 }
 
-.steempress_sp_active:after {
+.exxp_wp_active:after {
     content: "\2796"; /* Unicode character for "minus" sign (-) */
 }

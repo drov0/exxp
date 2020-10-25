@@ -6,8 +6,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/public
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/public
  */
 
 /**
@@ -16,10 +16,10 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/public
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/public
  */
-class Steempress_sp_Public {
+class Exxp_wp_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -64,15 +64,15 @@ class Steempress_sp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
+		 * defined in Exxp_wp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Steempress_sp_Loader will then create the relationship
+		 * The Exxp_wp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/steempress_sp-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/exxp_wp-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -87,21 +87,21 @@ class Steempress_sp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Steempress_sp_Loader as all of the hooks are defined
+		 * defined in Exxp_wp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Steempress_sp_Loader will then create the relationship
+		 * The Exxp_wp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name."iframeResizer", plugin_dir_url( __FILE__ ) . 'js/iframeResizer.min.js');
-		wp_enqueue_script( $this->plugin_name."public_js", plugin_dir_url( __FILE__ ) . 'js/steempress_sp-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name."iframeResizer", plugin_dir_url( __FILE__ ) . 'js/exxp_wp-iframeResizer.min.js');
+		wp_enqueue_script( $this->plugin_name."public_js", plugin_dir_url( __FILE__ ) . 'js/exxp_wp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
 
-	public function steempress_sp_comments($content)
+	public function exxp_wp_comments($content)
     {
 
         $options = get_option($this->plugin_name);
@@ -136,25 +136,25 @@ class Steempress_sp_Public {
             if ($meta_author != $author && $meta_author != "")
                 $author = $meta_author;
 
-            $steempress = "";
+            $exxp = "";
 
             $link = get_permalink($post->ID);
 
             if ($permlink != "" && $author != "") {
                 // If it's the front page, we display a smaller iframe.
-               $steempress = "<div id='steempress_sp_comment_feed'>";
+               $exxp = "<div id='exxp_wp_comment_feed'>";
                 if (is_front_page())
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({ heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false&parent=".$link."\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
+                    $exxp .= "<iframe name='exxp_wp_embed'  onload=\"iFrameResize({ heightCalculationMethod:'min'})\" src=\"".exxp_wp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=false&parent=".$link."\" style=\"border: 0; width: 100%;margin-bottom: 0px !important;\"></iframe>";
                 else
-                    $steempress .= "<iframe name='steempress_sp_embed'  onload=\"iFrameResize({ scrolling:true, heightCalculationMethod:'min'})\" src=\"".steempress_sp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true&parent=".$link."\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
+                    $exxp .= "<iframe name='exxp_wp_embed'  onload=\"iFrameResize({ scrolling:true, heightCalculationMethod:'min'})\" src=\"".exxp_wp_twoway_api_url."/?author=".$author."&permlink=".$permlink."&display_comment=true&parent=".$link."\" style=\"border: 0; width: 100%; margin-bottom: 0px !important;\"></iframe>";
 
-                $steempress .= "</div>";
+                $exxp .= "</div>";
             }
 
             if ($options["twoway-front"] === "off" && is_front_page())
                 return $content;
 
-            return $content .  $steempress;
+            return $content .  $exxp;
         } else
             return $content;
 

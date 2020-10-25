@@ -9,8 +9,8 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
 
 /**
@@ -23,10 +23,10 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Steempress_sp
- * @subpackage Steempress_sp/includes
+ * @package    Exxp_wp
+ * @subpackage Exxp_wp/includes
  */
-class Steempress_sp {
+class Exxp_wp {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -34,7 +34,7 @@ class Steempress_sp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Steempress_sp_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Exxp_wp_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -66,12 +66,12 @@ class Steempress_sp {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'steempress_sp_compte' ) ) {
-			$this->version = steempress_sp_compte;
+		if ( defined( 'exxp_wp_compte' ) ) {
+			$this->version = exxp_wp_compte;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'steempress_sp';
+		$this->plugin_name = 'exxp_wp';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -85,10 +85,10 @@ class Steempress_sp {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Steempress_sp_Loader. Orchestrates the hooks of the plugin.
-	 * - Steempress_sp_i18n. Defines internationalization functionality.
-	 * - Steempress_sp_Admin. Defines all hooks for the admin area.
-	 * - Steempress_sp_Public. Defines all hooks for the public side of the site.
+	 * - Exxp_wp_Loader. Orchestrates the hooks of the plugin.
+	 * - Exxp_wp_i18n. Defines internationalization functionality.
+	 * - Exxp_wp_Admin. Defines all hooks for the admin area.
+	 * - Exxp_wp_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -102,33 +102,33 @@ class Steempress_sp {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-steempress_sp-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-exxp_wp-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-steempress_sp-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-exxp_wp-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-steempress_sp-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-exxp_wp-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-steempress_sp-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-exxp_wp-public.php';
 
-		$this->loader = new Steempress_sp_Loader();
+		$this->loader = new Exxp_wp_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Steempress_sp_i18n class in order to set the domain and to register the hook
+	 * Uses the Exxp_wp_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -136,7 +136,7 @@ class Steempress_sp {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Steempress_sp_i18n();
+		$plugin_i18n = new Exxp_wp_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -151,13 +151,13 @@ class Steempress_sp {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Steempress_sp_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Exxp_wp_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
-        $this->loader->add_action( 'wp_head', $plugin_admin, 'steempress_sp_add_meta_tag' );
+        $this->loader->add_action( 'wp_head', $plugin_admin, 'exxp_wp_add_meta_tag' );
 
         // Add Settings link to the plugin
         $plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
@@ -165,26 +165,26 @@ class Steempress_sp {
 
 
         $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
-        $this->loader->add_action( 'transition_post_status', $plugin_admin, 'steempress_sp_post', 15, 3 );
-        $this->loader->add_action( 'publish_future_post',$plugin_admin, 'steempress_sp_future_post' );
+        $this->loader->add_action( 'transition_post_status', $plugin_admin, 'exxp_wp_post', 15, 3 );
+        $this->loader->add_action( 'publish_future_post',$plugin_admin, 'exxp_wp_future_post' );
 
 
-        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_action' );
-        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_publish_action' );
-        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_publish_handler', 10, 3 );
-        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'steempress_sp_bulk_update_handler', 10, 3 );
-        $this->loader->add_action( 'admin_notices', $plugin_admin,'steempress_sp_bulk_publish_notice' );
-        $this->loader->add_action( 'admin_notices', $plugin_admin,'steempress_sp_bulk_update_notice' );
+        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'exxp_wp_bulk_update_action' );
+        $this->loader->add_filter( 'bulk_actions-edit-post', $plugin_admin,'exxp_wp_bulk_publish_action' );
+        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'exxp_wp_bulk_publish_handler', 10, 3 );
+        $this->loader->add_filter( 'handle_bulk_actions-edit-post', $plugin_admin,'exxp_wp_bulk_update_handler', 10, 3 );
+        $this->loader->add_action( 'admin_notices', $plugin_admin,'exxp_wp_bulk_publish_notice' );
+        $this->loader->add_action( 'admin_notices', $plugin_admin,'exxp_wp_bulk_update_notice' );
 
 
         $this->loader->add_action( 'save_post', $plugin_admin,'saveSteemPublishField',8);
-        $this->loader->add_action('add_meta_boxes',$plugin_admin,  'steempress_sp_add_custom_box');
+        $this->loader->add_action('add_meta_boxes',$plugin_admin,  'exxp_wp_add_custom_box');
 
 
-        $this->loader->add_action( 'show_user_profile',  $plugin_admin, 'steempress_sp_extra_user_profile_fields' );
-        $this->loader->add_action( 'edit_user_profile',  $plugin_admin, 'steempress_sp_extra_user_profile_fields' );
-        $this->loader->add_action( 'personal_options_update',  $plugin_admin, 'steempress_sp_save_extra_user_profile_fields' );
-        $this->loader->add_action( 'edit_user_profile_update',  $plugin_admin, 'steempress_sp_save_extra_user_profile_fields' );
+        $this->loader->add_action( 'show_user_profile',  $plugin_admin, 'exxp_wp_extra_user_profile_fields' );
+        $this->loader->add_action( 'edit_user_profile',  $plugin_admin, 'exxp_wp_extra_user_profile_fields' );
+        $this->loader->add_action( 'personal_options_update',  $plugin_admin, 'exxp_wp_save_extra_user_profile_fields' );
+        $this->loader->add_action( 'edit_user_profile_update',  $plugin_admin, 'exxp_wp_save_extra_user_profile_fields' );
     }
 
 
@@ -198,10 +198,10 @@ class Steempress_sp {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Steempress_sp_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Exxp_wp_Public( $this->get_plugin_name(), $this->get_version() );
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-        $this->loader->add_filter('the_content',$plugin_public, 'steempress_sp_comments');
+        $this->loader->add_filter('the_content',$plugin_public, 'exxp_wp_comments');
 	}
 
 	/**
@@ -228,7 +228,7 @@ class Steempress_sp {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Steempress_sp_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Exxp_wp_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

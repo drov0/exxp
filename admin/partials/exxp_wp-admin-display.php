@@ -22,7 +22,7 @@
 
 
     if ($options["posting-key"] != "" && $options['username'] != "") {
-        echo '<div style="float: right; margin-right: 10%"> <a href="https://steempress.io/dashboard">Steempress post queue</a> </div>';
+        echo '<div style="float: right; margin-right: 10%"> <a href="https://exxp.io/dashboard">Exxp post queue</a> </div>';
     }
     //Grab all options
     $options = get_option($this->plugin_name);
@@ -49,7 +49,7 @@
     if (!isset($options["featured"]))
         $options["featured"] = "on";
     if (!isset($options["footer"]))
-        $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>";
+        $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
     if (!isset($options["twoway"]))
         $options["twoway"] = "off";
     if (!isset($options["update"]))
@@ -88,7 +88,7 @@
             if ($options["posting-key"] != "" && $options['username'] != "") {
                 echo "<p > This is a placeholder for a future feature .</p >";
                 echo "<label for=".$this->plugin_name."-license-key> License key :</label > <br /><br />";
-                echo "<input type = 'text' class='regular-text' id ='".$this->plugin_name."-license-key' name = '".$this->plugin_name."[license-key]' value = '".htmlspecialchars($options["license-key"], ENT_QUOTES)."' />";
+                echo "<input type = 'text' class='regular-text' id ='".$this->plugin_name."-license-key' name = '".$this->plugin_name."[license-key]' value = '".sanitize_text_field($options["license-key"])."' />";
             }
             ?>
         </div>
@@ -96,17 +96,17 @@
 
         <p>Default hive account : </p>
         <p>Hive Username : </p>
-        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo htmlspecialchars($options["username"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" maxlength="16" id="<?php echo $this->plugin_name; ?>-username" name="<?php echo $this->plugin_name; ?>[username]" value="<?php echo sanitize_user($options["username"]); ?>"/>
         <br />
 
         <p>Private Posting key : </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo htmlspecialchars($options["posting-key-display"], ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-posting-key" name="<?php echo $this->plugin_name; ?>[posting-key]" value="<?php echo sanitize_text_field($options["posting-key-display"]); ?>"/>
         <br />
         <br />
         <?php
         if ($options["posting-key"] == "" || $options['username'] == "") {
-            echo "If you've registered through <a href='https://steempress.io/signup'>https://steempress.io/signup</a> please enter the verification code that you recieved here : <br/>";
-            echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . htmlspecialchars($options["verification-code"], ENT_QUOTES)."'/>";
+            echo "If you've registered through <a href='https://exxp.io/signup'>https://exxp.io/signup</a> please enter the verification code that you recieved here : <br/>";
+            echo "<input placeholder='verification code ' type='text' class='regular-text' maxlength='20' id='" . $this->plugin_name . "-verification-code' name='".$this->plugin_name."[verification-code]' value='" . sanitize_text_field($options["verification-code"])."'/>";
 
             submit_button('Save all changes', 'primary','submit', TRUE);
 
@@ -115,12 +115,12 @@
                     "domain" => get_site_url(),
                     "verification_code" => $options['verification-code']
                 ));
-                $result = wp_remote_post(steempress_sp_api_url."/verification_code", $data);
+                $result = wp_remote_post(exxp_wp_api_url."/verification_code", $data);
                 $text = $result['body'];
                 if ($text == "verification_ok" || $text == "verification_not_new")
-                    echo "Thank you for verifying your blog. You will receive an email with a sign up link once the application has been be reviewed, please check your spam folder.<br/> If you didn't receive anything after a week, contact us at <b>contact@steempress.io</b>";
+                    echo "Thank you for verifying your blog. You will receive an email with a sign up link once the application has been be reviewed, please check your spam folder.<br/> If you didn't receive anything after a week, contact us at <b>contact@exxp.io</b>";
                 else
-                    echo "Your verification code is incorrect, please make sure it's the right one that you recieved by email. If you believe this is an error, please contact us at <b>contact@steempress.io</b>";
+                    echo "Your verification code is incorrect, please make sure it's the right one that you recieved by email. If you believe this is an error, please contact us at <b>contact@exxp.io</b>";
             }
             exit("");
 
@@ -135,10 +135,10 @@
 
 
         <p> Default tags : <br> separate each tag by a space, 5 max <br> Will be used if you don't specify tags when publishing. </p>
-        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo htmlspecialchars(($options["tags"] == "" ? "steempress blog" : $options["tags"]), ENT_QUOTES); ?>"/>
+        <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-tags" name="<?php echo $this->plugin_name; ?>[tags]" value="<?php echo sanitize_text_field(($options["tags"] == "" ? "exxp blog" : $options["tags"])); ?>"/>
         <br />
         <p> Delay posts : Your posts will get published to hive x minutes after being published on your blog. A value of 0 posts your articles to hive as soon as you publish them. maximum value is 87600, 2 months. </p>
-        <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo htmlspecialchars(($options["delay"] == "" ? "0" : $options["delay"]), ENT_QUOTES); ?>"/>
+        <input type="number" max="87600" class="regular-text" id="<?php echo $this->plugin_name; ?>-delay" name="<?php echo $this->plugin_name; ?>[delay]" value="<?php echo (($options["delay"] == "" ? "0" : (int)$options["delay"])) ?>"/>
         <br />
         <br />
 
@@ -153,12 +153,12 @@
 
         <p> Footer text : <br>  the tag [%original_link%] will be replaced by the link of the article on your blog. </p>
         <br/>
-        <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/steempress/'>SteemPress</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?></textarea>
+        <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?></textarea>
         <br />
 
         <br/>
         Category filter : <br/>
-        Check the categories that you want steempress to ignore.<br/>
+        Check the categories that you want exxp to ignore.<br/>
         <?php
 
         for ($i = 0; $i < sizeof($categories); $i++)
@@ -178,7 +178,7 @@
         ?>
         <br />
         <p> Word limit : only publish the first x words to the hive blockchain, set to 0 to publish the entire article. </p>
-        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo htmlspecialchars(($options["wordlimit"] == "" ? "0" : $options["wordlimit"]), ENT_QUOTES); ?>"/>
+        <input type="number" class="regular-text" id="<?php echo $this->plugin_name; ?>-wordlimit" name="<?php echo $this->plugin_name; ?>[wordlimit]" value="<?php echo ($options["wordlimit"] == "" ? "0" : (int)$options["wordlimit"]); ?>"/>
         <br />
 
 
@@ -191,7 +191,7 @@
     <p><?php
 
 
-        $version = steempress_sp_compte;
+        $version = exxp_wp_compte;
 
         $pos = explode(".", $version);
 
@@ -213,7 +213,7 @@
         ));
 
         // Post to the api who will publish it on the hive blockchain.
-        $result = wp_remote_post(steempress_sp_api_url."/test", $data);
+        $result = wp_remote_post(exxp_wp_api_url."/test", $data);
 
 
         if (is_array($result) or ($result instanceof Traversable)) {
@@ -226,11 +226,11 @@
                 echo "Default username/posting key  : <b style='color: darkgreen'>Ok</b> <br/>";
 
                 if (is_numeric($text))
-                    echo "Steempress premium : <b style='color: darkgreen'>Ok</b> Expiration date : ".date('d/m/Y H:i', $text);
+                    echo "Exxp premium : <b style='color: darkgreen'>Ok</b> Expiration date : ".date('d/m/Y H:i', $text);
                 else if ($text == "noexist")
-                    echo "Steempress premium : <b style='color: red'>License key not found</b>";
+                    echo "Exxp premium : <b style='color: red'>License key not found</b>";
                 else if ($text == "expired")
-                    echo "Steempress premium : <b style='color: red'>Your premium package has expired please renew it at <a href='#'>https://premium.steempress.io</a></b>";
+                    echo "Exxp premium : <b style='color: red'>Your premium package has expired please renew it at <a href='#'>https://premium.exxp.io</a></b>";
 
             }
         }

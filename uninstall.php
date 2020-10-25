@@ -22,7 +22,7 @@
  * @link       https://hive.blog/@howo
  * @since      1.0.0
  *
- * @package    Steempress_sp
+ * @package    Exxp_wp
  */
 
 // If uninstall not called from WordPress, then exit.

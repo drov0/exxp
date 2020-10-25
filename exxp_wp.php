@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       Exxp wp
  * Description:       Publishes your article to the hive blockchain automatically to allow you to ear n money and reach new audiences.
- * Version:           2.6.5
+ * Version:           2.6.6
  * Author:            Martin Lees
  * Author URI:        https://hive.blog/@howo
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  * using SemVer - https://semver.org
  */
-define( 'exxp_wp_compte', '2.6.5');
+define( 'exxp_wp_compte', '2.6.6');
 
 define( 'exxp_wp_api_url', 'https://api.exxp.io');
 define( 'exxp_wp_twoway_api_url', 'https://two.exxp.io');

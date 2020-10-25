@@ -103,7 +103,6 @@ class Exxp_wp_Public {
 
 	public function exxp_wp_comments($content)
     {
-
         $options = get_option($this->plugin_name);
 
         if (!isset($options["twoway"]))

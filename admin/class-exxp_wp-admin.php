@@ -185,7 +185,6 @@ class Exxp_wp_Admin {
 
 
     public function validate($input) {
-
         $options = $this->exxp_wp_get_options();
 
         // All checkboxes inputs
@@ -238,14 +237,12 @@ class Exxp_wp_Admin {
         register_setting($this->plugin_name, $this->plugin_name, array($this, 'validate'));
     }
 
-
-
-
-
     public function Exxp_wp_publish($id)
     {
-
         $post = get_post($id);
+
+        if ($post->post_type != "post")
+            return
 
         $options = $this->exxp_wp_get_options($post);
 

@@ -19,13 +19,13 @@
 
 
     <?php
-
+    //Grab all options
+    $options = get_option($this->plugin_name);
 
     if ($options["posting-key"] != "" && $options['username'] != "") {
         echo '<div style="float: right; margin-right: 10%"> <a href="https://exxp.io/dashboard">Exxp post queue</a> </div>';
     }
-    //Grab all options
-    $options = get_option($this->plugin_name);
+
 
     // avoid undefined errors when running it for the first time :
     if (!isset($options["username"]))

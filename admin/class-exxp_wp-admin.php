@@ -237,14 +237,156 @@ class Exxp_wp_Admin {
         register_setting($this->plugin_name, $this->plugin_name, array($this, 'validate'));
     }
 
+    function exxp_wp_get_options($post = null) {
+        if ($post != null)
+            $author_id = $post->post_author;
+        else
+            $author_id = get_current_user_id();
+
+        $options = get_option($this->plugin_name);
+
+        // avoid undefined errors when running it for the first time :
+        if (!isset($options["username"]))
+            $options["username"] = "";
+        if (!isset($options["posting-key"]))
+            $options["posting-key"] = "";
+        if (!isset($options["reward"]))
+            $options["reward"] = "50";
+        if (!isset($options["tags"]))
+            $options["tags"] = "";
+        if (!isset($options["footer-display"]))
+            $options["footer-display"] = "on";
+        if (!isset($options["footer-top"]))
+            $options["footer-top"] = "off";
+        if (!isset($options["vote"]))
+            $options["vote"] = "on";
+        if (!isset($options["append"]))
+            $options["append"] = "off";
+        if (!isset($options["delay"]))
+            $options["delay"] = "0";
+        if (!isset($options["featured"]))
+            $options["featured"] = "on";
+        if (!isset($options["footer"]))
+            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
+        if (!isset($options["twoway"]))
+            $options["twoway"] = "off";
+        if (!isset($options["update"]))
+            $options["update"] = "on";
+        if (!isset($options["twoway-front"]))
+            $options["twoway-front"] = "off";
+        if (!isset($options["wordlimit"]))
+            $options["wordlimit"] = "0";
+        if (!isset($options["license-key"]))
+            $options["license-key"] = "";
+        if (!isset($options["verification-code"]))
+            $options["verification-code"] = "";
+
+        $categories = get_categories(array('hide_empty' => FALSE));
+
+        for ($i = 0; $i < sizeof($categories); $i++)
+        {
+            if (!isset($options['cat'.$categories[$i]->cat_ID]))
+                $options['cat'.$categories[$i]->cat_ID] = "off";
+        }
+
+
+        if (get_the_author_meta( $this->plugin_name."username" , $author_id) != "" && get_the_author_meta( $this->plugin_name."posting-key" , $author_id) != "") {
+            // avoid undefined errors when running it for the first time :
+            if (get_the_author_meta($this->plugin_name . "username", $author_id) == "")
+                $options["username"] = "";
+            else
+                $options["username"] = get_the_author_meta($this->plugin_name . "username", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "posting-key", $author_id) == "")
+                $options["posting-key"] = "";
+            else
+                $options["posting-key"] = get_the_author_meta($this->plugin_name . "posting-key", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "reward", $author_id) == "")
+                $options["reward"] = "50";
+            else
+                $options["reward"] = get_the_author_meta($this->plugin_name . "reward", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "tags", $author_id) == "")
+                $options["tags"] = "";
+            else
+                $options["tags"] = get_the_author_meta($this->plugin_name . "tags", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id) == "")
+                $options["footer-display"] = "on";
+            else
+                $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "footer-top", $author_id) == "")
+                $options["footer-top"] = "off";
+            else
+                $options["footer-top"] = get_the_author_meta($this->plugin_name . "footer-top", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "vote", $author_id) == "")
+                $options["vote"] = "on";
+            else
+                $options["vote"] = get_the_author_meta($this->plugin_name . "vote", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "append", $author_id) == "")
+                $options["append"] = "off";
+            else
+                $options["append"] = get_the_author_meta($this->plugin_name . "append", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "delay", $author_id) == "")
+                $options["delay"] = "0";
+            else
+                $options["delay"] = get_the_author_meta($this->plugin_name . "delay", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "featured", $author_id) == "")
+                $options["featured"] = "on";
+            else
+                $options["featured"] = get_the_author_meta($this->plugin_name . "featured", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "footer", $author_id) == "")
+                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
+            else
+                $options["footer"] = get_the_author_meta($this->plugin_name . "footer", $author_id);
+
+
+            if (get_the_author_meta($this->plugin_name . "update", $author_id) == "")
+                $options["update"] = "on";
+            else
+                $options["update"] = get_the_author_meta($this->plugin_name . "update", $author_id);
+
+            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id) == "")
+                $options["wordlimit"] = "0";
+            else
+                $options["wordlimit"] = get_the_author_meta($this->plugin_name . "wordlimit", $author_id);
+
+            $categories = get_categories(array('hide_empty' => FALSE));
+
+            for ($i = 0; $i < sizeof($categories); $i++) {
+                if (get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id) == "")
+                    $options['cat' . $categories[$i]->cat_ID] = "off";
+                else
+                    $options['cat' . $categories[$i]->cat_ID] = get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id);
+            }
+        }
+
+        return $options;
+    }
+
+
     public function Exxp_wp_publish($id)
     {
         $post = get_post($id);
 
-        if ($post->post_type != "post")
-            return
+        if ($post->post_type != "post") {
+            return;
+        }
 
         $options = $this->exxp_wp_get_options($post);
+
 
         $error = [];
 
@@ -308,6 +450,8 @@ class Exxp_wp_Admin {
             $content = exxpxpTruncateHTML::truncateWords($content, $limit, '');
         }
 
+
+
         $data = array("body" => array(
             "title" => $post->post_title,
             "content" => $content,
@@ -328,9 +472,6 @@ class Exxp_wp_Admin {
             "license" => $options['license-key'],
         ));
 
-
-        // Last minute checks before sending it to the server
-
         // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(exxp_wp_api_url, $data);
         if (!isset($result->errors)) {
@@ -340,8 +481,6 @@ class Exxp_wp_Admin {
     }
 
     public function exxp_wp_bulk_update_action($bulk_actions) {
-
-
         $options = $this->exxp_wp_get_options();
 
         if (!isset($options["update"]))
@@ -456,9 +595,6 @@ class Exxp_wp_Admin {
         }
             return;
     }
-
-
-
 
     function createSteemPublishField()
     {
@@ -669,148 +805,6 @@ class Exxp_wp_Admin {
             'post',
             'side'
         );
-    }
-
-
-    function exxp_wp_get_options($post = null) {
-        if ($post != null)
-            $author_id = $post->post_author;
-        else
-            $author_id = get_current_user_id();
-
-        $options = get_option($this->plugin_name);
-
-        // avoid undefined errors when running it for the first time :
-        if (!isset($options["username"]))
-            $options["username"] = "";
-        if (!isset($options["posting-key"]))
-            $options["posting-key"] = "";
-        if (!isset($options["reward"]))
-            $options["reward"] = "50";
-        if (!isset($options["tags"]))
-            $options["tags"] = "";
-        if (!isset($options["footer-display"]))
-            $options["footer-display"] = "on";
-        if (!isset($options["footer-top"]))
-            $options["footer-top"] = "off";
-        if (!isset($options["vote"]))
-            $options["vote"] = "on";
-        if (!isset($options["append"]))
-            $options["append"] = "off";
-        if (!isset($options["delay"]))
-            $options["delay"] = "0";
-        if (!isset($options["featured"]))
-            $options["featured"] = "on";
-        if (!isset($options["footer"]))
-            $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
-        if (!isset($options["twoway"]))
-            $options["twoway"] = "off";
-        if (!isset($options["update"]))
-            $options["update"] = "on";
-        if (!isset($options["twoway-front"]))
-            $options["twoway-front"] = "off";
-        if (!isset($options["wordlimit"]))
-            $options["wordlimit"] = "0";
-        if (!isset($options["license-key"]))
-            $options["license-key"] = "";
-        if (!isset($options["verification-code"]))
-            $options["verification-code"] = "";
-
-        $categories = get_categories(array('hide_empty' => FALSE));
-
-        for ($i = 0; $i < sizeof($categories); $i++)
-        {
-            if (!isset($options['cat'.$categories[$i]->cat_ID]))
-                $options['cat'.$categories[$i]->cat_ID] = "off";
-        }
-
-
-        if (get_the_author_meta( $this->plugin_name."username" , $author_id) != "" && get_the_author_meta( $this->plugin_name."posting-key" , $author_id) != "") {
-            // avoid undefined errors when running it for the first time :
-            if (get_the_author_meta($this->plugin_name . "username", $author_id) == "")
-                $options["username"] = "";
-            else
-                $options["username"] = get_the_author_meta($this->plugin_name . "username", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "posting-key", $author_id) == "")
-                $options["posting-key"] = "";
-            else
-                $options["posting-key"] = get_the_author_meta($this->plugin_name . "posting-key", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "reward", $author_id) == "")
-                $options["reward"] = "50";
-            else
-                $options["reward"] = get_the_author_meta($this->plugin_name . "reward", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "tags", $author_id) == "")
-                $options["tags"] = "";
-            else
-                $options["tags"] = get_the_author_meta($this->plugin_name . "tags", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "footer-display", $author_id) == "")
-                $options["footer-display"] = "on";
-            else
-                $options["footer-display"] = get_the_author_meta($this->plugin_name . "footer-display", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "footer-top", $author_id) == "")
-                $options["footer-top"] = "off";
-            else
-                $options["footer-top"] = get_the_author_meta($this->plugin_name . "footer-top", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "vote", $author_id) == "")
-                $options["vote"] = "on";
-            else
-                $options["vote"] = get_the_author_meta($this->plugin_name . "vote", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "append", $author_id) == "")
-                $options["append"] = "off";
-            else
-                $options["append"] = get_the_author_meta($this->plugin_name . "append", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "delay", $author_id) == "")
-                $options["delay"] = "0";
-            else
-                $options["delay"] = get_the_author_meta($this->plugin_name . "delay", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "featured", $author_id) == "")
-                $options["featured"] = "on";
-            else
-                $options["featured"] = get_the_author_meta($this->plugin_name . "featured", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "footer", $author_id) == "")
-                $options["footer"] = "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
-            else
-                $options["footer"] = get_the_author_meta($this->plugin_name . "footer", $author_id);
-
-
-            if (get_the_author_meta($this->plugin_name . "update", $author_id) == "")
-                $options["update"] = "on";
-            else
-                $options["update"] = get_the_author_meta($this->plugin_name . "update", $author_id);
-
-            if (get_the_author_meta($this->plugin_name . "wordlimit", $author_id) == "")
-                $options["wordlimit"] = "0";
-            else
-                $options["wordlimit"] = get_the_author_meta($this->plugin_name . "wordlimit", $author_id);
-
-            $categories = get_categories(array('hide_empty' => FALSE));
-
-            for ($i = 0; $i < sizeof($categories); $i++) {
-                if (get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id) == "")
-                    $options['cat' . $categories[$i]->cat_ID] = "off";
-                else
-                    $options['cat' . $categories[$i]->cat_ID] = get_the_author_meta($this->plugin_name . 'cat' . $categories[$i]->cat_ID, $author_id);
-            }
-        }
-
-
-
-        return $options;
     }
 
     /* Returned codes :

@@ -450,8 +450,6 @@ class Exxp_wp_Admin {
             $content = exxpxpTruncateHTML::truncateWords($content, $limit, '');
         }
 
-
-
         $data = array("body" => array(
             "title" => $post->post_title,
             "content" => $content,
@@ -470,7 +468,7 @@ class Exxp_wp_Admin {
             "footer_top" =>$options['footer-top'],
             "error" => json_encode($error),
             "license" => $options['license-key'],
-        ));
+        ),                    'timeout' => 45);
 
         // Post to the api who will publish it on the hive blockchain.
         $result = wp_remote_post(exxp_wp_api_url, $data);
@@ -873,25 +871,27 @@ class Exxp_wp_Admin {
                     $content = exxpxpTruncateHTML::truncateWords($content, $limit, '');
                 }
 
-                $data = array("body" => array(
-                    "title" => $post->post_title,
-                    "content" => $content,
-                    "tags" => $tags,
-                    "author" => $username,
-                    "wif" => $posting_key,
-                    "original_link" => $link,
-                    "wordpress_id" => $post_id,
-                    "display_backlink" => $display_backlink,
-                    "footerTop" => $options['footer-top'],
-                    "version" => $version,
-                    "footer" => $options['footer'],
-                    "permlink" => $permlink[0],
-                    "vote"=> $options["vote"],
-                    "reward" => $options['reward'],
-                ));
+                $data = array(
+                        "body" => array(
+                            "title" => $post->post_title,
+                            "content" => $content,
+                            "tags" => $tags,
+                            "author" => $username,
+                            "wif" => $posting_key,
+                            "original_link" => $link,
+                            "wordpress_id" => $post_id,
+                            "display_backlink" => $display_backlink,
+                            "footerTop" => $options['footer-top'],
+                            "version" => $version,
+                            "footer" => $options['footer'],
+                            "permlink" => $permlink[0],
+                            "vote"=> $options["vote"],
+                            "reward" => $options['reward'],
+                        ),
+                    'timeout' => 45);
 
-                    // Post to the api who will update it on the hive blockchain.
-                    $result = wp_remote_post(exxp_wp_api_url . "/update", $data);
+                // Post to the api who will update it on the hive blockchain.
+                $result = wp_remote_post(exxp_wp_api_url . "/update", $data);
                     if (!isset($result->errors)) {
                         $data = $result['body'];
                         if ($data == "ok")

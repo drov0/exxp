@@ -158,7 +158,7 @@ class Exxp_wp_Admin {
         $valid['append'] = ((isset($_POST['exxp_wp']['append']) && !empty($_POST['exxp_wp']['append'])) && $_POST['exxp_wp']['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($_POST['exxp_wp']['delay']) && !empty($_POST['exxp_wp']['delay']) && is_numeric($_POST['exxp_wp']['delay']) && $_POST['exxp_wp']['delay'] >= 0 && $_POST['exxp_wp']['delay'] <= 87600)) ?  (int) $_POST['exxp_wp']['delay'] : "0";
         $valid['featured'] = ((isset($_POST['exxp_wp']['featured']) && !empty($_POST['exxp_wp']['featured'])) && $_POST['exxp_wp']['featured'] == 'on') ? 'on' : "off";
-        $valid['footer'] = (isset($_POST['exxp_wp']['footer']) && !empty($_POST['exxp_wp']['footer'])) ? $_POST['exxp_wp']['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
+        $valid['footer'] = (isset($_POST['exxp_wp']['footer']) && !empty($_POST['exxp_wp']['footer'])) ? sanitize_text_field($_POST['exxp_wp']['footer']) : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
         $valid['twoway'] = ((isset($_POST['exxp_wp']['twoway']) && !empty($_POST['exxp_wp']['twoway'])) && $_POST['exxp_wp']['twoway'] == 'on') ? 'on' : "off";
         $valid['twoway-front'] = ((isset($_POST['exxp_wp']['twoway-front']) && !empty($_POST['exxp_wp']['twoway-front'])) && $_POST['exxp_wp']['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($_POST['exxp_wp']['update']) && !empty($_POST['exxp_wp']['update'])) && $_POST['exxp_wp']['update'] == 'on') ? 'on' : "off";
@@ -207,7 +207,7 @@ class Exxp_wp_Admin {
         $valid['append'] = ((isset($input['append']) && !empty($input['append'])) && $input['append'] == 'on') ? 'on' : "off";
         $valid['delay'] = ((isset($input['delay']) && !empty($input['delay']) && is_numeric($input['delay']) && $input['delay'] >= 0 && $input['delay'] <= 87600)) ?  (int) $input['delay'] : "0";
         $valid['featured'] = ((isset($input['featured']) && !empty($input['featured'])) && $input['featured'] == 'on') ? 'on' : "off";
-        $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? $input['footer'] : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
+        $valid['footer'] = (isset($input['footer']) && !empty($input['footer'])) ? sanitize_text_field($input['footer']) : "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>";
         $valid['twoway'] = ((isset($input['twoway']) && !empty($input['twoway'])) && $input['twoway'] == 'on') ? 'on' : "off";
         $valid['twoway-front'] = ((isset($input['twoway-front']) && !empty($input['twoway-front'])) && $input['twoway-front'] == 'on') ? 'on' : "off";
         $valid['update'] = ((isset($input['update']) && !empty($input['update'])) && $input['update'] == 'on') ? 'on' : "off";

@@ -145,7 +145,7 @@ if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can('edit_post
 
     <p> Footer text : <br>  the tag [%original_link%] will be replaced by the link of the article on your blog. </p>
     <br/>
-    <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>" : $options["footer"]) ?> </textarea>
+    <textarea maxlength="30000" type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-footer" name="<?php echo $this->plugin_name; ?>[footer]"><?php echo ($options["footer"] == "" ? "<br /><center><hr/><em>Posted from my blog with <a href='https://wordpress.org/plugins/exxp/'>Exxp</a> : [%original_link%] </em><hr/></center>" : sanitize_text_field($options["footer"])) ?> </textarea>
     <br />
     Category filter : <br/>
     Check the categories that you want exxp to ignore.<br/>
